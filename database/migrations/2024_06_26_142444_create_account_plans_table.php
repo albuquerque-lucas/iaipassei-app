@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('account_plans', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('access_level');
+            $table->decimal('price', 10, 2)->nullable();
+            $table->integer('duration_days')->nullable();
+            $table->boolean('is_public')->default(false);
             $table->timestamps();
         });
     }

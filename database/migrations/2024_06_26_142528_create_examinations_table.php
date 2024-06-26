@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\EducationalLevel;
 
 return new class extends Migration
 {
@@ -13,6 +14,9 @@ return new class extends Migration
     {
         Schema::create('examinations', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(EducationalLevel::class);
+            $table->string('title')->unique();
+            $table->string('institution')->nullable()->default(null);
             $table->timestamps();
         });
     }
