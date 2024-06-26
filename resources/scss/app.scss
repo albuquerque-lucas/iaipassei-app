@@ -1,0 +1,13 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+@import './_variables/variables';
+
+@import './auth/loginPage';
+
+.body {
+    background-color: $default-light-background;
+}
