@@ -14,12 +14,12 @@ class AccountPlan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'access_level_id', // ID do nível de acesso associado ao plano
-        'name',            // Nome do plano (ex: Plano Regular, Plano Premium, etc.)
-        'description',     // Descrição do plano (pode ser nulo)
-        'price',           // Preço do plano
-        'duration_days',   // Duração do plano em dias (pode ser nulo)
-        'is_public',       // Indica se o plano é público ou privado
+        'access_level',
+        'name',
+        'description',
+        'price',
+        'duration_days',
+        'is_public',
     ];
 
     public function users(): HasMany
