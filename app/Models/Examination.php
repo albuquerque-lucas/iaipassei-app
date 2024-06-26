@@ -51,7 +51,7 @@ class Examination extends Model
         return $this->belongsToMany(StudyArea::class);
     }
 
-    public function educationalLevel(): BelongsTo
+    public function educationLevel(): BelongsTo
     {
         return $this->belongsTo(EducationLevel::class);
     }
