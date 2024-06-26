@@ -53,7 +53,7 @@ class Examination extends Model
 
     public function educationalLevel(): BelongsTo
     {
-        return $this->belongsTo(EducationalLevel::class);
+        return $this->belongsTo(EducationLevel::class);
     }
 
     public static function getAll(string $order, string $orderBy = 'id', array $params = []): LengthAwarePaginator
