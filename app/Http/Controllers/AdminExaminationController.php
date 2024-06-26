@@ -32,12 +32,6 @@ class AdminExaminationController extends Controller
         return redirect()->route('admin.examinations.index')->with('success', 'Concurso criado com sucesso!');
     }
 
-    public function show($id)
-    {
-        $examination = Examination::with('educationLevel')->findOrFail($id);
-        return view('admin.examinations.show', compact('examination'));
-    }
-
     public function edit($id)
     {
         $examination = Examination::findOrFail($id);
