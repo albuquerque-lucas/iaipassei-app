@@ -15,8 +15,7 @@ class Subject extends Model
     use HasFactory;
 
     protected $fillable = [
-        'educational_level_id',
-        'study_area_id',
+        'education_level_id',
         'title',
     ];
 
@@ -35,9 +34,9 @@ class Subject extends Model
         return $this->hasMany(Topic::class);
     }
 
-    public function studyArea(): BelongsTo
+    public function studyArea(): BelongsToMany
     {
-        return $this->belongsTo(StudyArea::class);
+        return $this->belongsToMany(StudyArea::class);
     }
 
     public function educationalLevel(): BelongsTo

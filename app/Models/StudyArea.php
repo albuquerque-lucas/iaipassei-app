@@ -23,9 +23,9 @@ class StudyArea extends Model
         return $this->belongsToMany(Examination::class);
     }
 
-    public function subjects(): HasMany
+    public function subjects(): BelongsToMany
     {
-        return $this->hasMany(Subject::class);
+        return $this->belongsToMany(Subject::class);
     }
 
     public function topics(): HasManyThrough

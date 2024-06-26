@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\StudyArea;
-use App\Models\Subject;
 
-class StudyAreasSeeder extends Seeder
+class StudyAreaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,15 +14,8 @@ class StudyAreasSeeder extends Seeder
     {
         $studyAreas = config('study_areas');
 
-        foreach ($studyAreas as $area => $subjects) {
+        foreach ($studyAreas as $area) {
             $studyArea = StudyArea::create(['name' => $area]);
-
-            foreach ($subjects as $subject) {
-                Subject::create([
-                    'study_area_id' => $studyArea->id,
-                    'title' => $subject,
-                ]);
-            }
         }
     }
 }

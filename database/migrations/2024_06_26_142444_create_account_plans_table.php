@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('access_level');
             $table->decimal('price', 10, 2)->nullable();
+            $table->string('description')->nullable();
             $table->integer('duration_days')->nullable();
             $table->boolean('is_public')->default(false);
             $table->timestamps();
