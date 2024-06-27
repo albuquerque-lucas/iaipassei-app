@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class AdminSubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::with('educationalLevel')->paginate();
+        $orderBy = $request->get('order_by', 'id');
+        $order = $request->get('order', 'desc');
+        $search = $request->get('search', '');
+
+        $subjects = Subject::with('educationLevel')
+            ->where('title', 'like', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate();
 
         return view('admin.subjects.index', [
             'subjects' => $subjects,
@@ -18,6 +25,7 @@ class AdminSubjectController extends Controller
             'deleteRoute' => 'admin.subjects.destroy'
         ]);
     }
+
 
     public function create()
     {

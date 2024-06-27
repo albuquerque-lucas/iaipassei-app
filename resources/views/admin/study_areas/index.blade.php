@@ -7,6 +7,8 @@
             <a href="{{ route('admin.study_areas.create') }}" class="btn btn-primary">Adicionar Área de Estudo</a>
         </div>
 
+        <x-filters.study-areas-dashboard-filter :action="route('admin.study_areas.index')" />
+
         <!-- Botões de navegação no topo -->
         <div class="d-flex justify-content-center mb-4">
             {!! $paginationLinks !!}

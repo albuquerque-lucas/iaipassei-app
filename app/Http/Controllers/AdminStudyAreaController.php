@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class AdminStudyAreaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $studyAreas = StudyArea::paginate();
+        $orderBy = $request->get('order_by', 'id');
+        $order = $request->get('order', 'desc');
+        $search = $request->get('search', '');
+
+        $studyAreas = StudyArea::where('name', 'like', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate();
 
         return view('admin.study_areas.index', [
             'studyAreas' => $studyAreas,
