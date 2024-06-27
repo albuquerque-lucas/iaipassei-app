@@ -3,7 +3,7 @@
 @section('main-content')
     <section class='admin-examinations-page container mt-5'>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Dashboard de Concursos Públicos</h1>
+            <h3>Dashboard de Concursos Públicos</h3>
             <a href="{{ route('admin.examinations.create') }}" class="btn btn-primary">Adicionar Concurso</a>
         </div>
 
@@ -26,16 +26,24 @@
                 <tbody>
                     @forelse ($examinations as $examination)
                         <tr>
-                            <td>{{ $examination->id }}</td>
+                            <td>
+                                <strong>
+                                    {{ $examination->id }}
+                                </strong>
+                            </td>
                             <td>{{ $examination->title }}</td>
                             <td>{{ $examination->institution }}</td>
                             <td>{{ optional($examination->educationLevel)->name ?? 'Não informado' }}</td>
                             <td>
-                                <a href="{{ route('admin.examinations.edit', $examination->id) }}" class="btn btn-sm btn-primary">Editar</a>
+                                <a href="{{ route('admin.examinations.edit', $examination->id) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
                                 <form action="{{ route('admin.examinations.destroy', $examination->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

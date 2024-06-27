@@ -9,7 +9,7 @@ class AdminSubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with('educationalLevel')->paginate(10);
+        $subjects = Subject::with('educationalLevel')->paginate();
         return view('admin.subjects.index', compact('subjects'));
     }
 
