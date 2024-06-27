@@ -7,7 +7,8 @@
             <a href="{{ route('admin.examinations.create') }}" class="btn btn-primary">Adicionar Concurso</a>
         </div>
 
-        <!-- Botões de navegação no topo -->
+        <x-filters.examinations-dashboard-filter :action="route('admin.examinations.index')" />
+
         <div class="d-flex justify-content-center mb-4">
             {!! $paginationLinks !!}
         </div>
