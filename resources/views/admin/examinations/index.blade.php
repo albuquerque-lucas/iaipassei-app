@@ -7,15 +7,19 @@
             <a href="{{ route('admin.examinations.create') }}" class="btn btn-primary">Adicionar Concurso</a>
         </div>
 
+        <!-- Botões de navegação no topo -->
+        <div class="d-flex justify-content-center mb-4">
+            {{ $examinations->links('pagination::bootstrap-4') }}
+        </div>
+
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Título</th>
-                        <th>Nível Educacional</th>
                         <th>Instituição</th>
-                        <th>Ativo</th>
+                        <th>Nível Educacional</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -24,11 +28,10 @@
                         <tr>
                             <td>{{ $examination->id }}</td>
                             <td>{{ $examination->title }}</td>
-                            <td>{{ $examination->educationLevel->name }}</td>
                             <td>{{ $examination->institution }}</td>
-                            <td>{{ $examination->active ? 'Sim' : 'Não' }}</td>
+                            <td>{{ optional($examination->educationLevel)->name ?? 'Não informado' }}</td>
                             <td>
-                                <a href="{{ route('admin.examinations.edit', $examination->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                                <a href="{{ route('admin.examinations.edit', $examination->id) }}" class="btn btn-sm btn-primary">Editar</a>
                                 <form action="{{ route('admin.examinations.destroy', $examination->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -44,5 +47,10 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Botões de navegação no fundo -->
+        {{-- <div class="d-flex justify-content-center mt-4">
+            {{ $examinations->links('pagination::bootstrap-4') }}
+        </div> --}}
     </section>
 @endsection

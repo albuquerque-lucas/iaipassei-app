@@ -9,7 +9,7 @@ class AdminStudyAreaController extends Controller
 {
     public function index()
     {
-        $studyAreas = StudyArea::withCount('subjects')->paginate(10);
+        $studyAreas = StudyArea::paginate(10);
         return view('admin.study_areas.index', compact('studyAreas'));
     }
 

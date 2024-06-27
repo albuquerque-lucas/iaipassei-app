@@ -13,7 +13,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Título</th>
-                        <th>Área de Estudo</th>
+                        {{-- <th>Área de Estudo</th> --}}
                         <th>Nível Educacional</th>
                         <th>Ações</th>
                     </tr>
@@ -23,8 +23,8 @@
                         <tr>
                             <td>{{ $subject->id }}</td>
                             <td>{{ $subject->title }}</td>
-                            <td>{{ $subject->studyArea->name }}</td>
-                            <td>{{ $subject->educationalLevel->name }}</td>
+                            {{-- <td>{{ $subject->studyArea->name }}</td> --}}
+                            <td>{{ $subject->educationLevel->name ?? 'Não informado' }}</td>
                             <td>
                                 <a href="{{ route('admin.subjects.edit', $subject->id) }}" class="btn btn-sm btn-warning">Editar</a>
                                 <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST" class="d-inline">

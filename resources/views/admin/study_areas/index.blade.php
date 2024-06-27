@@ -13,7 +13,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
-                        <th>Quantidade de Matérias</th>
+                        {{-- <th>Quantidade de Matérias</th> --}}
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -22,7 +22,7 @@
                         <tr>
                             <td>{{ $studyArea->id }}</td>
                             <td>{{ $studyArea->name }}</td>
-                            <td>{{ $studyArea->subjects_count }}</td>
+                            {{-- <td>{{ $studyArea->subjects_count }}</td> --}}
                             <td>
                                 <a href="{{ route('admin.study_areas.edit', $studyArea->id) }}" class="btn btn-sm btn-warning">Editar</a>
                                 <form action="{{ route('admin.study_areas.destroy', $studyArea->id) }}" method="POST" class="d-inline">
