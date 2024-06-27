@@ -1,6 +1,6 @@
 <div class="table-responsive">
     <table class="table table-hover">
-        <thead>
+        <thead class='admin-dashboard-head table-dark'>
             <tr>
                 @foreach ($columns as $column)
                     <th>{{ $column['label'] }}</th>
@@ -12,7 +12,13 @@
             @forelse ($data as $item)
                 <tr>
                     @foreach ($columns as $column)
-                        <td>{{ $item->{$column['field']} }}</td>
+                        <td>
+                            @if ($column['field'] === 'id')
+                                <strong>{{ $item->{$column['field']} ?? 'Não informado' }}</strong>
+                            @else
+                                {{ $item->{$column['field']} ?? 'Não informado' }}
+                            @endif
+                        </td>
                     @endforeach
                     <td>
                         <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-primary">

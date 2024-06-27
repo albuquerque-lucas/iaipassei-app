@@ -9,7 +9,7 @@ class AdminSubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with('educationalLevel')->paginate();
+        $subjects = Subject::with('educationLevel')->paginate();
         $columns = [
             ['label' => 'ID', 'field' => 'id'],
             ['label' => 'Título', 'field' => 'title'],
@@ -33,7 +33,7 @@ class AdminSubjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'educational_level_id' => 'required|exists:education_levels,id',
+            'education_level_id' => 'required|exists:education_levels,id',
             'study_area_id' => 'required|exists:study_areas,id',
             'title' => 'required|string|max:255',
         ]);
@@ -52,7 +52,7 @@ class AdminSubjectController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'educational_level_id' => 'nullable|exists:education_levels,id',
+            'education_level_id' => 'nullable|exists:education_levels,id',
             'study_area_id' => 'nullable|exists:study_areas,id',
             'title' => 'nullable|string|max:255',
         ]);
