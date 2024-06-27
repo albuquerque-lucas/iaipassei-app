@@ -12,6 +12,6 @@
             {!! $paginationLinks !!}
         </div>
 
-        <x-dashboards.admin-dashboard :columns="$columns" :data="$studyAreas" :editRoute="$editRoute" :deleteRoute="$deleteRoute" />
+        <x-dashboards.admin-study-areas-dashboard :data="$studyAreas" :editRoute="$editRoute" :deleteRoute="$deleteRoute" :paginationLinks="$paginationLinks" />
     </section>
 @endsection
