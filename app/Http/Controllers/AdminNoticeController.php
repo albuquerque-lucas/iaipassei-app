@@ -11,15 +11,9 @@ class AdminNoticeController extends Controller
     public function index()
     {
         $notices = Notice::with('examination')->paginate();
-        $columns = [
-            ['label' => 'ID', 'field' => 'id'],
-            ['label' => 'Concurso', 'field' => 'examination.title'],
-            ['label' => 'Nome do Arquivo', 'field' => 'file_name'],
-        ];
 
         return view('admin.notices.index', [
             'notices' => $notices,
-            'columns' => $columns,
             'paginationLinks' => $notices->links('pagination::bootstrap-4'),
             'editRoute' => 'admin.notices.edit',
             'deleteRoute' => 'admin.notices.destroy'

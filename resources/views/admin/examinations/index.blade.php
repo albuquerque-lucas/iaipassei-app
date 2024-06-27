@@ -3,7 +3,7 @@
 @section('main-content')
     <section class='admin-examinations-page container mt-5'>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3>Dashboard de Concursos Públicos</h3>
+            <h4>Dashboard Concursos Públicos</h4>
             <a href="{{ route('admin.examinations.create') }}" class="btn btn-primary">Adicionar Concurso</a>
         </div>
 

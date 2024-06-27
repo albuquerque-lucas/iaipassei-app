@@ -10,14 +10,9 @@ class AdminStudyAreaController extends Controller
     public function index()
     {
         $studyAreas = StudyArea::paginate();
-        $columns = [
-            ['label' => 'ID', 'field' => 'id'],
-            ['label' => 'Nome', 'field' => 'name'],
-        ];
 
         return view('admin.study_areas.index', [
             'studyAreas' => $studyAreas,
-            'columns' => $columns,
             'paginationLinks' => $studyAreas->links('pagination::bootstrap-4'),
             'editRoute' => 'admin.study_areas.edit',
             'deleteRoute' => 'admin.study_areas.destroy'

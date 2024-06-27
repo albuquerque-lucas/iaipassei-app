@@ -18,7 +18,23 @@
     background-color: $default-light-background;
     margin-bottom: 10rem;
 
+    .page-link {
+        margin: 0 0.5rem;
+        box-shadow:  $default-box-shadow;
+    }
+
+    .page-item.active {
+        span {
+            background-color: $default-dark-background;
+            border: none;
+            outline: none;
+
+        }
+    }
+
+    a.btn,
+    button.btn,
     .dashboard-table-container {
-        box-shadow: 1px 1px 3px #333;
+        box-shadow: $default-box-shadow;
     }
 }

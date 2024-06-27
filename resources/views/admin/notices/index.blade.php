@@ -3,7 +3,7 @@
 @section('main-content')
     <section class='admin-notices-page container mt-5'>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3>Dashboard de Editais</h3>
+            <h4>Dashboard Editais</h4>
             <a href="{{ route('admin.notices.create') }}" class="btn btn-primary">Adicionar Edital</a>
         </div>
 

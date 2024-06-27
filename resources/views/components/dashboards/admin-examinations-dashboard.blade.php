@@ -39,6 +39,6 @@
 </div>
 
 <!-- Botões de navegação no fundo -->
-<div class="d-flex justify-content-center mt-4">
+{{-- <div class="d-flex justify-content-center mt-4">
     {!! $paginationLinks !!}
-</div>
+</div> --}}
