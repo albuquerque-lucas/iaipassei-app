@@ -9,9 +9,23 @@ class AdminExaminationController extends Controller
 {
     public function index()
     {
-        $examinations = Examination::with('educationLevel')->paginate();
-        return view('admin.examinations.index', compact('examinations'));
+        $examinations = Examination::paginate();
+        $columns = [
+            ['label' => 'ID', 'field' => 'id'],
+            ['label' => 'Título', 'field' => 'title'],
+            ['label' => 'Instituição', 'field' => 'institution'],
+            ['label' => 'Nível Educacional', 'field' => 'educationLevel.name']
+        ];
+
+        return view('admin.examinations.index', [
+            'examinations' => $examinations,
+            'columns' => $columns,
+            'paginationLinks' => $examinations->links('pagination::bootstrap-4'),
+            'editRoute' => 'admin.examinations.edit',
+            'deleteRoute' => 'admin.examinations.destroy'
+        ]);
     }
+
 
     public function create()
     {

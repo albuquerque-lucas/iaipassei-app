@@ -10,7 +10,19 @@ class AdminSubjectController extends Controller
     public function index()
     {
         $subjects = Subject::with('educationalLevel')->paginate();
-        return view('admin.subjects.index', compact('subjects'));
+        $columns = [
+            ['label' => 'ID', 'field' => 'id'],
+            ['label' => 'Título', 'field' => 'title'],
+            ['label' => 'Nível Educacional', 'field' => 'educationLevel.name']
+        ];
+
+        return view('admin.subjects.index', [
+            'subjects' => $subjects,
+            'columns' => $columns,
+            'paginationLinks' => $subjects->links('pagination::bootstrap-4'),
+            'editRoute' => 'admin.subjects.edit',
+            'deleteRoute' => 'admin.subjects.destroy'
+        ]);
     }
 
     public function create()

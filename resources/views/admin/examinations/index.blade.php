@@ -9,56 +9,9 @@
 
         <!-- Botões de navegação no topo -->
         <div class="d-flex justify-content-center mb-4">
-            {{ $examinations->links('pagination::bootstrap-4') }}
+            {!! $paginationLinks !!}
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Instituição</th>
-                        <th>Nível Educacional</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($examinations as $examination)
-                        <tr>
-                            <td>
-                                <strong>
-                                    {{ $examination->id }}
-                                </strong>
-                            </td>
-                            <td>{{ $examination->title }}</td>
-                            <td>{{ $examination->institution }}</td>
-                            <td>{{ optional($examination->educationLevel)->name ?? 'Não informado' }}</td>
-                            <td>
-                                <a href="{{ route('admin.examinations.edit', $examination->id) }}" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('admin.examinations.destroy', $examination->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">Nenhum concurso encontrado.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Botões de navegação no fundo -->
-        {{-- <div class="d-flex justify-content-center mt-4">
-            {{ $examinations->links('pagination::bootstrap-4') }}
-        </div> --}}
+        <x-dashboards.admin-dashboard :columns="$columns" :data="$examinations" :editRoute="$editRoute" :deleteRoute="$deleteRoute" :paginationLinks="$paginationLinks" />
     </section>
 @endsection
