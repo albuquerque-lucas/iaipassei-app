@@ -4,66 +4,91 @@ namespace App\Http\Controllers;
 
 use App\Models\StudyArea;
 use Illuminate\Http\Request;
+use Exception;
 
 class AdminStudyAreaController extends Controller
 {
     public function index(Request $request)
     {
-        $orderBy = $request->get('order_by', 'id');
-        $order = $request->get('order', 'desc');
-        $search = $request->get('search', '');
+        try {
+            $orderBy = $request->get('order_by', 'id');
+            $order = $request->get('order', 'desc');
+            $search = $request->get('search', '');
 
-        $studyAreas = StudyArea::where('name', 'like', "%{$search}%")
-            ->orderBy($orderBy, $order)
-            ->paginate();
+            $studyAreas = StudyArea::where('name', 'like', "%{$search}%")
+                ->orderBy($orderBy, $order)
+                ->paginate();
 
-        return view('admin.study_areas.index', [
-            'studyAreas' => $studyAreas,
-            'paginationLinks' => $studyAreas->links('pagination::bootstrap-4'),
-            'editRoute' => 'admin.study_areas.edit',
-            'deleteRoute' => 'admin.study_areas.destroy'
-        ]);
+            return view('admin.study_areas.index', [
+                'studyAreas' => $studyAreas,
+                'paginationLinks' => $studyAreas->links('pagination::bootstrap-4'),
+                'editRoute' => 'admin.study_areas.edit',
+                'deleteRoute' => 'admin.study_areas.destroy'
+            ]);
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao carregar áreas de estudo: ' . $e->getMessage());
+        }
     }
 
     public function create()
     {
-        return view('admin.study_areas.create');
+        try {
+            return view('admin.study_areas.create');
+        } catch (Exception $e) {
+            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
+        }
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        StudyArea::create($validated);
+            StudyArea::create($validated);
 
-        return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo criada com sucesso!');
+            return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo criada com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao criar a área de estudo: ' . $e->getMessage());
+        }
     }
 
     public function edit($id)
     {
-        $studyArea = StudyArea::findOrFail($id);
-        return view('admin.study_areas.edit', compact('studyArea'));
+        try {
+            $studyArea = StudyArea::findOrFail($id);
+            return view('admin.study_areas.edit', compact('studyArea'));
+        } catch (Exception $e) {
+            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao abrir o formulário de edição: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'nullable|string|max:255',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'nullable|string|max:255',
+            ]);
 
-        $studyArea = StudyArea::findOrFail($id);
-        $studyArea->update($validated);
+            $studyArea = StudyArea::findOrFail($id);
+            $studyArea->update($validated);
 
-        return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo atualizada com sucesso!');
+            return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo atualizada com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao atualizar a área de estudo: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $studyArea = StudyArea::findOrFail($id);
-        $studyArea->delete();
+        try {
+            $studyArea = StudyArea::findOrFail($id);
+            $studyArea->delete();
 
-        return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo excluída com sucesso!');
+            return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo excluída com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao excluir a área de estudo: ' . $e->getMessage());
+        }
     }
 }
