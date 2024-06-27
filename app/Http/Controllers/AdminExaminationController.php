@@ -9,7 +9,7 @@ class AdminExaminationController extends Controller
 {
     public function index()
     {
-        $examinations = Examination::with('educationLevel')->paginate(10);
+        $examinations = Examination::with('educationLevel')->paginate();
         return view('admin.examinations.index', compact('examinations'));
     }
 

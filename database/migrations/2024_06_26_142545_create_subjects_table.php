@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(StudyArea::class);
-            $table->foreignIdFor(EducationLevel::class)->cascadeOnDelete();
+            $table->foreignIdFor(EducationLevel::class)->nullable();
             $table->string('title')->unique();
             $table->timestamps();
         });
