@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Examination;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\BulkDeleteTrait;
+use Exception;
 
 class AdminExaminationController extends Controller
 {
+
+    use BulkDeleteTrait;
+
     public function index(Request $request)
     {
         $order = $request->get('order', 'desc');
@@ -25,7 +31,8 @@ class AdminExaminationController extends Controller
             'examinations' => $examinations,
             'paginationLinks' => $examinations->appends($request->except('page'))->links('pagination::bootstrap-4'),
             'editRoute' => 'admin.examinations.edit',
-            'deleteRoute' => 'admin.examinations.destroy'
+            'deleteRoute' => 'admin.examinations.destroy',
+            'bulkDeleteRoute' => 'admin.examinations.bulkDelete',
         ]);
     }
 
@@ -77,4 +84,10 @@ class AdminExaminationController extends Controller
 
         return redirect()->route('admin.examinations.index')->with('success', 'Concurso excluído com sucesso!');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        return $this->bulkDeletes($request, Examination::class, 'admin.examinations.index');
+    }
 }
+

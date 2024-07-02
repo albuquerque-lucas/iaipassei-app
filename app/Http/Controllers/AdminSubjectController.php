@@ -6,10 +6,14 @@ use App\Models\Subject;
 use App\Models\EducationLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\BulkDeleteTrait;
 use Exception;
 
 class AdminSubjectController extends Controller
 {
+
+    use BulkDeleteTrait;
+
     public function index(Request $request)
     {
         $orderBy = $request->get('order_by', 'id');
@@ -82,21 +86,7 @@ class AdminSubjectController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        $ids = json_decode($request->input('selected_ids', '[]'));
-
-        if (empty($ids)) {
-            return redirect()->route('admin.subjects.index')->with('error', 'Nenhuma matéria selecionada para exclusão.');
-        }
-
-        DB::beginTransaction();
-        try {
-            Subject::whereIn('id', $ids)->delete();
-            DB::commit();
-            return redirect()->route('admin.subjects.index')->with('success', 'Matérias excluídas com sucesso!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('admin.subjects.index')->with('error', 'Ocorreu um erro ao excluir as matérias. Por favor, tente novamente.');
-        }
+        return $this->bulkDeletes($request, Subject::class, 'admin.subjects.index');
     }
 
 }

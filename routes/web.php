@@ -16,6 +16,7 @@ Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 
+Route::delete('admin/examinations/bulk_delete', [AdminExaminationController::class, 'bulkDelete'])->name('admin.examinations.bulkDelete');
 Route::resource('admin/examinations', AdminExaminationController::class)->names([
     'index' => 'admin.examinations.index',
     'create' => 'admin.examinations.create',

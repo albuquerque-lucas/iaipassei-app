@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\StudyArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\BulkDeleteTrait;
 use Exception;
 
 class AdminStudyAreaController extends Controller
 {
+
+    use BulkDeleteTrait;
+
     public function index(Request $request)
     {
         try {
@@ -96,20 +100,6 @@ class AdminStudyAreaController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        $ids = json_decode($request->input('selected_ids', '[]'));
-
-        if (empty($ids)) {
-            return redirect()->route('admin.study_areas.index')->with('error', 'Nenhuma área selecionada para exclusão.');
-        }
-
-        DB::beginTransaction();
-        try {
-            StudyArea::whereIn('id', $ids)->delete();
-            DB::commit();
-            return redirect()->route('admin.study_areas.index')->with('success', 'Áreas excluídas com sucesso!');
-        } catch (Exception $e) {
-            DB::rollBack();
-            return redirect()->route('admin.study_areas.index')->with('error', 'Ocorreu um erro ao excluir as áreas. Por favor, tente novamente.');
-        }
+        return $this->bulkDeletes($request, StudyArea::class, 'admin.study_areas.index');
     }
 }

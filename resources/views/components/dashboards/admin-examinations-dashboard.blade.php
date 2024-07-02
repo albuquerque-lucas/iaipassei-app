@@ -2,6 +2,7 @@
     <table class="table table-hover entity-dashboard">
         <thead class="table-dark">
             <tr>
+                <th><input type="checkbox" id="selectAll"></th>
                 <th>ID</th>
                 <th>Título</th>
                 <th>Instituição</th>
@@ -12,6 +13,7 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
+                    <td><input type="checkbox" class="select-item" value="{{ $item->id }}"></td>
                     <td><strong>{{ $item->id }}</strong></td>
                     <td>{{ $item->title }}</td>
                     <td>{{ $item->institution }}</td>
@@ -28,7 +30,7 @@
                 @include('components.popUps.confirm-delete-popUp', ['id' => $item->id, 'deleteRoute' => $deleteRoute])
             @empty
                 <tr>
-                    <td colspan="5" class="text-center">Nenhum concurso encontrado.</td>
+                    <td colspan="6" class="text-center">Nenhum concurso encontrado.</td>
                 </tr>
             @endforelse
         </tbody>
