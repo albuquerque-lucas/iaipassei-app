@@ -1,0 +1,31 @@
+.choices__inner {
+    color: #fff;
+}
+
+.choices__list--multiple .choices__item {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.choices__list--dropdown .choices__item--selectable {
+    color:black;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: #555;
+    color: black;
+}
+
+#searchSubjectsWrapper {
+    display: flex;
+    align-items: center;
+}
+
+#searchSubjects {
+    flex: 1;
+}
+
+#clearSearchSubjects {
+    margin-left: 10px;
+}

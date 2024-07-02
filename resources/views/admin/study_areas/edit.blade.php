@@ -48,7 +48,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <!-- Confirm Delete Modal -->
                                     <div class="modal fade" id="confirmDeleteSubjectModal{{ $subject->id }}" tabindex="-1" aria-labelledby="confirmDeleteSubjectModalLabel{{ $subject->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -89,15 +88,13 @@
                             <label for="name" class="form-label">Nome da Área de Estudo</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{ $studyArea->name }}">
                         </div>
-                        <div class="mb-3">
-                            <label for="searchSubjects" class="form-label">Pesquisar Matérias</label>
+                        <div class="mb-3" id="searchSubjectsWrapper">
                             <input type="text" id="searchSubjects" class="form-control mb-2" placeholder="Pesquisar Matérias">
                             <button type="button" class="btn btn-secondary mb-2" id="clearSearchSubjects">Limpar Pesquisa</button>
                         </div>
                         <div class="mb-3">
                             <label for="subjects" class="form-label">Matérias Associadas</label>
-                            <select multiple class="form-control" id="subjects" name="subjects[]">
-                                <!-- Options will be rendered here based on search -->
+                            <select id="subjects" name="subjects[]" class="form-control" multiple="multiple">
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Salvar Alterações</button>
@@ -116,26 +113,38 @@
             let allSubjects = @json($allSubjects);
             let selectedSubjects = @json($studyArea->subjects->pluck('id'));
 
-            function updateOptions(selectElement, items, selectedItems) {
-                selectElement.innerHTML = items.map(item => `
-                    <option value="${item.id}" ${selectedItems.includes(item.id) ? 'selected' : ''}>
-                        ${item.title}
-                    </option>
-                `).join('');
+            const choices = new Choices(subjectsSelect, {
+                removeItemButton: true,
+                shouldSort: false,
+                placeholder: true,
+                placeholderValue: 'Pesquisar Matérias'
+            });
+
+            function updateOptions(items, selectedItems) {
+                const choicesInstance = choices;
+                choicesInstance.clearStore();
+                items.forEach(item => {
+                    choicesInstance.setChoices([{
+                        value: item.id,
+                        label: item.title,
+                        selected: selectedItems.includes(item.id),
+                        disabled: false
+                    }], 'value', 'label', false);
+                });
             }
 
             searchSubjectsInput.addEventListener('input', function() {
                 const searchTerm = searchSubjectsInput.value.toLowerCase();
                 let filteredSubjects = allSubjects.filter(subject => subject.title.toLowerCase().includes(searchTerm));
-                updateOptions(subjectsSelect, filteredSubjects, selectedSubjects);
+                updateOptions(filteredSubjects, selectedSubjects);
             });
 
             clearSearchSubjectsButton.addEventListener('click', function() {
                 searchSubjectsInput.value = '';
-                updateOptions(subjectsSelect, [], selectedSubjects);
+                updateOptions(allSubjects, selectedSubjects);
             });
 
-            updateOptions(subjectsSelect, [], selectedSubjects);
+            updateOptions(allSubjects, selectedSubjects);
         });
     </script>
 @endsection
