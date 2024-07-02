@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
+use App\Models\EducationLevel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminSubjectController extends Controller
 {
@@ -12,6 +14,8 @@ class AdminSubjectController extends Controller
         $orderBy = $request->get('order_by', 'id');
         $order = $request->get('order', 'desc');
         $search = $request->get('search', '');
+
+        $educationLevels = EducationLevel::all();
 
         $subjects = Subject::with('educationLevel')
             ->where('title', 'like', "%{$search}%")
@@ -22,7 +26,8 @@ class AdminSubjectController extends Controller
             'subjects' => $subjects,
             'paginationLinks' => $subjects->links('pagination::bootstrap-4'),
             'editRoute' => 'admin.subjects.edit',
-            'deleteRoute' => 'admin.subjects.destroy'
+            'deleteRoute' => 'admin.subjects.destroy',
+            'educationLevels' => $educationLevels,
         ]);
     }
 
@@ -72,4 +77,24 @@ class AdminSubjectController extends Controller
 
         return redirect()->route('admin.subjects.index')->with('success', 'Matéria excluída com sucesso!');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = json_decode($request->input('selected_ids', '[]'));
+
+        if (empty($ids)) {
+            return redirect()->route('admin.subjects.index')->with('error', 'Nenhuma matéria selecionada para exclusão.');
+        }
+
+        DB::beginTransaction();
+        try {
+            Subject::whereIn('id', $ids)->delete();
+            DB::commit();
+            return redirect()->route('admin.subjects.index')->with('success', 'Matérias excluídas com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.subjects.index')->with('error', 'Ocorreu um erro ao excluir as matérias. Por favor, tente novamente.');
+        }
+    }
+
 }
