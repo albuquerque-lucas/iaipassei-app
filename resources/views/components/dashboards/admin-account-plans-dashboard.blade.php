@@ -4,9 +4,11 @@
             <tr>
                 <th><input type="checkbox" id="selectAll"></th>
                 <th>ID</th>
-                <th>Título</th>
-                <th>Instituição</th>
-                <th>Nível Educacional</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Duração (Dias)</th>
+                <th>Nível de Acesso</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -15,9 +17,11 @@
                 <tr>
                     <td><input type="checkbox" class="select-item" value="{{ $item->id }}"></td>
                     <td><strong>{{ $item->id }}</strong></td>
-                    <td>{{ $item->title }}</td>
-                    <td>{{ $item->institution }}</td>
-                    <td>{{ optional($item->educationLevel)->name ?? 'Não informado' }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->description }}</td>
+                    <td>{{ $item->price }}</td>
+                    <td>{{ $item->duration_days }}</td>
+                    <td>{{ optional($item->accessLevel)->name ?? 'Não informado' }}</td>
                     <td>
                         <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-primary">
                             <i class="fas fa-edit"></i>
@@ -30,7 +34,7 @@
                 <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
             @empty
                 <tr>
-                    <td colspan="6" class="text-center">Nenhum concurso encontrado.</td>
+                    <td colspan="8" class="text-center">Nenhum plano encontrado.</td>
                 </tr>
             @endforelse
         </tbody>

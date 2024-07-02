@@ -12,8 +12,9 @@
                     <x-navbar.nav-dropdown-item link="#" name="Usuários" />
                     <x-navbar.nav-dropdown-item link="{{ route('admin.examinations.index') }}" name="Concursos" />
                     <x-navbar.nav-dropdown-item link="{{ route('admin.notices.index') }}" name="Editais" />
-                    <x-navbar.nav-dropdown-item link="{{ route('admin.study_areas.index') }}" name="Áreas" />
                     <x-navbar.nav-dropdown-item link="{{ route('admin.subjects.index') }}" name="Matérias" />
+                    <x-navbar.nav-dropdown-item link="{{ route('admin.study_areas.index') }}" name="Áreas" />
+                    <x-navbar.nav-dropdown-item link="{{ route('admin.account_plans.index') }}" name="Planos" />
                 </x-navbar.nav-dropdown>
             </ul>
         </div>
