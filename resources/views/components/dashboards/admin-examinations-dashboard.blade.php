@@ -20,15 +20,12 @@
                         <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-primary">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form action="{{ route($deleteRoute, $item->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-sm btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </td>
                 </tr>
+                @include('components.popUps.confirm-delete-popUp', ['id' => $item->id, 'deleteRoute' => $deleteRoute])
             @empty
                 <tr>
                     <td colspan="5" class="text-center">Nenhum concurso encontrado.</td>
@@ -37,8 +34,3 @@
         </tbody>
     </table>
 </div>
-
-<!-- Botões de navegação no fundo -->
-{{-- <div class="d-flex justify-content-center mt-4">
-    {!! $paginationLinks !!}
-</div> --}}

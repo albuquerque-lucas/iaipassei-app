@@ -16,3 +16,18 @@
         <x-dashboards.admin-examinations-dashboard :data="$examinations" :editRoute="$editRoute" :deleteRoute="$deleteRoute" :paginationLinks="$paginationLinks" />
     </section>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const modalId = this.getAttribute('data-bs-target');
+                const modalElement = document.querySelector(modalId);
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            });
+        });
+    });
+</script>
+@endpush
