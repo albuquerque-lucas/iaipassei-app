@@ -2,18 +2,21 @@
 
 @section('main-content')
     <section class='admin-study-areas-page container mt-5'>
-        <ul class="nav nav-tabs" id="studyAreasTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="show-tab" data-bs-toggle="tab" data-bs-target="#show" type="button" role="tab" aria-controls="show" aria-selected="true">
-                    Visualizar
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">
-                    Editar
-                </button>
-            </li>
-        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="{{ route('admin.study_areas.index') }}" class="btn btn-secondary">Voltar</a>
+            <ul class="nav nav-tabs" id="studyAreasTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="show-tab" data-bs-toggle="tab" data-bs-target="#show" type="button" role="tab" aria-controls="show" aria-selected="true">
+                        Visualizar
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">
+                        Editar
+                    </button>
+                </li>
+            </ul>
+        </div>
         <div class="tab-content" id="studyAreasTabContent">
             <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
                 <div class="mt-4">
@@ -117,7 +120,14 @@
                 removeItemButton: true,
                 shouldSort: false,
                 placeholder: true,
-                placeholderValue: 'Pesquisar Matérias'
+                placeholderValue: 'Pesquisar Matérias',
+                classNames: {
+                    containerOuter: 'choices__outer custom-choices',
+                    containerInner: 'choices__inner custom-choices',
+                    list: 'choices__list custom-choices',
+                    item: 'choices__item custom-choices',
+                    placeholder: 'choices__placeholder custom-choices'
+                }
             });
 
             function updateOptions(items, selectedItems) {
