@@ -76,11 +76,15 @@ class AdminStudyAreaController extends Controller
         $studyArea = StudyArea::findOrFail($id);
         $studyArea->update($request->only(['name']));
 
-        $studyArea->examinations()->sync($request->input('examinations', []));
-        $studyArea->subjects()->sync($request->input('subjects', []));
+        $newSubjects = $request->input('subjects', []);
+        $currentSubjects = $studyArea->subjects->pluck('id')->toArray();
+
+        $subjectsToAdd = array_diff($newSubjects, $currentSubjects);
+        $studyArea->subjects()->attach($subjectsToAdd);
 
         return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Área de estudo atualizada com sucesso!');
     }
+
 
     public function destroy($id)
     {
@@ -98,4 +102,13 @@ class AdminStudyAreaController extends Controller
     {
         return $this->bulkDeletes($request, StudyArea::class, 'admin.study_areas.index');
     }
+
+    public function removeSubject($studyAreaId, $subjectId)
+    {
+        $studyArea = StudyArea::findOrFail($studyAreaId);
+        $studyArea->subjects()->detach($subjectId);
+
+        return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Matéria removida com sucesso!');
+    }
+
 }
