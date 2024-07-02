@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid container">
-        <a class="navbar-brand" href="#">Iai Passei | Admin</a>
+        <a class="navbar-brand" href="{{ route('admin.examinations.index') }}">Iai Passei | Admin</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <x-navbar.nav-item link="#" name="Home" active="true" />
+                <x-navbar.nav-item link="{{ route('admin.examinations.index') }}" name="Home" active="true" />
                 <x-navbar.nav-item link="#" name="Perfil" />
                 <x-navbar.nav-dropdown name="Gerenciar">
                     <x-navbar.nav-dropdown-item link="{{  route('admin.users.index')  }}" name="Usuários" />

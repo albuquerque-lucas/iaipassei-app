@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudyArea;
+use App\Models\Examination;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\BulkDeleteTrait;
@@ -62,28 +64,22 @@ class AdminStudyAreaController extends Controller
 
     public function edit($id)
     {
-        try {
-            $studyArea = StudyArea::findOrFail($id);
-            return view('admin.study_areas.edit', compact('studyArea'));
-        } catch (Exception $e) {
-            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao abrir o formulário de edição: ' . $e->getMessage());
-        }
+        $studyArea = StudyArea::with(['examinations', 'subjects'])->findOrFail($id);
+        $allExaminations = Examination::all();
+        $allSubjects = Subject::all();
+
+        return view('admin.study_areas.edit', compact('studyArea', 'allExaminations', 'allSubjects'));
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validated = $request->validate([
-                'name' => 'nullable|string|max:255',
-            ]);
+        $studyArea = StudyArea::findOrFail($id);
+        $studyArea->update($request->only(['name']));
 
-            $studyArea = StudyArea::findOrFail($id);
-            $studyArea->update($validated);
+        $studyArea->examinations()->sync($request->input('examinations', []));
+        $studyArea->subjects()->sync($request->input('subjects', []));
 
-            return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo atualizada com sucesso!');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Erro ao atualizar a área de estudo: ' . $e->getMessage());
-        }
+        return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Área de estudo atualizada com sucesso!');
     }
 
     public function destroy($id)
