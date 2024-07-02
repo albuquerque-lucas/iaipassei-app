@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminNoticeController;
 use App\Http\Controllers\AdminStudyAreaController;
 use App\Http\Controllers\AdminSubjectController;
 use App\Http\Controllers\AdminAccountPlanController;
+use App\Http\Controllers\AdminUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +17,18 @@ Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('au
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
+
+
+Route::delete('admin/users/bulk_delete', [AdminUserController::class, 'bulkDelete'])->name('admin.users.bulkDelete');
+Route::resource('admin/users', AdminUserController::class)->names([
+    'index' => 'admin.users.index',
+    'create' => 'admin.users.create',
+    'store' => 'admin.users.store',
+    'show' => 'admin.users.show',
+    'edit' => 'admin.users.edit',
+    'update' => 'admin.users.update',
+    'destroy' => 'admin.users.destroy',
+]);
 
 Route::delete('admin/examinations/bulk_delete', [AdminExaminationController::class, 'bulkDelete'])->name('admin.examinations.bulkDelete');
 Route::resource('admin/examinations', AdminExaminationController::class)->names([
