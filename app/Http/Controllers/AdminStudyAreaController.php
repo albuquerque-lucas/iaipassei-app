@@ -62,14 +62,28 @@ class AdminStudyAreaController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $studyArea = StudyArea::with(['examinations', 'subjects'])->findOrFail($id);
         $allExaminations = Examination::all();
         $allSubjects = Subject::all();
 
-        return view('admin.study_areas.edit', compact('studyArea', 'allExaminations', 'allSubjects'));
+        $query = $studyArea->subjects();
+
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->get('search') . '%');
+        }
+
+        if ($request->has('order_by')) {
+            $order = $request->get('order', 'asc');
+            $query->orderBy($request->get('order_by'), $order);
+        }
+
+        $filteredSubjects = $query->get();
+
+        return view('admin.study_areas.edit', compact('studyArea', 'allExaminations', 'allSubjects', 'filteredSubjects'));
     }
+
 
     public function update(Request $request, $id)
     {

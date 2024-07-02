@@ -2,8 +2,21 @@
 
 @section('main-content')
     <section class='admin-study-areas-page container mt-5'>
-        <x-tabs.tabs />
-
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="{{ route('admin.study_areas.index') }}" class="btn btn-secondary">Voltar</a>
+            <ul class="nav nav-tabs" id="studyAreasTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="show-tab" data-bs-toggle="tab" data-bs-target="#show" type="button" role="tab" aria-controls="show" aria-selected="true">
+                        Visualizar
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">
+                        Editar
+                    </button>
+                </li>
+            </ul>
+        </div>
         <div class="tab-content" id="studyAreasTabContent">
             <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
                 <div class="mt-4">
@@ -18,7 +31,7 @@
                         @endforelse
                     </ul>
                     <h5>Matérias Associadas</h5>
-                    <x-dashboards.study-area-associated-subjects-table :studyArea="$studyArea" />
+                    <x-dashboards.study-area-associated-subjects-table :studyArea="$studyArea" :filteredSubjects="$filteredSubjects" />
                 </div>
             </div>
             <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
