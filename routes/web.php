@@ -36,6 +36,7 @@ Route::resource('admin/notices', AdminNoticeController::class)->names([
     'destroy' => 'admin.notices.destroy',
 ]);
 
+Route::delete('admin/study_areas/bulk_delete', [AdminStudyAreaController::class, 'bulkDelete'])->name('admin.study_areas.bulkDelete');
 Route::resource('admin/study_areas', AdminStudyAreaController::class)->names([
     'index' => 'admin.study_areas.index',
     'create' => 'admin.study_areas.create',
@@ -46,7 +47,7 @@ Route::resource('admin/study_areas', AdminStudyAreaController::class)->names([
     'destroy' => 'admin.study_areas.destroy',
 ]);
 
-Route::delete('admin/subjects/bulk-delete', [AdminSubjectController::class, 'bulkDelete'])->name('admin.subjects.bulkDelete');
+Route::delete('admin/subjects/bulk_delete', [AdminSubjectController::class, 'bulkDelete'])->name('admin.subjects.bulkDelete');
 Route::resource('admin/subjects', AdminSubjectController::class)->names([
     'index' => 'admin.subjects.index',
     'create' => 'admin.subjects.create',

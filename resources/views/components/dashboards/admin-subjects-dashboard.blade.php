@@ -23,7 +23,10 @@
                         <button type="button" class="btn btn-sm btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                        @include('components.popUps.confirm-delete-popUp', ['id' => $item->id, 'deleteRoute' => $deleteRoute])
+
+                        <!-- Confirm Delete PopUp Component -->
+                        <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
+
                     </td>
                 </tr>
             @empty

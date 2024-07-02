@@ -6,11 +6,11 @@
                 <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Tem certeza que deseja excluir as matérias selecionadas?
+                Tem certeza que deseja excluir os itens selecionados?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form id="bulk-delete-form" action="{{ route('admin.subjects.bulkDelete') }}" method="POST">
+                <form id="bulk-delete-form" action="{{ route($deleteRoute) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="selected_ids" id="selected_ids">

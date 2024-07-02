@@ -38,5 +38,5 @@
         </div>
     </section>
 
-    @include('components.popUps.bulk-delete-confirmation-modal')
+    <x-popUps.bulk-delete-confirmation-modal :deleteRoute="$bulkDeleteRoute"/>
 @endsection

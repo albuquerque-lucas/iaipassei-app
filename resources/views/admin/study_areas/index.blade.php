@@ -18,6 +18,9 @@
             <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                 <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
                     <h4>Dashboard Áreas de Estudo</h4>
+                    <button id="bulkDeleteButton" class="btn btn-danger" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
+                        Excluir Selecionados
+                    </button>
                 </div>
 
                 <x-filters.study-areas-dashboard-filter :action="route('admin.study_areas.index')" />
@@ -34,4 +37,6 @@
             </div>
         </div>
     </section>
+
+    <x-popUps.bulk-delete-confirmation-modal :deleteRoute="$bulkDeleteRoute"/>
 @endsection

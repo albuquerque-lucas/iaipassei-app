@@ -2,6 +2,7 @@
     <table class="table table-hover">
         <thead class="table-dark">
             <tr>
+                <th><input type="checkbox" id="selectAll"></th>
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Ações</th>
@@ -10,6 +11,7 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
+                    <td><input type="checkbox" class="select-item" value="{{ $item->id }}"></td>
                     <td><strong>{{ $item->id }}</strong></td>
                     <td>{{ $item->name }}</td>
                     <td>
@@ -26,14 +28,9 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3" class="text-center">Nenhuma área de estudo encontrada.</td>
+                    <td colspan="4" class="text-center">Nenhuma área de estudo encontrada.</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
-
-<!-- Botões de navegação no fundo -->
-{{-- <div class="d-flex justify-content-center mt-4">
-    {!! $paginationLinks !!}
-</div> --}}

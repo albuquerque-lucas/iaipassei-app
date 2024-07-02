@@ -6,6 +6,7 @@ use App\Models\Subject;
 use App\Models\EducationLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class AdminSubjectController extends Controller
 {
@@ -28,6 +29,7 @@ class AdminSubjectController extends Controller
             'editRoute' => 'admin.subjects.edit',
             'deleteRoute' => 'admin.subjects.destroy',
             'educationLevels' => $educationLevels,
+            'bulkDeleteRoute' => 'admin.subjects.bulkDelete',
         ]);
     }
 

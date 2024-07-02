@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudyArea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Exception;
 
 class AdminStudyAreaController extends Controller
@@ -23,7 +24,8 @@ class AdminStudyAreaController extends Controller
                 'studyAreas' => $studyAreas,
                 'paginationLinks' => $studyAreas->links('pagination::bootstrap-4'),
                 'editRoute' => 'admin.study_areas.edit',
-                'deleteRoute' => 'admin.study_areas.destroy'
+                'deleteRoute' => 'admin.study_areas.destroy',
+                'bulkDeleteRoute' => 'admin.study_areas.bulkDelete',
             ]);
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao carregar áreas de estudo: ' . $e->getMessage());
@@ -89,6 +91,25 @@ class AdminStudyAreaController extends Controller
             return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo excluída com sucesso!');
         } catch (Exception $e) {
             return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao excluir a área de estudo: ' . $e->getMessage());
+        }
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = json_decode($request->input('selected_ids', '[]'));
+
+        if (empty($ids)) {
+            return redirect()->route('admin.study_areas.index')->with('error', 'Nenhuma área selecionada para exclusão.');
+        }
+
+        DB::beginTransaction();
+        try {
+            StudyArea::whereIn('id', $ids)->delete();
+            DB::commit();
+            return redirect()->route('admin.study_areas.index')->with('success', 'Áreas excluídas com sucesso!');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.study_areas.index')->with('error', 'Ocorreu um erro ao excluir as áreas. Por favor, tente novamente.');
         }
     }
 }
