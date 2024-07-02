@@ -8,6 +8,48 @@
 
 @import './auth/loginPage';
 
+// Import Font Awesome
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+@import "./components/dashboards.scss";
+
+
 .body {
     background-color: $default-light-background;
+    margin-bottom: 10rem;
+
+    .nav-tabs {
+        .nav-item {
+            button {
+                background-color: white;
+                color: black;
+            }
+
+            button.active {
+                background-color: $default-dark-background;
+                color: white;
+            }
+
+        }
+    }
+
+    .page-link {
+        margin: 0 0.5rem;
+        box-shadow:  $default-box-shadow;
+    }
+
+    .page-item.active {
+        span {
+            background-color: $default-dark-background;
+            border: none;
+            outline: none;
+
+        }
+    }
+
+    a.btn,
+    button.btn,
+    .dashboard-table-container {
+        box-shadow: $default-box-shadow;
+    }
 }

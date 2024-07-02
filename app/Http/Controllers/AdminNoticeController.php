@@ -11,7 +11,13 @@ class AdminNoticeController extends Controller
     public function index()
     {
         $notices = Notice::with('examination')->paginate();
-        return view('admin.notices.index', compact('notices'));
+
+        return view('admin.notices.index', [
+            'notices' => $notices,
+            'paginationLinks' => $notices->links('pagination::bootstrap-4'),
+            'editRoute' => 'admin.notices.edit',
+            'deleteRoute' => 'admin.notices.destroy'
+        ]);
     }
 
     public function create()

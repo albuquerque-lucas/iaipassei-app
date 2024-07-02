@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminExaminationController;
 use App\Http\Controllers\AdminNoticeController;
 use App\Http\Controllers\AdminStudyAreaController;
 use App\Http\Controllers\AdminSubjectController;
+use App\Http\Controllers\AdminAccountPlanController;
+use App\Http\Controllers\AdminUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +18,19 @@ Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 
+
+Route::delete('admin/users/bulk_delete', [AdminUserController::class, 'bulkDelete'])->name('admin.users.bulkDelete');
+Route::resource('admin/users', AdminUserController::class)->names([
+    'index' => 'admin.users.index',
+    'create' => 'admin.users.create',
+    'store' => 'admin.users.store',
+    'show' => 'admin.users.show',
+    'edit' => 'admin.users.edit',
+    'update' => 'admin.users.update',
+    'destroy' => 'admin.users.destroy',
+]);
+
+Route::delete('admin/examinations/bulk_delete', [AdminExaminationController::class, 'bulkDelete'])->name('admin.examinations.bulkDelete');
 Route::resource('admin/examinations', AdminExaminationController::class)->names([
     'index' => 'admin.examinations.index',
     'create' => 'admin.examinations.create',
@@ -36,6 +51,7 @@ Route::resource('admin/notices', AdminNoticeController::class)->names([
     'destroy' => 'admin.notices.destroy',
 ]);
 
+Route::delete('admin/study_areas/bulk_delete', [AdminStudyAreaController::class, 'bulkDelete'])->name('admin.study_areas.bulkDelete');
 Route::resource('admin/study_areas', AdminStudyAreaController::class)->names([
     'index' => 'admin.study_areas.index',
     'create' => 'admin.study_areas.create',
@@ -46,6 +62,7 @@ Route::resource('admin/study_areas', AdminStudyAreaController::class)->names([
     'destroy' => 'admin.study_areas.destroy',
 ]);
 
+Route::delete('admin/subjects/bulk_delete', [AdminSubjectController::class, 'bulkDelete'])->name('admin.subjects.bulkDelete');
 Route::resource('admin/subjects', AdminSubjectController::class)->names([
     'index' => 'admin.subjects.index',
     'create' => 'admin.subjects.create',
@@ -54,4 +71,15 @@ Route::resource('admin/subjects', AdminSubjectController::class)->names([
     'edit' => 'admin.subjects.edit',
     'update' => 'admin.subjects.update',
     'destroy' => 'admin.subjects.destroy',
+]);
+
+Route::delete('admin/account_plans/bulk_delete', [AdminAccountPlanController::class, 'bulkDelete'])->name('admin.account_plans.bulkDelete');
+Route::resource('admin/account_plans', AdminAccountPlanController::class)->names([
+    'index' => 'admin.account_plans.index',
+    'create' => 'admin.account_plans.create',
+    'store' => 'admin.account_plans.store',
+    'show' => 'admin.account_plans.show',
+    'edit' => 'admin.account_plans.edit',
+    'update' => 'admin.account_plans.update',
+    'destroy' => 'admin.account_plans.destroy',
 ]);

@@ -27,11 +27,6 @@ class AccountPlan extends Model
         return $this->hasMany(User::class);
     }
 
-    public function accessLevel(): BelongsTo
-    {
-        return $this->belongsTo(AccessLevel::class);
-    }
-
     public static function getAllOrdered(string $order, string $orderBy = 'id'): LengthAwarePaginator
     {
         return self::orderBy($orderBy, $order)->paginate();

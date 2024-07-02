@@ -3,15 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
+use App\Models\EducationLevel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\BulkDeleteTrait;
+use Exception;
 
 class AdminSubjectController extends Controller
 {
-    public function index()
+
+    use BulkDeleteTrait;
+
+    public function index(Request $request)
     {
-        $subjects = Subject::with('educationalLevel')->paginate(10);
-        return view('admin.subjects.index', compact('subjects'));
+        $orderBy = $request->get('order_by', 'id');
+        $order = $request->get('order', 'desc');
+        $search = $request->get('search', '');
+
+        $educationLevels = EducationLevel::all();
+
+        $subjects = Subject::with('educationLevel')
+            ->where('title', 'like', "%{$search}%")
+            ->orderBy($orderBy, $order)
+            ->paginate();
+
+        return view('admin.subjects.index', [
+            'subjects' => $subjects,
+            'paginationLinks' => $subjects->links('pagination::bootstrap-4'),
+            'editRoute' => 'admin.subjects.edit',
+            'deleteRoute' => 'admin.subjects.destroy',
+            'educationLevels' => $educationLevels,
+            'bulkDeleteRoute' => 'admin.subjects.bulkDelete',
+        ]);
     }
+
 
     public function create()
     {
@@ -21,7 +46,7 @@ class AdminSubjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'educational_level_id' => 'required|exists:education_levels,id',
+            'education_level_id' => 'required|exists:education_levels,id',
             'study_area_id' => 'required|exists:study_areas,id',
             'title' => 'required|string|max:255',
         ]);
@@ -40,7 +65,7 @@ class AdminSubjectController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'educational_level_id' => 'nullable|exists:education_levels,id',
+            'education_level_id' => 'nullable|exists:education_levels,id',
             'study_area_id' => 'nullable|exists:study_areas,id',
             'title' => 'nullable|string|max:255',
         ]);
@@ -58,4 +83,10 @@ class AdminSubjectController extends Controller
 
         return redirect()->route('admin.subjects.index')->with('success', 'Matéria excluída com sucesso!');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        return $this->bulkDeletes($request, Subject::class, 'admin.subjects.index');
+    }
+
 }

@@ -2,46 +2,41 @@
 
 @section('main-content')
     <section class='admin-subjects-page container mt-5'>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Dashboard de Matérias</h1>
-            <a href="{{ route('admin.subjects.create') }}" class="btn btn-primary">Adicionar Matéria</a>
-        </div>
+        <ul class="nav nav-tabs" id="subjectsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+                    Dashboard
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="false">
+                    Adicionar Matéria
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="subjectsTabContent">
+            <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+                    <h4>Dashboard Matérias</h4>
+                    <button id="bulkDeleteButton" class="btn btn-danger" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
+                        Excluir Selecionados
+                    </button>
+                </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        {{-- <th>Área de Estudo</th> --}}
-                        <th>Nível Educacional</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($subjects as $subject)
-                        <tr>
-                            <td>{{ $subject->id }}</td>
-                            <td>{{ $subject->title }}</td>
-                            {{-- <td>{{ $subject->studyArea->name }}</td> --}}
-                            <td>{{ $subject->educationLevel->name ?? 'Não informado' }}</td>
-                            <td>
-                                <a href="{{ route('admin.subjects.edit', $subject->id) }}" class="btn btn-sm btn-warning">Editar</a>
-                                <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Nenhuma matéria encontrada.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            {{ $subjects->links() }}
+                <x-filters.subjects-dashboard-filter :action="route('admin.subjects.index')" />
+
+                <!-- Botões de navegação no topo -->
+                <div class="d-flex justify-content-center mb-4">
+                    {!! $paginationLinks !!}
+                </div>
+
+                <x-dashboards.admin-subjects-dashboard :data="$subjects" :editRoute="$editRoute" :deleteRoute="$deleteRoute" :paginationLinks="$paginationLinks" />
+            </div>
+            <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+                <x-forms.create-subject-form :educationLevels="$educationLevels" />
+            </div>
         </div>
     </section>
+
+    <x-popUps.bulk-delete-confirmation-modal :deleteRoute="$bulkDeleteRoute"/>
 @endsection

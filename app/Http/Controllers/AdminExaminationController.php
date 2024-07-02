@@ -4,14 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Examination;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\BulkDeleteTrait;
+use Exception;
 
 class AdminExaminationController extends Controller
 {
-    public function index()
+
+    use BulkDeleteTrait;
+
+    public function index(Request $request)
     {
-        $examinations = Examination::with('educationLevel')->paginate();
-        return view('admin.examinations.index', compact('examinations'));
+        $order = $request->get('order', 'desc');
+        $orderBy = $request->get('order_by', 'id');
+        $search = $request->get('search', '');
+
+        $query = Examination::with('educationLevel')
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'like', "%{$search}%");
+            })
+            ->orderBy($orderBy, $order);
+
+        $examinations = $query->paginate();
+
+        return view('admin.examinations.index', [
+            'examinations' => $examinations,
+            'paginationLinks' => $examinations->appends($request->except('page'))->links('pagination::bootstrap-4'),
+            'editRoute' => 'admin.examinations.edit',
+            'deleteRoute' => 'admin.examinations.destroy',
+            'bulkDeleteRoute' => 'admin.examinations.bulkDelete',
+        ]);
     }
+
 
     public function create()
     {
@@ -60,4 +84,10 @@ class AdminExaminationController extends Controller
 
         return redirect()->route('admin.examinations.index')->with('success', 'Concurso excluído com sucesso!');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        return $this->bulkDeletes($request, Examination::class, 'admin.examinations.index');
+    }
 }
+
