@@ -1,5 +1,5 @@
 <div class="table-responsive dashboard-table-container">
-    <table class="table table-hover">
+    <table class="table table-hover entity-dashboard">
         <thead class="table-dark">
             <tr>
                 <th><input type="checkbox" id="selectAll"></th>
