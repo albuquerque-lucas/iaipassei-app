@@ -71,11 +71,13 @@ class AdminAccountPlanController extends Controller
     {
         try {
             $accountPlan = AccountPlan::findOrFail($id);
-            return view('admin.account_plans.edit', compact('accountPlan'));
+            $users = $accountPlan->users()->paginate();
+            return view('admin.account_plans.edit', compact('accountPlan', 'users'));
         } catch (Exception $e) {
             return redirect()->route('admin.account_plans.index')->with('error', 'Erro ao carregar o plano de conta para edição: ' . $e->getMessage());
         }
     }
+
 
     public function update(Request $request, $id)
     {

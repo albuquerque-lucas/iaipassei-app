@@ -10,7 +10,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="false">
-                    Adicionar Área de Estudo
+                    Adicionar
                 </button>
             </li>
         </ul>
