@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminStudyAreaController;
 use App\Http\Controllers\AdminSubjectController;
 use App\Http\Controllers\AdminAccountPlanController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AdminExamController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -83,4 +84,16 @@ Route::resource('admin/account_plans', AdminAccountPlanController::class)->names
     'edit' => 'admin.account_plans.edit',
     'update' => 'admin.account_plans.update',
     'destroy' => 'admin.account_plans.destroy',
+]);
+
+
+Route::delete('admin/exams/bulk_delete', [AdminExamController::class, 'bulkDelete'])->name('admin.exams.bulkDelete');
+Route::resource('admin/exams', AdminExamController::class)->names([
+    'index' => 'admin.exams.index',
+    'create' => 'admin.exams.create',
+    'store' => 'admin.exams.store',
+    'show' => 'admin.exams.show',
+    'edit' => 'admin.exams.edit',
+    'update' => 'admin.exams.update',
+    'destroy' => 'admin.exams.destroy',
 ]);

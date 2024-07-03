@@ -17,51 +17,46 @@
                 <p><strong>Título:</strong> {{ $examination->title }}</p>
                 <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
                 <p><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
-                <p><strong>Quantidade de Provas:</strong> {{ $examination->exams->count() }}</p>
-                <p><strong>Quantidade de Questões por Prova:</strong> {{ $examination->exams->first() ? $examination->exams->first()->examQuestions->count() : 'N/A' }}</p>
-                <p><strong>Quantidade de Alternativas por Questão:</strong> {{ $examination->exams->first() && $examination->exams->first()->examQuestions->first() ? $examination->exams->first()->examQuestions->first()->alternatives->count() : 'N/A' }}</p>
+                <p><strong>Quantidade de Provas:</strong> {{ $numExams }}</p>
+                <p><strong>Quantidade de Questões por Prova:</strong> {{ $numQuestionsPerExam }}</p>
+                <p><strong>Quantidade de Alternativas por Questão:</strong> {{ $numAlternativesPerQuestion }}</p>
+
+                <div class="d-flex align-items-center">
+                    <label for="select_exam" class="form-label me-2 my-5">Selecionar Prova:</label>
+                    <select class="form-select me-2 w-25" id="select_exam">
+                        @foreach($examination->exams as $exam)
+                            <option value="{{ $exam->id }}">{{ $exam->title }}</option>
+                        @endforeach
+                    </select>
+                    <a id="view_exam_btn" href="#" class="btn btn-primary">Visualizar</a>
+                </div>
             </div>
         </div>
         <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
             <div class="mt-4">
                 <h4>Editar Concurso</h4>
-                <form method="POST" action="{{ route('admin.examinations.update', $examination->id) }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="mb-3">
-                        <label for="education_level_id" class="form-label">Nível Educacional</label>
-                        <select class="form-select" id="education_level_id" name="education_level_id" required>
-                            @foreach($educationLevels as $level)
-                                <option value="{{ $level->id }}" {{ $examination->education_level_id == $level->id ? 'selected' : '' }}>
-                                    {{ $level->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="title" name="title" value="{{ $examination->title }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="institution" class="form-label">Instituição</label>
-                        <input type="text" class="form-control" id="institution" name="institution" value="{{ $examination->institution }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="num_exams" class="form-label">Número de Provas</label>
-                        <input type="number" class="form-control" id="num_exams" name="num_exams" value="{{ $examination->exams->count() }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="num_questions_per_exam" class="form-label">Número de Questões por Prova</label>
-                        <input type="number" class="form-control" id="num_questions_per_exam" name="num_questions_per_exam" value="{{ $examination->exams->first() ? $examination->exams->first()->examQuestions->count() : 0 }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="num_alternatives_per_question" class="form-label">Número de Alternativas por Questão</label>
-                        <input type="number" class="form-control" id="num_alternatives_per_question" name="num_alternatives_per_question" value="{{ $examination->exams->first() && $examination->exams->first()->examQuestions->first() ? $examination->exams->first()->examQuestions->first()->alternatives->count() : 0 }}" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                </form>
+                <x-forms.edit-examination-form
+                    :examination="$examination"
+                    :educationLevels="$educationLevels"
+                />
+
+                <h4 class="mt-5">Criar Nova Prova</h4>
+                <x-forms.create-exam-form :examination="$examination" />
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectExam = document.getElementById('select_exam');
+        const viewExamBtn = document.getElementById('view_exam_btn');
+
+        viewExamBtn.addEventListener('click', function () {
+            const selectedExamId = selectExam.value;
+            const url = `{{ url('admin/exams/edit') }}/${selectedExamId}`;
+            window.location.href = url;
+        });
+    });
+</script>
 @endsection
