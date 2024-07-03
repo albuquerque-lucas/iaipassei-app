@@ -19,10 +19,9 @@ class Examination extends Model
     use HasFactory;
 
     protected $fillable = [
-        'education_level_id', // ID do nivel educacional associado ao concurso
-        'title',        // Título do concurso
-        'active',       // Indica se o concurso está ativo
-        'institution',  // Instituição responsável pelo concurso
+        'education_level_id',
+        'title',
+        'institution',
     ];
 
     protected function casts() {

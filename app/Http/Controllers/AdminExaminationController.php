@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Examination;
+use App\Models\EducationLevel;
+use App\Models\Exam;
+use App\Models\ExamQuestion;
+use App\Models\QuestionAlternative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\BulkDeleteTrait;
+use App\Http\Requests\ExaminationManualStoreFormRequest;
 use Exception;
 
 class AdminExaminationController extends Controller
@@ -42,29 +47,57 @@ class AdminExaminationController extends Controller
     public function create()
     {
         try {
-            return view('admin.examinations.create');
+            $educationLevels = EducationLevel::all();
+            return view('admin.examinations.create', compact('educationLevels'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
         }
     }
 
-    public function store(Request $request)
+    public function store(ExaminationManualStoreFormRequest $request)
     {
+        DB::beginTransaction();
+
         try {
-            $validated = $request->validate([
-                'educational_level_id' => 'required|exists:education_levels,id',
-                'title' => 'required|string|max:255',
-                'institution' => 'required|string|max:255',
-                'active' => 'required|boolean',
+            $validated = $request->validated();
+
+            $examination = Examination::create([
+                'education_level_id' => $validated['education_level_id'],
+                'title' => $validated['title'],
+                'institution' => $validated['institution'],
+                'active' => $request->has('active') ? $validated['active'] : false,
             ]);
 
-            Examination::create($validated);
+            for ($i = 1; $i <= $validated['num_exams']; $i++) {
+                $exam = Exam::create([
+                    'examination_id' => $examination->id,
+                    'title' => "P-$i",
+                ]);
+
+                for ($j = 1; $j <= $validated['num_questions_per_exam']; $j++) {
+                    $examQuestion = ExamQuestion::create([
+                        'exam_id' => $exam->id,
+                        'question_number' => $j,
+                    ]);
+
+                    for ($k = 0; $k < $validated['num_alternatives_per_question']; $k++) {
+                        QuestionAlternative::create([
+                            'exam_question_id' => $examQuestion->id,
+                            'letter' => chr(97 + $k),
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
 
             return redirect()->route('admin.examinations.index')->with('success', 'Concurso criado com sucesso!');
         } catch (Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao criar o concurso: ' . $e->getMessage());
         }
     }
+
 
     public function edit($id)
     {
