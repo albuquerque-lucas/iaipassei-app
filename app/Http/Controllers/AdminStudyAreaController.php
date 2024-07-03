@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudyArea;
+use App\Models\Examination;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\BulkDeleteTrait;
@@ -10,7 +12,6 @@ use Exception;
 
 class AdminStudyAreaController extends Controller
 {
-
     use BulkDeleteTrait;
 
     public function index(Request $request)
@@ -60,27 +61,53 @@ class AdminStudyAreaController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         try {
-            $studyArea = StudyArea::findOrFail($id);
-            return view('admin.study_areas.edit', compact('studyArea'));
+            $studyArea = StudyArea::with(['examinations', 'subjects'])->findOrFail($id);
+            $allExaminations = Examination::all();
+            $allSubjects = Subject::all();
+
+            $query = $studyArea->subjects();
+
+            if ($request->has('search')) {
+                $query->where('title', 'like', '%' . $request->get('search') . '%');
+            }
+
+            if ($request->has('order_by')) {
+                $order = $request->get('order', 'asc');
+                $query->orderBy($request->get('order_by'), $order);
+            }
+
+            $filteredSubjects = $query->get();
+
+            return view('admin.study_areas.edit', compact('studyArea', 'allExaminations', 'allSubjects', 'filteredSubjects'));
         } catch (Exception $e) {
-            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao abrir o formulário de edição: ' . $e->getMessage());
+            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao carregar a área de estudo para edição: ' . $e->getMessage());
         }
     }
 
     public function update(Request $request, $id)
     {
         try {
+            $studyArea = StudyArea::findOrFail($id);
             $validated = $request->validate([
-                'name' => 'nullable|string|max:255',
+                'name' => 'required|string|max:255',
+                'subjects' => 'array'
             ]);
 
-            $studyArea = StudyArea::findOrFail($id);
             $studyArea->update($validated);
 
-            return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo atualizada com sucesso!');
+            $newSubjects = $request->input('subjects', []);
+            $currentSubjects = $studyArea->subjects->pluck('id')->toArray();
+
+            $subjectsToAdd = array_diff($newSubjects, $currentSubjects);
+            $subjectsToRemove = array_diff($currentSubjects, $newSubjects);
+
+            $studyArea->subjects()->attach($subjectsToAdd);
+            $studyArea->subjects()->detach($subjectsToRemove);
+
+            return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Área de estudo atualizada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao atualizar a área de estudo: ' . $e->getMessage());
         }
@@ -100,6 +127,22 @@ class AdminStudyAreaController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        return $this->bulkDeletes($request, StudyArea::class, 'admin.study_areas.index');
+        try {
+            return $this->bulkDeletes($request, StudyArea::class, 'admin.study_areas.index');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao excluir áreas de estudo em massa: ' . $e->getMessage());
+        }
+    }
+
+    public function removeSubject($studyAreaId, $subjectId)
+    {
+        try {
+            $studyArea = StudyArea::findOrFail($studyAreaId);
+            $studyArea->subjects()->detach($subjectId);
+
+            return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Matéria removida com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao remover a matéria: ' . $e->getMessage());
+        }
     }
 }
