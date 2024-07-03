@@ -2,7 +2,7 @@
 
 @section('main-content')
 <section class='edit-exam-page container mt-5'>
-    <x-tabs.tabs :backRoute="route('admin.exams.index')" />
+    <x-tabs.tabs :backRoute="route('admin.examinations.edit', $exam->examination->id)" />
 
     @if (session('success'))
         <x-cards.flash-message-card type="success" :message="session('success')" />
@@ -20,15 +20,14 @@
                     <div class="card-body">
                         <h5 class="card-title">Questão {{ $question->question_number }}</h5>
                         <p class="card-text">{{ $question->statement ?? 'Enunciado não informado' }}</p>
-                        <ul class="list-group" style="cursor:pointer">
+                        <ul class="list-group">
                             @foreach ($question->alternatives as $alternative)
-                                <li class="list-group-item list-group-item-action">{{ $alternative->letter }}. {{ $alternative->text }}</li>
+                                <li class="list-group-item list-group-item-action" style="cursor:pointer">{{ $alternative->letter }}. {{ $alternative->text }}</li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
             @endforeach
-
 
             <div class="d-flex justify-content-center">
                 {{ $examQuestions->links('pagination::bootstrap-4') }}
