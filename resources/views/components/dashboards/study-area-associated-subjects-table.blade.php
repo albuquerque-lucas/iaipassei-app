@@ -19,7 +19,7 @@
         </div>
         <div class="row g-2 mt-2">
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                <button type="submit" class="btn btn-sm btn-primary w-100">Filtrar</button>
             </div>
         </div>
     </form>

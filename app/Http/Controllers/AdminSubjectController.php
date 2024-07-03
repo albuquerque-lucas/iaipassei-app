@@ -59,7 +59,9 @@ class AdminSubjectController extends Controller
     public function edit($id)
     {
         $subject = Subject::findOrFail($id);
-        return view('admin.subjects.edit', compact('subject'));
+        $educationLevels = EducationLevel::all();
+        $deleteRoute = 'admin.subjects.destroy';
+        return view('admin.subjects.edit', compact('subject', 'educationLevels', 'deleteRoute'));
     }
 
     public function update(Request $request, $id)
@@ -73,7 +75,7 @@ class AdminSubjectController extends Controller
         $subject = Subject::findOrFail($id);
         $subject->update(array_filter($validated));
 
-        return redirect()->route('admin.subjects.index')->with('success', 'Matéria atualizada com sucesso!');
+        return redirect()->route('admin.subjects.edit', $id)->with('success', 'Matéria atualizada com sucesso!');
     }
 
     public function destroy($id)
