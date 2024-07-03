@@ -10,84 +10,109 @@ use Exception;
 
 class AdminExaminationController extends Controller
 {
-
     use BulkDeleteTrait;
 
     public function index(Request $request)
     {
-        $order = $request->get('order', 'desc');
-        $orderBy = $request->get('order_by', 'id');
-        $search = $request->get('search', '');
+        try {
+            $order = $request->get('order', 'desc');
+            $orderBy = $request->get('order_by', 'id');
+            $search = $request->get('search', '');
 
-        $query = Examination::with('educationLevel')
-            ->when($search, function ($query, $search) {
-                return $query->where('title', 'like', "%{$search}%");
-            })
-            ->orderBy($orderBy, $order);
+            $query = Examination::with('educationLevel')
+                ->when($search, function ($query, $search) {
+                    return $query->where('title', 'like', "%{$search}%");
+                })
+                ->orderBy($orderBy, $order);
 
-        $examinations = $query->paginate();
+            $examinations = $query->paginate();
 
-        return view('admin.examinations.index', [
-            'examinations' => $examinations,
-            'paginationLinks' => $examinations->appends($request->except('page'))->links('pagination::bootstrap-4'),
-            'editRoute' => 'admin.examinations.edit',
-            'deleteRoute' => 'admin.examinations.destroy',
-            'bulkDeleteRoute' => 'admin.examinations.bulkDelete',
-        ]);
+            return view('admin.examinations.index', [
+                'examinations' => $examinations,
+                'paginationLinks' => $examinations->appends($request->except('page'))->links('pagination::bootstrap-4'),
+                'editRoute' => 'admin.examinations.edit',
+                'deleteRoute' => 'admin.examinations.destroy',
+                'bulkDeleteRoute' => 'admin.examinations.bulkDelete',
+            ]);
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao carregar concursos: ' . $e->getMessage());
+        }
     }
-
 
     public function create()
     {
-        return view('admin.examinations.create');
+        try {
+            return view('admin.examinations.create');
+        } catch (Exception $e) {
+            return redirect()->route('admin.examinations.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
+        }
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'educational_level_id' => 'required|exists:education_levels,id',
-            'title' => 'required|string|max:255',
-            'institution' => 'required|string|max:255',
-            'active' => 'required|boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'educational_level_id' => 'required|exists:education_levels,id',
+                'title' => 'required|string|max:255',
+                'institution' => 'required|string|max:255',
+                'active' => 'required|boolean',
+            ]);
 
-        Examination::create($validated);
+            Examination::create($validated);
 
-        return redirect()->route('admin.examinations.index')->with('success', 'Concurso criado com sucesso!');
+            return redirect()->route('admin.examinations.index')->with('success', 'Concurso criado com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao criar o concurso: ' . $e->getMessage());
+        }
     }
 
     public function edit($id)
     {
-        $examination = Examination::findOrFail($id);
-        return view('admin.examinations.edit', compact('examination'));
+        try {
+            $examination = Examination::findOrFail($id);
+            return view('admin.examinations.edit', compact('examination'));
+        } catch (Exception $e) {
+            return redirect()->route('admin.examinations.index')->with('error', 'Erro ao carregar o concurso para edição: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'educational_level_id' => 'required|exists:education_levels,id',
-            'title' => 'required|string|max:255',
-            'institution' => 'required|string|max:255',
-            'active' => 'required|boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'educational_level_id' => 'required|exists:education_levels,id',
+                'title' => 'required|string|max:255',
+                'institution' => 'required|string|max:255',
+                'active' => 'required|boolean',
+            ]);
 
-        $examination = Examination::findOrFail($id);
-        $examination->update($validated);
+            $examination = Examination::findOrFail($id);
+            $examination->update($validated);
 
-        return redirect()->route('admin.examinations.index')->with('success', 'Concurso atualizado com sucesso!');
+            return redirect()->route('admin.examinations.index')->with('success', 'Concurso atualizado com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao atualizar o concurso: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $examination = Examination::findOrFail($id);
-        $examination->delete();
+        try {
+            $examination = Examination::findOrFail($id);
+            $examination->delete();
 
-        return redirect()->route('admin.examinations.index')->with('success', 'Concurso excluído com sucesso!');
+            return redirect()->route('admin.examinations.index')->with('success', 'Concurso excluído com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.examinations.index')->with('error', 'Erro ao excluir o concurso: ' . $e->getMessage());
+        }
     }
 
     public function bulkDelete(Request $request)
     {
-        return $this->bulkDeletes($request, Examination::class, 'admin.examinations.index');
+        try {
+            return $this->bulkDeletes($request, Examination::class, 'admin.examinations.index');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao excluir concursos em massa: ' . $e->getMessage());
+        }
     }
 }
-

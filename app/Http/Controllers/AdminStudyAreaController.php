@@ -12,7 +12,6 @@ use Exception;
 
 class AdminStudyAreaController extends Controller
 {
-
     use BulkDeleteTrait;
 
     public function index(Request $request)
@@ -64,41 +63,55 @@ class AdminStudyAreaController extends Controller
 
     public function edit($id, Request $request)
     {
-        $studyArea = StudyArea::with(['examinations', 'subjects'])->findOrFail($id);
-        $allExaminations = Examination::all();
-        $allSubjects = Subject::all();
+        try {
+            $studyArea = StudyArea::with(['examinations', 'subjects'])->findOrFail($id);
+            $allExaminations = Examination::all();
+            $allSubjects = Subject::all();
 
-        $query = $studyArea->subjects();
+            $query = $studyArea->subjects();
 
-        if ($request->has('search')) {
-            $query->where('title', 'like', '%' . $request->get('search') . '%');
+            if ($request->has('search')) {
+                $query->where('title', 'like', '%' . $request->get('search') . '%');
+            }
+
+            if ($request->has('order_by')) {
+                $order = $request->get('order', 'asc');
+                $query->orderBy($request->get('order_by'), $order);
+            }
+
+            $filteredSubjects = $query->get();
+
+            return view('admin.study_areas.edit', compact('studyArea', 'allExaminations', 'allSubjects', 'filteredSubjects'));
+        } catch (Exception $e) {
+            return redirect()->route('admin.study_areas.index')->with('error', 'Erro ao carregar a área de estudo para edição: ' . $e->getMessage());
         }
-
-        if ($request->has('order_by')) {
-            $order = $request->get('order', 'asc');
-            $query->orderBy($request->get('order_by'), $order);
-        }
-
-        $filteredSubjects = $query->get();
-
-        return view('admin.study_areas.edit', compact('studyArea', 'allExaminations', 'allSubjects', 'filteredSubjects'));
     }
-
 
     public function update(Request $request, $id)
     {
-        $studyArea = StudyArea::findOrFail($id);
-        $studyArea->update($request->only(['name']));
+        try {
+            $studyArea = StudyArea::findOrFail($id);
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'subjects' => 'array'
+            ]);
 
-        $newSubjects = $request->input('subjects', []);
-        $currentSubjects = $studyArea->subjects->pluck('id')->toArray();
+            $studyArea->update($validated);
 
-        $subjectsToAdd = array_diff($newSubjects, $currentSubjects);
-        $studyArea->subjects()->attach($subjectsToAdd);
+            $newSubjects = $request->input('subjects', []);
+            $currentSubjects = $studyArea->subjects->pluck('id')->toArray();
 
-        return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Área de estudo atualizada com sucesso!');
+            $subjectsToAdd = array_diff($newSubjects, $currentSubjects);
+            $subjectsToRemove = array_diff($currentSubjects, $newSubjects);
+
+            $studyArea->subjects()->attach($subjectsToAdd);
+            $studyArea->subjects()->detach($subjectsToRemove);
+
+            return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Área de estudo atualizada com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao atualizar a área de estudo: ' . $e->getMessage());
+        }
     }
-
 
     public function destroy($id)
     {
@@ -114,15 +127,22 @@ class AdminStudyAreaController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        return $this->bulkDeletes($request, StudyArea::class, 'admin.study_areas.index');
+        try {
+            return $this->bulkDeletes($request, StudyArea::class, 'admin.study_areas.index');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao excluir áreas de estudo em massa: ' . $e->getMessage());
+        }
     }
 
     public function removeSubject($studyAreaId, $subjectId)
     {
-        $studyArea = StudyArea::findOrFail($studyAreaId);
-        $studyArea->subjects()->detach($subjectId);
+        try {
+            $studyArea = StudyArea::findOrFail($studyAreaId);
+            $studyArea->subjects()->detach($subjectId);
 
-        return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Matéria removida com sucesso!');
+            return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Matéria removida com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao remover a matéria: ' . $e->getMessage());
+        }
     }
-
 }
