@@ -102,12 +102,19 @@ class AdminExaminationController extends Controller
     public function edit($id)
     {
         try {
-            $examination = Examination::findOrFail($id);
-            return view('admin.examinations.edit', compact('examination'));
+            $examination = Examination::with(['educationLevel', 'exams.examQuestions.alternatives'])->findOrFail($id);
+            $educationLevels = EducationLevel::all();
+
+            $numExams = $examination->exams->count();
+            $numQuestionsPerExam = $numExams > 0 ? $examination->exams->first()->examQuestions->count() : 0;
+            $numAlternativesPerQuestion = $numQuestionsPerExam > 0 ? $examination->exams->first()->examQuestions->first()->alternatives->count() : 0;
+
+            return view('admin.examinations.edit', compact('examination', 'educationLevels', 'numExams', 'numQuestionsPerExam', 'numAlternativesPerQuestion'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao carregar o concurso para edição: ' . $e->getMessage());
         }
     }
+
 
     public function update(Request $request, $id)
     {
