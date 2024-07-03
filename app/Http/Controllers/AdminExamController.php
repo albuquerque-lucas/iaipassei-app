@@ -8,6 +8,7 @@ use App\Models\ExamQuestion;
 use App\Models\QuestionAlternative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\BulkDeleteTrait;
 use Exception;
 
 class AdminExamController extends Controller

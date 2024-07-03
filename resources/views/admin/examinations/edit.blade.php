@@ -21,14 +21,23 @@
                 <p><strong>Quantidade de Questões por Prova:</strong> {{ $numQuestionsPerExam }}</p>
                 <p><strong>Quantidade de Alternativas por Questão:</strong> {{ $numAlternativesPerQuestion }}</p>
 
-                <div class="d-flex align-items-center">
-                    <label for="select_exam" class="form-label me-2 my-5">Selecionar Prova:</label>
-                    <select class="form-select me-2 w-25" id="select_exam">
+                <div class="mt-5">
+                    <h5>Lista de Provas</h5>
+                    <ul class="list-group">
                         @foreach($examination->exams as $exam)
-                            <option value="{{ $exam->id }}">{{ $exam->title }}</option>
+                            <li class="list-group-item d-flex justify-content-between align-items-center w-50 my-1">
+                                <span>{{ $exam->title }}</span>
+                                <div>
+                                    <a href="{{ route('admin.exams.edit', $exam->id) }}" class="btn btn-primary btn-sm me-2"><i class="fa-solid fa-eye"></i></a>
+                                    <form action="{{ route('admin.exams.destroy', $exam->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </li>
                         @endforeach
-                    </select>
-                    <a id="view_exam_btn" href="#" class="btn btn-primary">Visualizar</a>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -46,17 +55,4 @@
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectExam = document.getElementById('select_exam');
-        const viewExamBtn = document.getElementById('view_exam_btn');
-
-        viewExamBtn.addEventListener('click', function () {
-            const selectedExamId = selectExam.value;
-            const url = `{{ url('admin/exams/edit') }}/${selectedExamId}`;
-            window.location.href = url;
-        });
-    });
-</script>
 @endsection
