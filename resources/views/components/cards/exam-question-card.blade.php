@@ -8,6 +8,13 @@
                 <button class="btn btn-sm btn-dark edit-question-btn" data-bs-toggle="collapse" data-bs-target="#edit-question-{{ $question->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Questão">
                     <i class='fa-solid fa-edit'></i>
                 </button>
+                <form action="{{ route('admin.question_alternatives.store') }}" method="POST" class="d-inline">
+                    @csrf
+                    <input type="hidden" name="exam_question_id" value="{{ $question->id }}">
+                    <button type="submit" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar Alternativa">
+                        <i class="fa-solid fa-plus-circle"></i>
+                    </button>
+                </form>
                 <button class="btn btn-sm btn-danger delete-question-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $question->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir Questão">
                     <i class='fa-solid fa-trash'></i>
                 </button>
@@ -24,9 +31,16 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span class="alternative-text" id="alternative-text-{{ $alternative->id }}">{{ $alternative->letter }}. {{ $alternative->text }}</span>
                     <div class='btn-container' x-show="editMode">
-                        <button class="btn btn-sm btn-dark edit-alternative-btn" data-bs-toggle="collapse" data-bs-target="#edit-alternative-{{ $alternative->id }}" aria-expanded="false" aria-controls="edit-alternative-{{ $alternative->id }}" onclick="toggleAlternativeText({{ $alternative->id }})" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Alternativa">
+                        <button class="btn btn-sm btn-dark edit-alternative-btn mx-1" data-bs-toggle="collapse" data-bs-target="#edit-alternative-{{ $alternative->id }}" aria-expanded="false" aria-controls="edit-alternative-{{ $alternative->id }}" onclick="toggleAlternativeText({{ $alternative->id }})" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Alternativa">
                             <i class='fa-solid fa-edit'></i>
                         </button>
+                        <form action="{{ route('admin.question_alternatives.destroy', $alternative->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir Alternativa">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
 
                     <div class="collapse w-100 mt-2" id="edit-alternative-{{ $alternative->id }}">

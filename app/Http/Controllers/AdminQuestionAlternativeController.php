@@ -53,20 +53,29 @@ class AdminQuestionAlternativeController extends Controller
         try {
             $validated = $request->validate([
                 'exam_question_id' => 'required|exists:exam_questions,id',
-                'letter' => 'required|string|max:1',
-                'text' => 'nullable|string|max:255',
             ]);
 
-            QuestionAlternative::create($validated);
+            $lastAlternative = QuestionAlternative::where('exam_question_id', $validated['exam_question_id'])
+                ->orderBy('letter', 'desc')
+                ->first();
+
+            $nextLetter = $lastAlternative ? chr(ord($lastAlternative->letter) + 1) : 'a';
+
+            QuestionAlternative::create([
+                'exam_question_id' => $validated['exam_question_id'],
+                'letter' => $nextLetter,
+                'text' => '',
+            ]);
 
             DB::commit();
 
-            return redirect()->route('admin.question_alternatives.index')->with('success', 'Alternativa criada com sucesso!');
+            return redirect()->back()->with('success', 'Alternativa criada com sucesso!');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao criar a alternativa: ' . $e->getMessage());
         }
     }
+
 
     public function edit($id)
     {
@@ -100,12 +109,13 @@ class AdminQuestionAlternativeController extends Controller
     public function destroy($id)
     {
         try {
-            $questionAlternative = QuestionAlternative::findOrFail($id);
-            $questionAlternative->delete();
+            $alternative = QuestionAlternative::findOrFail($id);
+            $alternative->delete();
 
-            return redirect()->route('admin.question_alternatives.index')->with('success', 'Alternativa excluída com sucesso!');
+            return redirect()->back()->with('success', 'Alternativa excluída com sucesso!');
         } catch (Exception $e) {
-            return redirect()->route('admin.question_alternatives.index')->with('error', 'Erro ao excluir a alternativa: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao excluir a alternativa: ' . $e->getMessage());
         }
     }
+
 }

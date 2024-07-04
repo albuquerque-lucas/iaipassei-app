@@ -101,13 +101,14 @@ class AdminExamController extends Controller
             $numQuestions = $exam->examQuestions->count();
             $numAlternativesPerQuestion = $numQuestions > 0 ? $exam->examQuestions->first()->alternatives->count() : 0;
 
-            $examQuestions = $exam->examQuestions()->paginate(5);
+            $examQuestions = $exam->examQuestions()->orderBy('question_number', 'asc')->paginate(5);
 
             return view('admin.exams.edit', compact('exam', 'examinations', 'numQuestions', 'numAlternativesPerQuestion', 'examQuestions'));
         } catch (Exception $e) {
             return redirect()->route('admin.exams.index')->with('error', 'Erro ao carregar a prova para edição: ' . $e->getMessage());
         }
     }
+
 
 
     public function update(Request $request, $id)
