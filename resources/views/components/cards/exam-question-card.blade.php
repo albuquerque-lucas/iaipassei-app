@@ -28,62 +28,21 @@
 
         <ul class="list-group mt-3">
             @foreach ($question->alternatives as $alternative)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="alternative-text" id="alternative-text-{{ $alternative->id }}">{{ $alternative->letter }}. {{ $alternative->text }}</span>
-                    <div class='btn-container' x-show="editMode">
-                        <button class="btn btn-sm btn-dark edit-btn edit-alternative-btn mx-2" data-bs-toggle="collapse" data-bs-target="#edit-alternative-{{ $alternative->id }}" aria-expanded="false" aria-controls="edit-alternative-{{ $alternative->id }}" onclick="toggleAlternativeText({{ $alternative->id }})" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Alternativa">
-                            <i class='fa-solid fa-edit'></i>
-                        </button>
-                        <form action="{{ route('admin.question_alternatives.destroy', $alternative->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir Alternativa">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="collapse w-100 mt-2" id="edit-alternative-{{ $alternative->id }}">
-                        <x-forms.edit-alternative-form :alternative="$alternative"/>
-                    </div>
-                </li>
+                <x-listItems.alternative-item :alternative="$alternative" x-show="editMode"/>
             @endforeach
         </ul>
     </div>
 </div>
 
-<x-popUps.confirm-delete-popUp :id="$question->id" deleteRoute="admin.exam_questions.destroy"/>
-
-<script>
-    function toggleAlternativeText(id) {
-        const alternativeText = document.getElementById('alternative-text-' + id);
-        if (alternativeText.style.display === 'none') {
-            alternativeText.style.display = 'block';
-        } else {
-            alternativeText.style.display = 'none';
-        }
-    }
-</script>
+<x-popUps.confirm-delete-popUp :id="$question->id" :deleteRoute="'admin.exam_questions.destroy'"/>
 
 <style>
-    .list-group-item {
-        position: relative;
-    }
-    .btn-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        height: 2rem;
-        right: 1%;
-        top: 10%;
-    }
     .collapse.show + .edit-question-btn,
     .collapse.show + .edit-alternative-btn {
         display: none;
     }
     .edit-btn:hover {
-        background-color: #007bff !important; /* Bootstrap primary color */
+        background-color: #007bff !important;
         border-color: #007bff !important;
         box-shadow: 1px 1px 3px #333;
     }

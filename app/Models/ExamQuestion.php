@@ -33,7 +33,7 @@ class ExamQuestion extends Model
 
     public function alternatives(): HasMany
     {
-        return $this->hasMany(QuestionAlternative::class);
+        return $this->hasMany(QuestionAlternative::class)->orderBy('letter', 'asc');
     }
 
     public function images(): HasMany

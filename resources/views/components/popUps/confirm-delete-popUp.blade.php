@@ -1,3 +1,5 @@
+@props(['id', 'deleteRoute'])
+
 <div class="modal fade" id="confirmDeleteModal{{ $id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel{{ $id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content bg-dark text-light">
