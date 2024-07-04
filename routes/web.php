@@ -111,6 +111,7 @@ Route::resource('admin/question_alternatives', AdminQuestionAlternativeControlle
     'destroy' => 'admin.question_alternatives.destroy',
 ]);
 
+Route::delete('admin/exam_questions/delete_last', [AdminExamQuestionController::class, 'deleteLastQuestion'])->name('admin.exam_questions.delete_last');
 Route::delete('admin/exam_questions/bulk_delete', [AdminExamQuestionController::class, 'bulkDelete'])->name('admin.exam_questions.bulkDelete');
 Route::resource('admin/exam_questions', AdminExamQuestionController::class)->names([
     'index' => 'admin.exam_questions.index',

@@ -54,35 +54,36 @@ class AdminExamQuestionController extends Controller
         try {
             $validated = $request->validate([
                 'exam_id' => 'required|exists:exams,id',
-                'question_number' => 'required|integer|min:1',
-                'statement' => 'nullable|string|max:1000',
-                'alternatives' => 'required|array|min:1',
-                'alternatives.*.letter' => 'required|string|max:1',
-                'alternatives.*.text' => 'nullable|string|max:255',
             ]);
+
+            $lastQuestion = ExamQuestion::where('exam_id', $validated['exam_id'])
+                                ->orderBy('question_number', 'desc')
+                                ->first();
+
+            $newQuestionNumber = $lastQuestion ? $lastQuestion->question_number + 1 : 1;
 
             $examQuestion = ExamQuestion::create([
                 'exam_id' => $validated['exam_id'],
-                'question_number' => $validated['question_number'],
-                'statement' => $validated['statement'],
+                'question_number' => $newQuestionNumber,
             ]);
 
-            foreach ($validated['alternatives'] as $alternative) {
+            $letters = ['a', 'b', 'c', 'd', 'e'];
+            foreach ($letters as $letter) {
                 QuestionAlternative::create([
                     'exam_question_id' => $examQuestion->id,
-                    'letter' => $alternative['letter'],
-                    'text' => $alternative['text'],
+                    'letter' => $letter,
                 ]);
             }
 
             DB::commit();
 
-            return redirect()->route('admin.exam_questions.index')->with('success', 'Questão criada com sucesso!');
+            return redirect()->back()->with('success', 'Questão criada com sucesso!');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao criar a questão: ' . $e->getMessage());
         }
     }
+
 
     public function edit($id)
     {
@@ -126,15 +127,50 @@ class AdminExamQuestionController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id = null)
     {
         try {
-            $examQuestion = ExamQuestion::findOrFail($id);
-            $examQuestion->delete();
+            $validated = $request->validate([
+                'exam_id' => 'required|exists:exams,id',
+            ]);
 
-            return redirect()->route('admin.exam_questions.index')->with('success', 'Questão excluída com sucesso!');
+            $lastQuestion = ExamQuestion::where('exam_id', $validated['exam_id'])
+                                ->orderBy('question_number', 'desc')
+                                ->first();
+
+            if ($lastQuestion) {
+                $lastQuestion->delete();
+                return redirect()->back()->with('success', 'Última questão excluída com sucesso!');
+            }
+
+            return redirect()->back()->with('error', 'Não há questões para excluir.');
         } catch (Exception $e) {
-            return redirect()->route('admin.exam_questions.index')->with('error', 'Erro ao excluir a questão: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao excluir a última questão: ' . $e->getMessage());
         }
     }
+
+    public function deleteLastQuestion(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'exam_id' => 'required|exists:exams,id',
+        ]);
+
+        $lastQuestion = ExamQuestion::where('exam_id', $validated['exam_id'])
+                            ->orderBy('question_number', 'desc')
+                            ->first();
+
+        if ($lastQuestion) {
+            $lastQuestion->delete();
+            return redirect()->back()->with('success', 'Última questão excluída com sucesso!');
+        }
+
+        return redirect()->back()->with('error', 'Não há questões para excluir.');
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', 'Erro ao excluir a última questão: ' . $e->getMessage());
+    }
+}
+
+
+
 }

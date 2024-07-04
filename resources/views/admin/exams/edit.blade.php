@@ -14,7 +14,9 @@
         <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
             <x-cards.exam-info-card :exam="$exam" />
 
-            <h4 class="mt-5">Questões</h4>
+            <x-bars.question-control-bar :exam="$exam" />
+
+            <h4 class="mt-2">Questões</h4>
             @foreach ($examQuestions as $question)
                 <x-cards.exam-question-card :question="$question" />
             @endforeach
