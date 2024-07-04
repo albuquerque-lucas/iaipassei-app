@@ -15,7 +15,13 @@
                         <i class="fa-solid fa-plus-circle"></i>
                     </button>
                 </form>
-                <button class="btn btn-sm btn-secondary delete-question-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $question->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir Questão">
+                <button
+                class="btn btn-sm btn-secondary delete-question-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#confirmDeleteModal{{ $question->id }}"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Excluir Questão">
                     <i class='fa-solid fa-trash'></i>
                 </button>
             </div>
