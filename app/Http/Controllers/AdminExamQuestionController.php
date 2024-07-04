@@ -127,7 +127,19 @@ class AdminExamQuestionController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id = null)
+    public function destroy($id)
+    {
+        try {
+            $examQuestion = ExamQuestion::findOrFail($id);
+            $examQuestion->delete();
+
+            return redirect()->back()->with('success', 'Questão excluída com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao excluir a questão: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteLastQuestion(Request $request)
     {
         try {
             $validated = $request->validate([
@@ -148,29 +160,4 @@ class AdminExamQuestionController extends Controller
             return redirect()->back()->with('error', 'Erro ao excluir a última questão: ' . $e->getMessage());
         }
     }
-
-    public function deleteLastQuestion(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'exam_id' => 'required|exists:exams,id',
-        ]);
-
-        $lastQuestion = ExamQuestion::where('exam_id', $validated['exam_id'])
-                            ->orderBy('question_number', 'desc')
-                            ->first();
-
-        if ($lastQuestion) {
-            $lastQuestion->delete();
-            return redirect()->back()->with('success', 'Última questão excluída com sucesso!');
-        }
-
-        return redirect()->back()->with('error', 'Não há questões para excluir.');
-    } catch (Exception $e) {
-        return redirect()->back()->with('error', 'Erro ao excluir a última questão: ' . $e->getMessage());
-    }
-}
-
-
-
 }

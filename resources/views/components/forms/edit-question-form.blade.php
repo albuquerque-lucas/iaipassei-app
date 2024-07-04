@@ -12,6 +12,6 @@
         <label for="statement-{{ $question->id }}" class="form-label">Enunciado</label>
         <input type="text" id="statement-{{ $question->id }}" name="statement" class="form-control" value="{{ $question->statement }}">
     </div>
-    <button type="submit" class="btn btn-success">Salvar</button>
-    <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#edit-question-{{ $question->id }}">Cancelar</button>
+    <button type="submit" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Salvar alterações">Salvar</button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#edit-question-{{ $question->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar edição">Cancelar</button>
 </form>
