@@ -2,10 +2,10 @@
 
 @section('main-content')
 <section class='edit-exam-page container mt-5' x-data="{
-    editMode: localStorage.getItem('editMode') === 'true',
+    editMode: localStorage.getItem('questionEditMode') === 'true',
     toggleEditMode() {
         this.editMode = !this.editMode;
-        localStorage.setItem('editMode', this.editMode);
+        localStorage.setItem('questionEditMode', this.editMode);
     }
 }">
     <x-tabs.tabs :backRoute="route('admin.examinations.edit', $exam->examination->id)" />
@@ -26,7 +26,7 @@
             </button>
             <x-bars.question-control-bar :exam="$exam" x-show="editMode" />
 
-            <h4 class="mt-2">Questões</h4>
+            <h4 class="mt-2 py-2">Questões</h4>
             @foreach ($examQuestions as $question)
                 <x-cards.exam-question-card :question="$question" x-show="editMode" />
             @endforeach
