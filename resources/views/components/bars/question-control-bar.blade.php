@@ -4,7 +4,7 @@
     <form action="{{ route('admin.exam_questions.store') }}" method="POST" class="mx-2"  x-show="editMode">
         @csrf
         <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-        <button type="submit" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar Questão">
+        <button type="submit" class="btn btn-dark edit-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar Questão">
             <i class="fa-solid fa-plus-circle"></i> Questão
         </button>
     </form>
