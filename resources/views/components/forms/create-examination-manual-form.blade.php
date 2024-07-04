@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('admin.examinations.store') }}" id="examinationForm">
+<form method="POST" action="{{ route('admin.examinations.store') }}" id="examinationForm" enctype="multipart/form-data">
     @csrf
     <div id="loadingBar" class="progress" style="display: none; height: 5px;">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;"></div>
@@ -34,6 +34,10 @@
     <div class="mb-3">
         <label for="num_alternatives_per_question" class="form-label">Número de Alternativas por Questão</label>
         <input type="number" class="form-control" id="num_alternatives_per_question" name="num_alternatives_per_question" required>
+    </div>
+    <div class="mb-3">
+        <label for="notice" class="form-label">Edital do Concurso</label>
+        <input type="file" class="form-control" id="notice" name="notice" required>
     </div>
     <button type="submit" class="btn btn-primary">Criar Exame</button>
 </form>

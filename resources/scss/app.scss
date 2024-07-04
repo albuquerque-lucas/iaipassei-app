@@ -52,4 +52,16 @@
     .dashboard-table-container {
         box-shadow: $default-box-shadow;
     }
+
+    .delete-btn:hover {
+        background-color: $danger-color;
+        border-color: $danger-color;
+        box-shadow: 1px 1px 3px #333;
+    }
+
+    .edit-btn:hover {
+        background-color: $primary-bootstrap-color;
+        border-color: $primary-bootstrap-color;
+        box-shadow: 1px 1px 3px #333;
+    }
 }

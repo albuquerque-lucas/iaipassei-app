@@ -98,4 +98,20 @@ class AdminNoticeController extends Controller
 
         return redirect()->route('admin.notices.index')->with('success', 'Edital excluído com sucesso!');
     }
+
+    public function download($id)
+{
+    try {
+        $notice = Notice::findOrFail($id);
+        $filePath = storage_path('app/public/' . $notice->file_path);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath, $notice->file_name);
+        } else {
+            return redirect()->back()->with('error', 'Arquivo não encontrado.');
+        }
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', 'Erro ao fazer download do arquivo: ' . $e->getMessage());
+    }
+}
 }

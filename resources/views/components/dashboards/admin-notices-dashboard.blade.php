@@ -15,10 +15,13 @@
                     <td>{{ $item->examination->title }}</td>
                     <td>{{ $item->file_name }}</td>
                     <td>
-                        <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-edit"></i>
+                        <a href="{{ route('notices.download', $item->id) }}" class="btn btn-sm btn-dark" target="_blank">
+                            <i class="fas fa-download"></i>
                         </a>
-                        <button type="button" class="btn btn-sm btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
+                        <a href="{{ asset('storage/' . $item->file_path) }}" class="btn btn-sm btn-dark edit-btn" target="_blank">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-dark delete-button delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
