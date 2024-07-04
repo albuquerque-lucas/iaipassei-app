@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title">Questão {{ $question->question_number }}</h5>
             <div>
-                <button class="btn btn-sm btn-primary edit-question-btn" data-bs-toggle="collapse" data-bs-target="#edit-question-{{ $question->id }}">
+                <button class="btn btn-sm btn-dark edit-question-btn" data-bs-toggle="collapse" data-bs-target="#edit-question-{{ $question->id }}">
                     <i class='fa-solid fa-edit'></i>
                 </button>
             </div>
@@ -34,7 +34,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span class="alternative-text" id="alternative-text-{{ $alternative->id }}">{{ $alternative->letter }}. {{ $alternative->text }}</span>
                     <div class='btn-container'>
-                        <button class="btn btn-sm btn-primary edit-alternative-btn" data-bs-toggle="collapse" data-bs-target="#edit-alternative-{{ $alternative->id }}" aria-expanded="false" aria-controls="edit-alternative-{{ $alternative->id }}" onclick="toggleAlternativeText({{ $alternative->id }})">
+                        <button class="btn btn-sm btn-dark edit-alternative-btn" data-bs-toggle="collapse" data-bs-target="#edit-alternative-{{ $alternative->id }}" aria-expanded="false" aria-controls="edit-alternative-{{ $alternative->id }}" onclick="toggleAlternativeText({{ $alternative->id }})">
                             <i class='fa-solid fa-edit'></i>
                         </button>
                     </div>
