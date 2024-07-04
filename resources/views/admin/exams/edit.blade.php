@@ -16,17 +16,7 @@
 
             <h4 class="mt-5">Questões</h4>
             @foreach ($examQuestions as $question)
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Questão {{ $question->question_number }}</h5>
-                        <p class="card-text">{{ $question->statement ?? 'Enunciado não informado' }}</p>
-                        <ul class="list-group">
-                            @foreach ($question->alternatives as $alternative)
-                                <li class="list-group-item list-group-item-action" style="cursor:pointer">{{ $alternative->letter }}. {{ $alternative->text }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
+                <x-cards.exam-question-card :question="$question" />
             @endforeach
 
             <div class="d-flex justify-content-center">

@@ -114,19 +114,16 @@ class AdminExamController extends Controller
     {
         try {
             $validated = $request->validate([
-                'examination_id' => 'required|exists:examinations,id',
-                'title' => 'required|string|max:255',
-                'num_questions' => 'required|integer|min=1',
-                'num_alternatives' => 'required|integer|min=1',
+                'examination_id' => 'nullable|integer|exists:examinations,id',
+                'title' => 'nullable|string|max:255',
+                'date' => 'nullable|date',
+                'description' => 'nullable|string|max:1000',
             ]);
 
             $exam = Exam::findOrFail($id);
-            $exam->update([
-                'examination_id' => $validated['examination_id'],
-                'title' => $validated['title'],
-            ]);
+            $exam->update($validated);
 
-            return redirect()->route('admin.exams.index')->with('success', 'Prova atualizada com sucesso!');
+            return redirect()->route('admin.exams.edit', $id)->with('success', 'Prova atualizada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao atualizar a prova: ' . $e->getMessage());
         }
