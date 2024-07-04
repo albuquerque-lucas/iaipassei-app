@@ -21,7 +21,7 @@
                         <a href="{{ asset('storage/' . $item->file_path) }}" class="btn btn-sm btn-dark edit-btn" target="_blank">
                             <i class="fa-solid fa-eye"></i>
                         </a>
-                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#editNoticeModal{{ $item->id }}">
+                        <button type="button" class="btn btn-sm btn-dark edit-btn" data-bs-toggle="modal" data-bs-target="#editNoticeModal{{ $item->id }}">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-dark delete-button delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
