@@ -21,12 +21,16 @@
                         <a href="{{ asset('storage/' . $item->file_path) }}" class="btn btn-sm btn-dark edit-btn" target="_blank">
                             <i class="fa-solid fa-eye"></i>
                         </a>
+                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#editNoticeModal{{ $item->id }}">
+                            <i class="fas fa-edit"></i>
+                        </button>
                         <button type="button" class="btn btn-sm btn-dark delete-button delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
                 </tr>
-                @include('components.popUps.confirm-delete-popUp', ['id' => $item->id, 'deleteRoute' => $deleteRoute])
+                <x-popUps.edit-notice-popUp :id="$item->id" :updateRoute="'admin.notices.update'" :notice="$item" />
+                <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
             @empty
                 <tr>
                     <td colspan="4" class="text-center">Nenhum edital encontrado.</td>

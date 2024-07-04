@@ -1,4 +1,3 @@
-<!-- resources/views/components/flash-message-card.blade.php -->
 @props(['type', 'message'])
 
 @php
