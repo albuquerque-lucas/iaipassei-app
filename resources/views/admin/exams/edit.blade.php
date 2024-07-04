@@ -1,7 +1,13 @@
 @extends('adminLayout')
 
 @section('main-content')
-<section class='edit-exam-page container mt-5' x-data="{ editMode: false }">
+<section class='edit-exam-page container mt-5' x-data="{
+    editMode: localStorage.getItem('editMode') === 'true',
+    toggleEditMode() {
+        this.editMode = !this.editMode;
+        localStorage.setItem('editMode', this.editMode);
+    }
+}">
     <x-tabs.tabs :backRoute="route('admin.examinations.edit', $exam->examination->id)" />
 
     @if (session('success'))
@@ -10,12 +16,11 @@
         <x-cards.flash-message-card type="error" :message="session('error')" />
     @endif
 
-
     <div class="tab-content" id="editExamTabContent">
         <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
             <x-cards.exam-info-card :exam="$exam" />
 
-            <button class="btn btn-dark mb-3" @click="editMode = !editMode">
+            <button class="btn btn-dark mb-3" @click="toggleEditMode">
                 <span x-show="!editMode">Editar Questões</span>
                 <span x-show="editMode">Fechar Edição</span>
             </button>
