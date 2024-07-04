@@ -15,14 +15,12 @@ class QuestionAlternative extends Model
         'exam_question_id',
         'letter',
         'text',
-        'is_answer',
     ];
 
     protected function casts() {
         return [
             'letter' => 'string',
             'text' => 'string',
-            'is_answer' => 'boolean',
         ];
     }
 

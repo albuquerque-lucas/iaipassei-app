@@ -12,7 +12,7 @@
     @vite('resources/js/app.js')
 </head>
 
-<body class='body'>
+<body class='body bg-secondary-subtle'>
     <header>
         <x-navbar.admin-navbar />
     </header>

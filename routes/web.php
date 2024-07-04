@@ -8,6 +8,9 @@ use App\Http\Controllers\AdminStudyAreaController;
 use App\Http\Controllers\AdminSubjectController;
 use App\Http\Controllers\AdminAccountPlanController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AdminExamController;
+use App\Http\Controllers\AdminExamQuestionController;
+use App\Http\Controllers\AdminQuestionAlternativeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -84,3 +87,39 @@ Route::resource('admin/account_plans', AdminAccountPlanController::class)->names
     'update' => 'admin.account_plans.update',
     'destroy' => 'admin.account_plans.destroy',
 ]);
+
+
+Route::delete('admin/exams/bulk_delete', [AdminExamController::class, 'bulkDelete'])->name('admin.exams.bulkDelete');
+Route::resource('admin/exams', AdminExamController::class)->names([
+    'index' => 'admin.exams.index',
+    'create' => 'admin.exams.create',
+    'store' => 'admin.exams.store',
+    'show' => 'admin.exams.show',
+    'edit' => 'admin.exams.edit',
+    'update' => 'admin.exams.update',
+    'destroy' => 'admin.exams.destroy',
+]);
+
+Route::delete('admin/question_alternatives/bulk_delete', [AdminQuestionAlternativeController::class, 'bulkDelete'])->name('admin.question_alternatives.bulkDelete');
+Route::resource('admin/question_alternatives', AdminQuestionAlternativeController::class)->names([
+    'index' => 'admin.question_alternatives.index',
+    'create' => 'admin.question_alternatives.create',
+    'store' => 'admin.question_alternatives.store',
+    'show' => 'admin.question_alternatives.show',
+    'edit' => 'admin.question_alternatives.edit',
+    'update' => 'admin.question_alternatives.update',
+    'destroy' => 'admin.question_alternatives.destroy',
+]);
+
+Route::delete('admin/exam_questions/delete_last', [AdminExamQuestionController::class, 'deleteLastQuestion'])->name('admin.exam_questions.delete_last');
+Route::delete('admin/exam_questions/bulk_delete', [AdminExamQuestionController::class, 'bulkDelete'])->name('admin.exam_questions.bulkDelete');
+Route::resource('admin/exam_questions', AdminExamQuestionController::class)->names([
+    'index' => 'admin.exam_questions.index',
+    'create' => 'admin.exam_questions.create',
+    'store' => 'admin.exam_questions.store',
+    'show' => 'admin.exam_questions.show',
+    'edit' => 'admin.exam_questions.edit',
+    'update' => 'admin.exam_questions.update',
+    'destroy' => 'admin.exam_questions.destroy',
+]);
+
