@@ -18,7 +18,7 @@
 
     <div class="tab-content" id="editExamTabContent">
         <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
-            <x-cards.exam-info-card :exam="$exam" />
+            <x-cards.exam-info-card :exam="$exam" :numQuestions="$numQuestions" />
 
             <button class="btn btn-dark mb-3" @click="toggleEditMode">
                 <span x-show="!editMode">Editar Questões</span>
