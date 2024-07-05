@@ -15,10 +15,24 @@
                     <td><strong>{{ $item->id }}</strong></td>
                     <td>{{ $item->name }}</td>
                     <td>
-                        <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-dark edit-btn">
+                        <a
+                        href="{{ route($editRoute, $item->id) }}"
+                        class="btn btn-sm btn-dark edit-btn"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Editar"
+                        >
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button type="button" class="btn btn-sm btn-dark delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
+                        <button
+                        type="button"
+                        class="btn btn-sm btn-dark delete-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal{{ $item->id }}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Excluir"
+                        >
                             <i class="fas fa-trash"></i>
                         </button>
 

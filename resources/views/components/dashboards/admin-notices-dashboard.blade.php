@@ -15,16 +15,46 @@
                     <td>{{ $item->examination->title }}</td>
                     <td>{{ $item->file_name }}</td>
                     <td>
-                        <a href="{{ route('notices.download', $item->id) }}" class="btn btn-sm btn-dark" target="_blank">
+                        <a
+                        href="{{ route('notices.download', $item->id) }}"
+                        class="btn btn-sm btn-dark"
+                        target="_blank"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Download"
+                        >
                             <i class="fas fa-download"></i>
                         </a>
-                        <a href="{{ asset('storage/' . $item->file_path) }}" class="btn btn-sm btn-dark edit-btn" target="_blank">
+                        <a
+                        href="{{ asset('storage/' . $item->file_path) }}"
+                        class="btn btn-sm btn-dark edit-btn"
+                        target="_blank"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Visualizar Edital"
+                        >
                             <i class="fa-solid fa-eye"></i>
                         </a>
-                        <button type="button" class="btn btn-sm btn-dark edit-btn" data-bs-toggle="modal" data-bs-target="#editNoticeModal{{ $item->id }}">
+                        <button
+                        type="button"
+                        class="btn btn-sm btn-dark edit-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editNoticeModal{{ $item->id }}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Alterar Edital"
+                        >
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-dark delete-button delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
+                        <button
+                        type="button"
+                        class="btn btn-sm btn-dark delete-button delete-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal{{ $item->id }}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Excluir Edital"
+                        >
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>

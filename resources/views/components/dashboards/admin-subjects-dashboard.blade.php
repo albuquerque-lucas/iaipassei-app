@@ -4,8 +4,7 @@
             <tr>
                 <th><input type="checkbox" id="selectAll"></th>
                 <th>ID</th>
-                <th>Título</th>
-                <th>Nível Educacional</th>
+                <th>Nome</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -14,24 +13,36 @@
                 <tr>
                     <td><input type="checkbox" class="select-item" value="{{ $item->id }}"></td>
                     <td><strong>{{ $item->id }}</strong></td>
-                    <td>{{ $item->title }}</td>
-                    <td>{{ optional($item->educationLevel)->name ?? 'Não informado' }}</td>
+                    <td>{{ $item->name }}</td>
                     <td>
-                        <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-dark edit-btn">
+                        <a
+                        href="{{ route($editRoute, $item->id) }}"
+                        class="btn btn-sm btn-dark edit-btn"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Editar"
+                        >
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button type="button" class="btn btn-sm btn-dark delete-btn delete-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
+                        <button
+                        type="button"
+                        class="btn btn-sm btn-dark delete-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal{{ $item->id }}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Excluir"
+                        >
                             <i class="fas fa-trash"></i>
                         </button>
 
                         <!-- Confirm Delete PopUp Component -->
                         <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
-
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center">Nenhuma matéria encontrada.</td>
+                    <td colspan="4" class="text-center">Nenhuma área de estudo encontrada.</td>
                 </tr>
             @endforelse
         </tbody>
