@@ -7,6 +7,7 @@ use App\Models\EducationLevel;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
 use App\Models\Notice;
+use App\Models\StudyArea;
 use App\Models\QuestionAlternative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -118,38 +119,45 @@ class AdminExaminationController extends Controller
     public function edit($id)
     {
         try {
-            $examination = Examination::with(['educationLevel', 'exams.examQuestions.alternatives'])->findOrFail($id);
+            $examination = Examination::with(['educationLevel', 'exams.examQuestions.alternatives', 'studyAreas', 'notice'])->findOrFail($id);
             $educationLevels = EducationLevel::all();
+            $allStudyAreas = StudyArea::all();
 
             $numExams = $examination->exams->count();
             $numQuestionsPerExam = $numExams > 0 ? $examination->exams->first()->examQuestions->count() : 0;
             $numAlternativesPerQuestion = $numQuestionsPerExam > 0 ? $examination->exams->first()->examQuestions->first()->alternatives->count() : 0;
 
-            return view('admin.examinations.edit', compact('examination', 'educationLevels', 'numExams', 'numQuestionsPerExam', 'numAlternativesPerQuestion'));
+            return view('admin.examinations.edit', compact('examination', 'educationLevels', 'numExams', 'numQuestionsPerExam', 'numAlternativesPerQuestion', 'allStudyAreas'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao carregar o concurso para edição: ' . $e->getMessage());
         }
     }
 
 
+
     public function update(Request $request, $id)
     {
         try {
             $validated = $request->validate([
-                'educational_level_id' => 'required|exists:education_levels,id',
+                'education_level_id' => 'required|exists:education_levels,id',
                 'title' => 'required|string|max:255',
                 'institution' => 'required|string|max:255',
-                'active' => 'required|boolean',
+                'study_areas' => 'array|exists:study_areas,id',
             ]);
 
             $examination = Examination::findOrFail($id);
             $examination->update($validated);
 
-            return redirect()->route('admin.examinations.index')->with('success', 'Concurso atualizado com sucesso!');
+            if ($request->has('study_areas')) {
+                $examination->studyAreas()->sync($request->study_areas);
+            }
+
+            return redirect()->back()->with('success', 'Concurso atualizado com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao atualizar o concurso: ' . $e->getMessage());
         }
     }
+
 
     public function destroy($id)
     {

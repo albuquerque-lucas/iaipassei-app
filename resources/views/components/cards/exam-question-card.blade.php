@@ -12,7 +12,7 @@
                     @csrf
                     <input type="hidden" name="exam_question_id" value="{{ $question->id }}">
                     <button type="submit" class="btn btn-sm btn-dark edit-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Adicionar Alternativa">
-                        <i class="fa-solid fa-plus-circle"></i>
+                        <i class="fa-solid fa-plus"></i>
                     </button>
                 </form>
                 <button

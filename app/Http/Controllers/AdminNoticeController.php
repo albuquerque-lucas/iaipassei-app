@@ -44,7 +44,7 @@ class AdminNoticeController extends Controller
             'extension' => $extension,
         ]);
 
-        return redirect()->route('admin.notices.index')->with('success', 'Edital criado com sucesso!');
+        return redirect()->back()->with('success', 'Edital criado com sucesso!');
     }
 
     public function edit($id)
@@ -104,7 +104,7 @@ class AdminNoticeController extends Controller
 
         $notice->delete();
 
-        return redirect()->route('admin.notices.index')->with('success', 'Edital excluído com sucesso!');
+        return redirect()->back()->with('success', 'Edital excluído com sucesso!');
     }
 
     public function download($id)
