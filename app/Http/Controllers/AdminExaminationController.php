@@ -6,6 +6,7 @@ use App\Models\Examination;
 use App\Models\EducationLevel;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
+use App\Models\Notice;
 use App\Models\QuestionAlternative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,6 +69,19 @@ class AdminExaminationController extends Controller
                 'active' => $request->has('active') ? $validated['active'] : false,
             ]);
 
+            if ($request->hasFile('notice')) {
+                $file = $request->file('notice');
+                $filePath = $file->store('notices', 'public');
+
+                Notice::create([
+                    'examination_id' => $examination->id,
+                    'file_path' => $filePath,
+                    'file_name' => $file->getClientOriginalName(),
+                    'extension' => $file->getClientOriginalExtension(),
+                    'publication_date' => now(),
+                ]);
+            }
+
             for ($i = 1; $i <= $validated['num_exams']; $i++) {
                 $exam = Exam::create([
                     'examination_id' => $examination->id,
@@ -97,6 +111,8 @@ class AdminExaminationController extends Controller
             return redirect()->back()->with('error', 'Erro ao criar o concurso: ' . $e->getMessage());
         }
     }
+
+
 
 
     public function edit($id)

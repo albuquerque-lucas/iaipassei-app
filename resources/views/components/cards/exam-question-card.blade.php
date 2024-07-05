@@ -16,7 +16,7 @@
                     </button>
                 </form>
                 <button
-                class="btn btn-sm btn-secondary delete-question-btn"
+                class="btn btn-sm btn-secondary delete-question-btn delete-btn"
                 data-bs-toggle="modal"
                 data-bs-target="#confirmDeleteModal{{ $question->id }}"
                 data-bs-toggle="tooltip"
@@ -46,10 +46,5 @@
     .collapse.show + .edit-question-btn,
     .collapse.show + .edit-alternative-btn {
         display: none;
-    }
-    .edit-btn:hover {
-        background-color: #007bff !important;
-        border-color: #007bff !important;
-        box-shadow: 1px 1px 3px #333;
     }
 </style>

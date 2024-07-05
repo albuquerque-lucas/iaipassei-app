@@ -44,6 +44,7 @@ Route::resource('admin/examinations', AdminExaminationController::class)->names(
     'destroy' => 'admin.examinations.destroy',
 ]);
 
+Route::get('notices/download/{id}', [AdminNoticeController::class, 'download'])->name('notices.download');
 Route::resource('admin/notices', AdminNoticeController::class)->names([
     'index' => 'admin.notices.index',
     'create' => 'admin.notices.create',

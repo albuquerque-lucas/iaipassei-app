@@ -12,17 +12,8 @@
         @csrf
         @method('DELETE')
         <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-        <button type="submit" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar Questão">
+        <button type="submit" class="btn btn-secondary delete-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar Questão">
             <i class="fa-solid fa-minus-circle"></i>
         </button>
     </form>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    });
-</script>

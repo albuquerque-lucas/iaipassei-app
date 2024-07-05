@@ -7,7 +7,12 @@
             <a href="{{ route('admin.notices.create') }}" class="btn btn-primary">Adicionar Edital</a>
         </div>
 
-        <!-- Botões de navegação no topo -->
+        @if (session('success'))
+            <x-cards.flash-message-card type="success" :message="session('success')" />
+        @elseif (session('error'))
+            <x-cards.flash-message-card type="error" :message="session('error')" />
+        @endif
+
         <div class="d-flex justify-content-center mb-4">
             {!! $paginationLinks !!}
         </div>

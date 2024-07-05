@@ -19,10 +19,10 @@
                     <td>{{ $item->institution }}</td>
                     <td>{{ optional($item->educationLevel)->name ?? 'Não informado' }}</td>
                     <td>
-                        <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ route($editRoute, $item->id) }}" class="btn btn-sm btn-dark edit-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button type="button" class="btn btn-sm btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
+                        <button type="button" class="btn btn-sm btn-dark delete-btn delete-button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>

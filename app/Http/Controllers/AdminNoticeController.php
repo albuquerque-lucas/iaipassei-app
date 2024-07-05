@@ -60,31 +60,39 @@ class AdminNoticeController extends Controller
             'file' => 'nullable|mimes:pdf|max:10240',
         ]);
 
-        $notice = Notice::findOrFail($id);
+        try {
+            $notice = Notice::findOrFail($id);
 
-        if ($request->hasFile('file')) {
-            if ($notice->file_path) {
-                Storage::disk('public')->delete($notice->file_path);
+            if ($request->hasFile('file')) {
+                if ($notice->file_path) {
+                    Storage::disk('public')->delete($notice->file_path);
+                }
+
+                $file = $request->file('file');
+                $filePath = $file->store('notices', 'public');
+                $fileName = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+
+                $notice->update([
+                    'file_path' => $filePath,
+                    'file_name' => $fileName,
+                    'extension' => $extension,
+                ]);
             }
 
-            $file = $request->file('file');
-            $filePath = $file->store('notices', 'public');
-            $fileName = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
+            if (isset($validated['examination_id'])) {
+                $notice->update([
+                    'examination_id' => $validated['examination_id'],
+                ]);
+            }
 
-            $notice->update([
-                'file_path' => $filePath,
-                'file_name' => $fileName,
-                'extension' => $extension,
-            ]);
+            return redirect()->back()->with('success', 'Edital atualizado com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao atualizar o edital: ' . $e->getMessage());
         }
-
-        $notice->update(array_filter([
-            'examination_id' => $validated['examination_id'],
-        ]));
-
-        return redirect()->route('admin.notices.index')->with('success', 'Edital atualizado com sucesso!');
     }
+
+
 
     public function destroy($id)
     {
@@ -98,4 +106,20 @@ class AdminNoticeController extends Controller
 
         return redirect()->route('admin.notices.index')->with('success', 'Edital excluído com sucesso!');
     }
+
+    public function download($id)
+{
+    try {
+        $notice = Notice::findOrFail($id);
+        $filePath = storage_path('app/public/' . $notice->file_path);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath, $notice->file_name);
+        } else {
+            return redirect()->back()->with('error', 'Arquivo não encontrado.');
+        }
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', 'Erro ao fazer download do arquivo: ' . $e->getMessage());
+    }
+}
 }

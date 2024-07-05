@@ -19,7 +19,7 @@
             <i class='fa-solid fa-edit'></i>
         </button>
         <button
-        class="btn btn-sm btn-secondary delete-alternative-btn"
+        class="btn btn-sm btn-secondary delete-alternative-btn delete-btn"
         data-bs-toggle="modal"
         data-bs-target="#confirmDeleteModal{{ $alternative->id }}"
         data-bs-toggle="tooltip"
