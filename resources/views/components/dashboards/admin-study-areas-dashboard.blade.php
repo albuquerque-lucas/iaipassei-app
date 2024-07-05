@@ -19,7 +19,7 @@
                             <i class="fas fa-edit"></i>
                         </a>
                         <button type="button" class="btn btn-sm btn-dark delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ $item->id }}">
-                            <i class="fas fa-trash-alt"></i>
+                            <i class="fas fa-trash"></i>
                         </button>
 
                         <!-- Confirm Delete PopUp Component -->
