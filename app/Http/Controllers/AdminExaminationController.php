@@ -179,4 +179,36 @@ class AdminExaminationController extends Controller
             return redirect()->back()->with('error', 'Erro ao excluir concursos em massa: ' . $e->getMessage());
         }
     }
+
+    public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|file|mimes:pdf|max:2048',
+    ]);
+
+    $file = $request->file('file');
+
+    $data = $this->processFileWithAI($file);
+
+    return redirect()->route('admin.examinations.create')
+                    ->with('success', 'Arquivo importado com sucesso!')
+                    ->with('data', $data);
+}
+
+private function processFileWithAI($file)
+{
+    // Lógica para enviar o arquivo para um serviço de IA e obter os dados processados
+    // Esta é uma implementação simulada:
+
+    $data = [
+        'education_level_id' => 1,
+        'title' => 'Título do Concurso',
+        'institution' => 'Nome da Instituição',
+        'num_exams' => 3,
+        'num_questions_per_exam' => 50,
+        'num_alternatives_per_question' => 5,
+    ];
+
+    return $data;
+}
 }
