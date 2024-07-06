@@ -55,13 +55,13 @@
 
     .delete-btn:hover {
         background-color: $danger-color;
-        border-color: $danger-color;
-        box-shadow: 1px 1px 3px #333;
+        border: 1px solid $danger-color;
+        box-shadow: $hover-box-shadow;
     }
 
     .edit-btn:hover {
         background-color: $primary-bootstrap-color;
-        border-color: $primary-bootstrap-color;
-        box-shadow: 1px 1px 3px #333;
+        border: 1px solid $primary-bootstrap-color;
+        box-shadow: $hover-box-shadow;
     }
 }

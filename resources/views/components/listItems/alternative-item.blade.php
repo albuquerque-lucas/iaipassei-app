@@ -26,7 +26,7 @@
         data-bs-placement="top"
         title="Excluir Alternativa"
         >
-            <i class="fa-solid fa-trash"></i>
+            <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
 
