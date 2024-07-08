@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('admin.examinations.update', $examination->id) }}" class="examination-edit-form">
+<form method="POST" action="{{ route('admin.examinations.update', $examination->slug) }}" class="examination-edit-form">
     @csrf
     @method('PUT')
     <div class="mb-3">

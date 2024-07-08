@@ -44,7 +44,10 @@ Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
 
     Route::post('admin/examinations/import', [AdminExaminationController::class, 'import'])->name('admin.examinations.import');
     Route::delete('admin/examinations/bulk_delete', [AdminExaminationController::class, 'bulkDelete'])->name('admin.examinations.bulkDelete');
-    Route::resource('admin/examinations', AdminExaminationController::class)->names([
+    Route::resource('admin/examinations', AdminExaminationController::class)->parameters([
+        'examinations' => 'examination:slug'
+    ])
+    ->names([
         'index' => 'admin.examinations.index',
         'create' => 'admin.examinations.create',
         'store' => 'admin.examinations.store',

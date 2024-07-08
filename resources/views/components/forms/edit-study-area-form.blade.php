@@ -1,5 +1,5 @@
 <div class="mt-4">
-    <form action="{{ route('admin.study_areas.update', $studyArea->id) }}" method="POST">
+    <form action="{{ route('admin.study_areas.update', $studyArea->slug) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">
