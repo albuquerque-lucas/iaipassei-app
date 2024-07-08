@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminExamController;
 use App\Http\Controllers\AdminExamQuestionController;
 use App\Http\Controllers\AdminQuestionAlternativeController;
 use App\Http\Middleware\CheckAccountLevel;
+use App\Http\Middleware\CheckAccessLevel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +21,7 @@ Route::get('/', function () {
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login.index');
-Route::post('admin/login', [AuthController::class, 'login'])->name('admin.login.store');
+Route::post('admin/login', [AuthController::class, 'login'])->middleware(CheckAccessLevel::class)->name('admin.login.store');
 Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 

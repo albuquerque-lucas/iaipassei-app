@@ -24,13 +24,9 @@ class AuthController extends Controller
         ]);
 
         try {
-            $user = User::where('username', $request->username)->first();
-
-            if ($user && $user->accountPlan->access_level < 7) {
-                return redirect()->back()->with(['error' => 'A sua conta não possui acesso a este conteúdo.']);
-            }
 
             if (Auth::attempt($request->only('username', 'password'))) {
+                $user = Auth::user();
                 return redirect()->route('admin.profile.index', ['slug' => $user->slug])->with('success', 'Login realizado com sucesso.');
             }
 
