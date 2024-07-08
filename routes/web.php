@@ -26,11 +26,12 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 
 Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
 
-    Route::get('admin/profile', [AuthController::class, 'profile'])->name('admin.profile.index');
-    Route::patch('admin/profile', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
+    Route::get('admin/profile/{slug}', [AuthController::class, 'profile'])->name('admin.profile.index');
 
     Route::delete('admin/users/bulk_delete', [AdminUserController::class, 'bulkDelete'])->name('admin.users.bulkDelete');
-    Route::resource('admin/users', AdminUserController::class)->names([
+    Route::resource('admin/users', AdminUserController::class)->parameters([
+        'users' => 'user:slug'
+    ])->names([
         'index' => 'admin.users.index',
         'create' => 'admin.users.create',
         'store' => 'admin.users.store',

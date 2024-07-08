@@ -23,7 +23,7 @@
                             <i class="fas fa-user-circle me-2"></i>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.profile.index', Auth::user()->slug) }}">Perfil</a></li>
                             <li>
                                 <form method="POST" action="{{ route('admin.logout') }}">
                                     @csrf

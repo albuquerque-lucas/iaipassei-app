@@ -1,6 +1,6 @@
 @props(['user'])
 
-<form method="POST" action="{{ route('admin.users.update', $user->id) }}" class="mt-4">
+<form method="POST" action="{{ route('admin.users.update', $user->slug) }}" class="mt-4">
     @csrf
     @method('PATCH')
 
@@ -14,7 +14,7 @@
     <div class="collapse" id="disabilityCollapse">
         <div class="mb-3">
             <label for="disability" class="form-label">Deficiência</label>
-            <input id="disability" type="text" class="form-control @error('disability') is-invalid @enderror" name="disability" value="{{ old('disability', $user->disability) }}">
+            <input id="disability" type="text" class="form-control @error('disability') is-invalid @enderror" name="disability" placeholder="{{ old('disability', $user->disability) }}">
             @error('disability')
                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
             @enderror
