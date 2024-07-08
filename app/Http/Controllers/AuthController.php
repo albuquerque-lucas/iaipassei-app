@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         try {
             if (Auth::attempt($request->only('username', 'password'))) {
-                return redirect()->route('admin.examinations.index')->with('success', 'Login realizado com sucesso.');
+                return redirect()->route('admin.profile.index')->with('success', 'Login realizado com sucesso.');
             }
 
             return back()->withErrors([
@@ -37,6 +37,7 @@ class AuthController extends Controller
             ])->withInput();
         }
     }
+
 
     public function redirectToGoogle()
     {
@@ -83,7 +84,8 @@ class AuthController extends Controller
 
     public function profile()
     {
-        return view('auth.profile');
+        $user = Auth::user();
+        return view('auth.profile', compact('user'));
     }
 
     public function updateProfile(Request $request)

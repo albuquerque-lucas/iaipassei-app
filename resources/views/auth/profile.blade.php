@@ -2,6 +2,16 @@
 
 @section('main-content')
     <section class="container mt-5">
+        @if(session('success'))
+            <x-cards.flash-message-card type="success" :message="session('success')" />
+        @endif
+
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
+                <x-cards.flash-message-card type="danger" :message="$error" />
+            @endforeach
+        @endif
+
         <ul class="nav nav-tabs" id="profileTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
