@@ -33,7 +33,7 @@ Route::resource('admin/users', AdminUserController::class)->names([
     'destroy' => 'admin.users.destroy',
 ]);
 
-Route::post('admin/examinations/import', [ExaminationController::class, 'import'])->name('admin.examinations.import');
+Route::post('admin/examinations/import', [AdminExaminationController::class, 'import'])->name('admin.examinations.import');
 Route::delete('admin/examinations/bulk_delete', [AdminExaminationController::class, 'bulkDelete'])->name('admin.examinations.bulkDelete');
 Route::resource('admin/examinations', AdminExaminationController::class)->names([
     'index' => 'admin.examinations.index',
