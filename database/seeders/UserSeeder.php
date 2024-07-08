@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'account_plan_id' => 2,
             'first_name' => 'Lucas',
             'last_name' => 'Albuquerque',
-            'username' => 'lucaslpra',
+            'username' => 'albuquerque.lucas',
             'email' => 'lucaslpra@gmail.com',
             'phone_number' => '32988673808',
             'password' => Hash::make('12345678'),

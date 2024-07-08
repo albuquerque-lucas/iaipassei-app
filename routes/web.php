@@ -23,10 +23,12 @@ Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin
 Route::post('admin/login', [AuthController::class, 'login'])->name('admin.login.store');
 Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-Route::get('admin/profile', [AuthController::class, 'profile'])->name('admin.profile.index');
-Route::patch('admin/profile', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
 
 Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
+
+    Route::get('admin/profile', [AuthController::class, 'profile'])->name('admin.profile.index');
+    Route::patch('admin/profile', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
+
     Route::delete('admin/users/bulk_delete', [AdminUserController::class, 'bulkDelete'])->name('admin.users.bulkDelete');
     Route::resource('admin/users', AdminUserController::class)->names([
         'index' => 'admin.users.index',

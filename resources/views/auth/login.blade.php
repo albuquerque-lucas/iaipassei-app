@@ -39,7 +39,7 @@
                             <label class="form-check-label" for="remember">{{ __('Remember Me') }}</label>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-dark">
                                 {{ __('Login') }}
                             </button>
                         </div>
