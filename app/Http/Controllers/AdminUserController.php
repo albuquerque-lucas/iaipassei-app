@@ -9,6 +9,8 @@ use App\Http\Controllers\Traits\BulkDeleteTrait;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
@@ -23,7 +25,7 @@ class AdminUserController extends Controller
         $query = User::with('accountPlan')
             ->when($search, function ($query, $search) {
                 return $query->where('username', 'like', "%{$search}%")
-                             ->orWhere('email', 'like', "%{$search}%");
+                            ->orWhere('email', 'like', "%{$search}%");
             })
             ->orderBy($orderBy, $order);
 
@@ -49,9 +51,12 @@ class AdminUserController extends Controller
         $validated = $request->validated();
         $validated['password'] = bcrypt($validated['password']);
 
-        User::create($validated);
-
-        return redirect()->route('admin.users.index')->with('success', 'Usuário criado com sucesso!');
+        try {
+            User::create($validated);
+            return redirect()->route('admin.users.index')->with('success', 'Usuário criado com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.users.index')->withErrors(['error' => 'Erro ao criar usuário: ' . $e->getMessage()]);
+        }
     }
 
     public function edit($id)
@@ -69,22 +74,49 @@ class AdminUserController extends Controller
             $validated['password'] = bcrypt($validated['password']);
         }
 
-        $user = User::findOrFail($id);
-        $user->update(array_filter($validated));
+        if ($request->hasFile('profile_img')) {
+            $image = $request->file('profile_img');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/storage/admin/profile');
+            $image->move($destinationPath, $name);
+            $validated['profile_img'] = $name;
+        }
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuário atualizado com sucesso!');
+        try {
+            $user = User::findOrFail($id);
+            $user->update(array_filter($validated));
+
+            return redirect()->back()->with('success', 'Usuário atualizado com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Erro ao atualizar usuário: ' . $e->getMessage()]);
+        }
     }
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuário excluído com sucesso!');
+            return redirect()->route('admin.users.index')->with('success', 'Usuário excluído com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.users.index')->withErrors(['error' => 'Erro ao excluir usuário: ' . $e->getMessage()]);
+        }
     }
 
     public function bulkDelete(Request $request)
     {
         return $this->bulkDeletes($request, User::class, 'admin.users.index');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('auth.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        return $this->update($request, Auth::id());
     }
 }
