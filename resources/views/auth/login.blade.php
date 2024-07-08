@@ -8,12 +8,18 @@
                     <h4>{{ __('Login') }}</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    @if (session('error'))
+                        <x-cards.flash-message-card type="danger" :message="session('error')" />
+                    @endif
+                    @if (session('success'))
+                        <x-cards.flash-message-card type="success" :message="session('success')" />
+                    @endif
+                    <form method="POST" action="{{ route('admin.login.store') }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="email" class="form-label">{{ __('E-Mail Address') }}</label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                            @error('email')
+                            <label for="username" class="form-label">{{ __('Username') }}</label>
+                            <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                            @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

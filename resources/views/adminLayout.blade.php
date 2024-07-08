@@ -14,7 +14,9 @@
 
 <body class='body bg-secondary-subtle'>
     <header>
-        <x-navbar.admin-navbar />
+        @auth
+            <x-navbar.admin-navbar />
+        @endauth
     </header>
     <main>
         @yield('main-content')
