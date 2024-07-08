@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
-Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login.index');
 Route::post('admin/login', [AuthController::class, 'login'])->name('admin.login.store');
 Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 

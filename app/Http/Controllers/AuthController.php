@@ -28,7 +28,6 @@ class AuthController extends Controller
                 $user = Auth::user();
                 return redirect()->route('admin.profile.index', ['slug' => $user->slug])->with('success', 'Login realizado com sucesso.');
             }
-
             return back()->withErrors([
                 'username' => 'As credenciais fornecidas não correspondem aos nossos registros.',
             ])->withInput();
@@ -63,7 +62,7 @@ class AuthController extends Controller
 
             return redirect()->route('admin.examinations.index')->with('success', 'Login com Google realizado com sucesso.');
         } catch (Exception $e) {
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('admin.login.index')->withErrors([
                 'error' => 'Ocorreu um erro ao tentar fazer login com Google: ' . $e->getMessage(),
             ]);
         }
@@ -76,7 +75,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->route('admin.login')->with('success', 'Logout realizado com sucesso.');
+            return redirect()->route('admin.login.index')->with('success', 'Logout realizado com sucesso.');
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->withErrors([
                 'error' => 'Ocorreu um erro ao tentar fazer logout: ' . $e->getMessage(),
@@ -90,26 +89,4 @@ class AuthController extends Controller
 
         return view('auth.profile', compact('user', 'slug'));
     }
-
-    // public function updateProfile(Request $request)
-    // {
-    //     try {
-    //         $user = Auth::user();
-    //         $data = $request->validate([
-    //             'first_name' => 'required|string|max:255',
-    //             'last_name' => 'required|string|max:255',
-    //             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-    //             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-    //             'phone_number' => 'nullable|string|max:255',
-    //             // Add other fields as necessary
-    //         ]);
-
-    //         $user->update($data);
-    //         return redirect()->route('admin.profile', $user->slug)->with('success', 'Perfil atualizado com sucesso.');
-    //     } catch (Exception $e) {
-    //         return redirect()->route('admin.profile', $user->slug)->withErrors([
-    //             'error' => 'Falha ao atualizar perfil: ' . $e->getMessage(),
-    //         ]);
-    //     }
-    // }
 }
