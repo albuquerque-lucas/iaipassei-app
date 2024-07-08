@@ -26,7 +26,6 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 Route::get('admin/profile', [AuthController::class, 'profile'])->name('admin.profile.index');
 Route::patch('admin/profile', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
 
-
 Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
     Route::delete('admin/users/bulk_delete', [AdminUserController::class, 'bulkDelete'])->name('admin.users.bulkDelete');
     Route::resource('admin/users', AdminUserController::class)->names([
@@ -64,7 +63,9 @@ Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
 
     Route::delete('admin/study_areas/{studyArea}/remove_subject/{subject}', [AdminStudyAreaController::class, 'removeSubject'])->name('admin.study_areas.remove_subject');
     Route::delete('admin/study_areas/bulk_delete', [AdminStudyAreaController::class, 'bulkDelete'])->name('admin.study_areas.bulkDelete');
-    Route::resource('admin/study_areas', AdminStudyAreaController::class)->names([
+    Route::resource('admin/study_areas', AdminStudyAreaController::class)->parameters([
+        'study_areas' => 'studyArea:slug'
+    ])->names([
         'index' => 'admin.study_areas.index',
         'create' => 'admin.study_areas.create',
         'store' => 'admin.study_areas.store',
@@ -108,7 +109,7 @@ Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
     ]);
 
     Route::delete('admin/question_alternatives/bulk_delete', [AdminQuestionAlternativeController::class, 'bulkDelete'])->name('admin.question_alternatives.bulkDelete');
-    Route::resource('admin/question_alternatives', AdminQuestionAlternativeController::class)->names([
+    Route::resource('admin.question_alternatives', AdminQuestionAlternativeController::class)->names([
         'index' => 'admin.question_alternatives.index',
         'create' => 'admin.question_alternatives.create',
         'store' => 'admin.question_alternatives.store',
@@ -120,7 +121,7 @@ Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
 
     Route::delete('admin/exam_questions/delete_last', [AdminExamQuestionController::class, 'deleteLastQuestion'])->name('admin.exam_questions.delete_last');
     Route::delete('admin/exam_questions/bulk_delete', [AdminExamQuestionController::class, 'bulkDelete'])->name('admin.exam_questions.bulkDelete');
-    Route::resource('admin/exam_questions', AdminExamQuestionController::class)->names([
+    Route::resource('admin.exam_questions', AdminExamQuestionController::class)->names([
         'index' => 'admin.exam_questions.index',
         'create' => 'admin.exam_questions.create',
         'store' => 'admin.exam_questions.store',

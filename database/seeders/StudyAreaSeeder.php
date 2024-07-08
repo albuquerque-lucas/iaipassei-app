@@ -15,7 +15,7 @@ class StudyAreaSeeder extends Seeder
         $studyAreas = config('study_areas');
 
         foreach ($studyAreas as $area) {
-            $studyArea = StudyArea::create(['name' => $area]);
+            StudyArea::create(['name' => $area]);
         }
     }
 }

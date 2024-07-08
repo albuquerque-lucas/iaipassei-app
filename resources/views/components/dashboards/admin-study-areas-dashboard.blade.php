@@ -11,12 +11,12 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
-                    <td><input type="checkbox" class="select-item" value="{{ $item->id }}"></td>
+                    <td><input type="checkbox" class="select-item" value="{{ $item->slug }}"></td>
                     <td><strong>{{ $item->id }}</strong></td>
                     <td>{{ $item->name }}</td>
                     <td>
                         <a
-                        href="{{ route($editRoute, $item->id) }}"
+                        href="{{ route($editRoute, $item->slug) }}"
                         class="btn btn-sm btn-dark edit-btn"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
@@ -28,7 +28,7 @@
                         type="button"
                         class="btn btn-sm btn-dark delete-btn"
                         data-bs-toggle="modal"
-                        data-bs-target="#confirmDeleteModal{{ $item->id }}"
+                        data-bs-target="#confirmDeleteModal{{ $item->slug }}"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="Excluir"
@@ -37,7 +37,7 @@
                         </button>
 
                         <!-- Confirm Delete PopUp Component -->
-                        <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
+                        <x-popUps.confirm-delete-popUp :slug="$item->slug" :deleteRoute="$deleteRoute" />
                     </td>
                 </tr>
             @empty
