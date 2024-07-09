@@ -8,7 +8,7 @@
         localStorage.setItem('questionEditMode', this.editMode);
     }
 }">
-    <x-tabs.tabs :backRoute="route('admin.examinations.edit', $exam->examination->id)" />
+    <x-tabs.tabs :backRoute="route('admin.examinations.edit', $exam->examination->slug)" />
 
     @if (session('success'))
         <x-cards.flash-message-card type="success" :message="session('success')" />
@@ -17,6 +17,7 @@
     @endif
 
     <div class="tab-content" id="editExamTabContent">
+
         <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
             <x-cards.exam-info-card :exam="$exam" :numQuestions="$numQuestions" />
 
@@ -35,6 +36,7 @@
                 {{ $examQuestions->links('pagination::bootstrap-4') }}
             </div>
         </div>
+
         <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
             <div class="mt-4">
                 <h4>Editar Prova</h4>

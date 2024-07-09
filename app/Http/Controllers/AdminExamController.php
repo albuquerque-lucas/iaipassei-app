@@ -60,8 +60,8 @@ class AdminExamController extends Controller
             $validated = $request->validate([
                 'examination_id' => 'required|exists:examinations,id',
                 'title' => 'required|string|max:255',
-                'num_questions' => 'required|integer|min=1',
-                'num_alternatives' => 'required|integer|min=1',
+                'num_questions' => 'required|integer|min:1',
+                'num_alternatives' => 'required|integer|min:1',
             ]);
 
             $exam = Exam::create([
@@ -85,7 +85,7 @@ class AdminExamController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.exams.index')->with('success', 'Prova criada com sucesso!');
+            return redirect()->back()->with('success', 'Prova criada com sucesso!');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao criar a prova: ' . $e->getMessage());
@@ -102,7 +102,7 @@ class AdminExamController extends Controller
             $numAlternativesPerQuestion = $numQuestions > 0 ? $exam->examQuestions->first()->alternatives->count() : 0;
 
             $examQuestions = $exam->examQuestions()->orderBy('question_number', 'asc')->paginate(5);
-
+            // dd($examQuestions);
             return view('admin.exams.edit', compact('exam', 'examinations', 'numQuestions', 'numAlternativesPerQuestion', 'examQuestions'));
         } catch (Exception $e) {
             return redirect()->route('admin.exams.index')->with('error', 'Erro ao carregar a prova para edição: ' . $e->getMessage());
@@ -137,9 +137,9 @@ class AdminExamController extends Controller
             $exam = Exam::findOrFail($id);
             $exam->delete();
 
-            return redirect()->route('admin.exams.index')->with('success', 'Prova excluída com sucesso!');
+            return redirect()->back()->with('success', 'Prova excluída com sucesso!');
         } catch (Exception $e) {
-            return redirect()->route('admin.exams.index')->with('error', 'Erro ao excluir a prova: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao excluir a prova: ' . $e->getMessage());
         }
     }
 

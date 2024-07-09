@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<x-popUps.confirm-delete-popUp :id="$question->id" :deleteRoute="'admin.exam_questions.destroy'"/>
+{{-- <x-popUps.confirm-delete-popUp :id="$question->id" :deleteRoute="'admin.exam_questions.destroy'"/> --}}
 
 <style>
     .collapse.show + .edit-question-btn,

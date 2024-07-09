@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<x-popUps.add-exam-notice-popUp :examinationId="$examination->id" />
+<x-popUps.add-exam-notice-popUp :examinationSlug="$examination->slug" />
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

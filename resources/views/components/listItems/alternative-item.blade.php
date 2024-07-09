@@ -34,7 +34,7 @@
         <x-forms.edit-alternative-form :alternative="$alternative"/>
     </div>
 
-    <x-popUps.confirm-delete-popUp :id="$alternative->id" :deleteRoute="'admin.question_alternatives.destroy'"/>
+    {{-- <x-popUps.confirm-delete-popUp :id="$alternative->id" :deleteRoute="'admin.question_alternatives.destroy'"/> --}}
 </li>
 
 <script>

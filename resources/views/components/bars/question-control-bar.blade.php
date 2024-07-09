@@ -1,5 +1,7 @@
 @props(['exam'])
-
+{{-- @php
+    dd($exam->slug);
+@endphp --}}
 <div class="control-bar d-flex justify-content-end">
     <form action="{{ route('admin.exam_questions.store') }}" method="POST" class="mx-2"  x-show="editMode">
         @csrf

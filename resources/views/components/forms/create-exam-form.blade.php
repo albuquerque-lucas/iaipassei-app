@@ -1,6 +1,6 @@
 <form method="POST" action="{{ route('admin.exams.store') }}">
     @csrf
-    <input type="hidden" name="examination_id" value="{{ $examination->id }}">
+    <input type="hidden" name="examination_id" value="{{ $examination->slug }}">
     <div class="mb-3">
         <label for="title" class="form-label">Título</label>
         <input type="text" class="form-control" id="title" name="title" required>
