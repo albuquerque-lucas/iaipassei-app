@@ -1,6 +1,6 @@
 @props(['exam'])
 
-<form method="POST" action="{{ route('admin.exams.update', $exam->id) }}">
+<form method="POST" action="{{ route('admin.exams.update', $exam->slug) }}">
     @csrf
     @method('PATCH')
     <div class="mb-3">

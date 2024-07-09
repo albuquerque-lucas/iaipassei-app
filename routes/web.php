@@ -105,7 +105,11 @@ Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
     ]);
 
     Route::delete('admin/exams/bulk_delete', [AdminExamController::class, 'bulkDelete'])->name('admin.exams.bulkDelete');
-    Route::resource('admin/exams', AdminExamController::class)->names([
+    Route::resource('admin/exams', AdminExamController::class)
+    ->parameters([
+        'exams' => 'exam:slug'
+    ])
+    ->names([
         'index' => 'admin.exams.index',
         'create' => 'admin.exams.create',
         'store' => 'admin.exams.store',

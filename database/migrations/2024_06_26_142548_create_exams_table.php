@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Examination::class)->constrained()->onDelete('cascade');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
