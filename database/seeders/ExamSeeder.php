@@ -31,7 +31,7 @@ class ExamSeeder extends Seeder
                     'question_number' => $i,
                 ]);
 
-                foreach (range('A', 'E') as $letter) {
+                foreach (range('a', 'e') as $letter) {
                     QuestionAlternative::create([
                         'exam_question_id' => $examQuestion->id,
                         'letter' => $letter,
