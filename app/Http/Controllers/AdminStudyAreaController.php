@@ -61,10 +61,10 @@ class AdminStudyAreaController extends Controller
         }
     }
 
-    public function edit($id, Request $request)
+    public function edit($slug, Request $request)
     {
         try {
-            $studyArea = StudyArea::with(['examinations', 'subjects'])->findOrFail($id);
+            $studyArea = StudyArea::with(['examinations', 'subjects'])->where('slug', $slug)->firstOrFail();
             $allExaminations = Examination::all();
             $allSubjects = Subject::all();
 
@@ -87,10 +87,10 @@ class AdminStudyAreaController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         try {
-            $studyArea = StudyArea::findOrFail($id);
+            $studyArea = StudyArea::where('slug', $slug)->firstOrFail();
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'subjects' => 'array'
@@ -107,16 +107,16 @@ class AdminStudyAreaController extends Controller
             $studyArea->subjects()->attach($subjectsToAdd);
             $studyArea->subjects()->detach($subjectsToRemove);
 
-            return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Área de estudo atualizada com sucesso!');
+            return redirect()->route('admin.study_areas.edit', $studyArea->slug)->with('success', 'Área de estudo atualizada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao atualizar a área de estudo: ' . $e->getMessage());
         }
     }
 
-    public function destroy($id)
+    public function destroy($slug)
     {
         try {
-            $studyArea = StudyArea::findOrFail($id);
+            $studyArea = StudyArea::where('slug', $slug)->firstOrFail();
             $studyArea->delete();
 
             return redirect()->route('admin.study_areas.index')->with('success', 'Área de estudo excluída com sucesso!');
@@ -134,13 +134,13 @@ class AdminStudyAreaController extends Controller
         }
     }
 
-    public function removeSubject($studyAreaId, $subjectId)
+    public function removeSubject($studyAreaSlug, $subjectId)
     {
         try {
-            $studyArea = StudyArea::findOrFail($studyAreaId);
+            $studyArea = StudyArea::where('slug', $studyAreaSlug)->firstOrFail();
             $studyArea->subjects()->detach($subjectId);
 
-            return redirect()->route('admin.study_areas.edit', $studyArea->id)->with('success', 'Matéria removida com sucesso!');
+            return redirect()->route('admin.study_areas.edit', $studyArea->slug)->with('success', 'Matéria removida com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao remover a matéria: ' . $e->getMessage());
         }

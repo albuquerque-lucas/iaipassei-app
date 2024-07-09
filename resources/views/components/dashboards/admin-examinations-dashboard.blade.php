@@ -20,7 +20,7 @@
                     <td>{{ optional($item->educationLevel)->name ?? 'Não informado' }}</td>
                     <td>
                         <a
-                        href="{{ route($editRoute, $item->id) }}"
+                        href="{{ route($editRoute, $item->slug) }}"
                         class="btn btn-sm btn-dark edit-btn"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
@@ -30,9 +30,9 @@
                         </a>
                         <button
                         type="button"
-                        class="btn btn-sm btn-dark delete-btn delete-button"
+                        class="btn btn-sm btn-dark delete-btn"
                         data-bs-toggle="modal"
-                        data-bs-target="#confirmDeleteModal{{ $item->id }}"
+                        data-bs-target="#confirmDeleteModal{{ $item->slug }}"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="Excluir Concurso"
@@ -41,7 +41,7 @@
                         </button>
                     </td>
                 </tr>
-                <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
+                <x-popUps.confirm-delete-popUp :slug="$item->slug" :deleteRoute="$deleteRoute" />
             @empty
                 <tr>
                     <td colspan="6" class="text-center">Nenhum concurso encontrado.</td>

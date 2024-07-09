@@ -34,7 +34,7 @@ class AdminUserController extends Controller
         return view('admin.users.index', [
             'users' => $users,
             'paginationLinks' => $users->appends($request->except('page'))->links('pagination::bootstrap-4'),
-            'editRoute' => 'admin.users.edit',
+            'editRoute' => 'admin.profile.index',
             'deleteRoute' => 'admin.users.destroy',
             'bulkDeleteRoute' => 'admin.users.bulkDelete',
         ]);
@@ -59,14 +59,14 @@ class AdminUserController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($slug)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($slug);
         $accountPlans = AccountPlan::all();
-        return view('admin.users.edit', compact('user', 'accountPlans'));
+        return view('auth.profile', compact('user', 'accountPlans'));
     }
 
-    public function update(UserUpdateRequest $request, $id)
+    public function update(UserUpdateRequest $request, $slug)
     {
         $validated = $request->validated();
 
@@ -83,7 +83,7 @@ class AdminUserController extends Controller
         }
 
         try {
-            $user = User::findOrFail($id);
+            $user = User::where('slug', $slug)->firstOrFail();
             $user->update(array_filter($validated));
 
             return redirect()->back()->with('success', 'Usuário atualizado com sucesso!');
@@ -92,10 +92,10 @@ class AdminUserController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($slug)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::findOrFail($slug);
             $user->delete();
 
             return redirect()->route('admin.users.index')->with('success', 'Usuário excluído com sucesso!');

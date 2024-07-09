@@ -22,6 +22,6 @@ class CheckAccountLevel
             return $next($request);
         }
 
-        return redirect()->route('admin.login')->withErrors(['access_denied' => 'You do not have sufficient access level.']);
+        return redirect()->route('admin.login.index')->withErrors(['access_denied' => 'You do not have sufficient access level.']);
     }
 }

@@ -113,13 +113,10 @@ class AdminExaminationController extends Controller
         }
     }
 
-
-
-
-    public function edit($id)
+    public function edit($slug)
     {
         try {
-            $examination = Examination::with(['educationLevel', 'exams.examQuestions.alternatives', 'studyAreas', 'notice'])->findOrFail($id);
+            $examination = Examination::with(['educationLevel', 'exams.examQuestions.alternatives', 'studyAreas', 'notice'])->where('slug', $slug)->firstOrFail();
             $educationLevels = EducationLevel::all();
             $allStudyAreas = StudyArea::all();
 
@@ -133,9 +130,7 @@ class AdminExaminationController extends Controller
         }
     }
 
-
-
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         try {
             $validated = $request->validate([
@@ -145,7 +140,7 @@ class AdminExaminationController extends Controller
                 'study_areas' => 'array|exists:study_areas,id',
             ]);
 
-            $examination = Examination::findOrFail($id);
+            $examination = Examination::where('slug', $slug)->firstOrFail();
             $examination->update($validated);
 
             if ($request->has('study_areas')) {
@@ -158,11 +153,10 @@ class AdminExaminationController extends Controller
         }
     }
 
-
-    public function destroy($id)
+    public function destroy($slug)
     {
         try {
-            $examination = Examination::findOrFail($id);
+            $examination = Examination::where('slug', $slug)->firstOrFail();
             $examination->delete();
 
             return redirect()->route('admin.examinations.index')->with('success', 'Concurso excluído com sucesso!');
@@ -181,34 +175,32 @@ class AdminExaminationController extends Controller
     }
 
     public function import(Request $request)
-{
-    $request->validate([
-        'file' => 'required|file|mimes:pdf|max:2048',
-    ]);
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf|max:2048',
+        ]);
 
-    $file = $request->file('file');
+        $file = $request->file('file');
 
-    $data = $this->processFileWithAI($file);
+        $data = $this->processFileWithAI($file);
 
-    return redirect()->route('admin.examinations.create')
-                    ->with('success', 'Arquivo importado com sucesso!')
-                    ->with('data', $data);
-}
+        return redirect()->route('admin.examinations.create')
+                        ->with('success', 'Arquivo importado com sucesso!')
+                        ->with('data', $data);
+    }
 
-private function processFileWithAI($file)
-{
-    // Lógica para enviar o arquivo para um serviço de IA e obter os dados processados
-    // Esta é uma implementação simulada:
+    private function processFileWithAI($file)
+    {
 
-    $data = [
-        'education_level_id' => 1,
-        'title' => 'Título do Concurso',
-        'institution' => 'Nome da Instituição',
-        'num_exams' => 3,
-        'num_questions_per_exam' => 50,
-        'num_alternatives_per_question' => 5,
-    ];
+        $data = [
+            'education_level_id' => 1,
+            'title' => 'Título do Concurso',
+            'institution' => 'Nome da Instituição',
+            'num_exams' => 3,
+            'num_questions_per_exam' => 50,
+            'num_alternatives_per_question' => 5,
+        ];
 
-    return $data;
-}
+        return $data;
+    }
 }

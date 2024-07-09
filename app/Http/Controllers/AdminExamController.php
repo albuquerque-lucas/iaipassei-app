@@ -60,8 +60,8 @@ class AdminExamController extends Controller
             $validated = $request->validate([
                 'examination_id' => 'required|exists:examinations,id',
                 'title' => 'required|string|max:255',
-                'num_questions' => 'required|integer|min=1',
-                'num_alternatives' => 'required|integer|min=1',
+                'num_questions' => 'required|integer|min:1',
+                'num_alternatives' => 'required|integer|min:1',
             ]);
 
             $exam = Exam::create([
@@ -85,34 +85,30 @@ class AdminExamController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.exams.index')->with('success', 'Prova criada com sucesso!');
+            return redirect()->back()->with('success', 'Prova criada com sucesso!');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao criar a prova: ' . $e->getMessage());
         }
     }
 
-    public function edit($id)
+    public function edit($slug)
     {
         try {
-            $exam = Exam::with(['examination', 'examQuestions.alternatives'])->findOrFail($id);
+            $exam = Exam::with(['examination', 'examQuestions.alternatives'])->where('slug', $slug)->firstOrFail();
             $examinations = Examination::all();
 
             $numQuestions = $exam->examQuestions->count();
             $numAlternativesPerQuestion = $numQuestions > 0 ? $exam->examQuestions->first()->alternatives->count() : 0;
 
             $examQuestions = $exam->examQuestions()->orderBy('question_number', 'asc')->paginate(5);
-
             return view('admin.exams.edit', compact('exam', 'examinations', 'numQuestions', 'numAlternativesPerQuestion', 'examQuestions'));
         } catch (Exception $e) {
             return redirect()->route('admin.exams.index')->with('error', 'Erro ao carregar a prova para edição: ' . $e->getMessage());
         }
     }
 
-
-
-
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         try {
             $validated = $request->validate([
@@ -122,24 +118,24 @@ class AdminExamController extends Controller
                 'description' => 'nullable|string|max:1000',
             ]);
 
-            $exam = Exam::findOrFail($id);
+            $exam = Exam::where('slug', $slug)->firstOrFail();
             $exam->update($validated);
 
-            return redirect()->route('admin.exams.edit', $id)->with('success', 'Prova atualizada com sucesso!');
+            return redirect()->route('admin.exams.edit', $slug)->with('success', 'Prova atualizada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Erro ao atualizar a prova: ' . $e->getMessage());
         }
     }
 
-    public function destroy($id)
+    public function destroy($slug)
     {
         try {
-            $exam = Exam::findOrFail($id);
+            $exam = Exam::where('slug', $slug)->firstOrFail();
             $exam->delete();
 
-            return redirect()->route('admin.exams.index')->with('success', 'Prova excluída com sucesso!');
+            return redirect()->back()->with('success', 'Prova excluída com sucesso!');
         } catch (Exception $e) {
-            return redirect()->route('admin.exams.index')->with('error', 'Erro ao excluir a prova: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao excluir a prova: ' . $e->getMessage());
         }
     }
 

@@ -9,14 +9,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class StudyArea extends Model
 {
     use HasFactory;
 
+    use HasFactory, Sluggable;
+
     protected $fillable = [
         'name',
+        'slug',
     ];
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 
     public function examinations(): BelongsToMany
     {

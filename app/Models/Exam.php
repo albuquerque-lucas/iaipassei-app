@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,37 +12,40 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class Exam extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $fillable = [
         'examination_id',
         'title',
         'date',
         'description',
+        'slug',
     ];
 
-    protected function casts() {
+    protected $casts = [
+        'date' => 'date',
+    ];
+
+    public function sluggable(): array
+    {
         return [
-            'date' => 'date',
+            'slug' => [
+                'source' => ['title', 'examination.title']
+            ]
         ];
     }
 
-    public function examination(): BelongsTo
+    public function examination()
     {
         return $this->belongsTo(Examination::class);
     }
 
-    public function booklet(): BelongsTo
-    {
-        return $this->belongsTo(Booklet::class);
-    }
-
-    public function examQuestions(): HasMany
+    public function examQuestions()
     {
         return $this->hasMany(ExamQuestion::class);
     }
 
-    public function subjects(): BelongsToMany
+    public function subjects()
     {
         return $this->belongsToMany(Subject::class);
     }

@@ -27,16 +27,16 @@
 
         <div class="tab-content" id="profileTabContent">
             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
-                <x-sections.admin-profile-info-display :user="Auth::user()" />
+                <x-sections.admin-profile-info-display :user="$user" />
             </div>
             <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-                <x-forms.update-user-personal :user="Auth::user()" />
+                <x-forms.update-user-personal :user="$user" />
                 <hr>
-                <x-forms.update-user-race-gender :user="Auth::user()" />
+                <x-forms.update-user-race-gender :user="$user" />
                 <hr>
-                <x-forms.update-user-disability :user="Auth::user()" />
+                <x-forms.update-user-disability :user="$user" />
                 <hr>
-                <x-forms.update-user-password :user="Auth::user()" />
+                <x-forms.update-user-password :user="$user" />
             </div>
         </div>
     </section>

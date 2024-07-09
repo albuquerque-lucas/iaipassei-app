@@ -11,22 +11,34 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Pagination\LengthAwarePaginator;
-use DateTime;
-use Illuminate\Database\Eloquent\Builder;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Examination extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $fillable = [
         'education_level_id',
         'title',
+        'slug',
         'institution',
     ];
 
-    protected function casts() {
+    protected $casts = [
+        'active' => 'boolean'
+    ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
         return [
-            'active' => 'boolean'
+            'slug' => [
+                'source' => 'title'
+            ]
         ];
     }
 
@@ -57,7 +69,6 @@ class Examination extends Model
 
     public static function getAll(string $order, string $orderBy = 'id', array $params = []): LengthAwarePaginator
     {
-        // dd($params);
         $query = self::orderBy($orderBy, $order);
         foreach ($params as $key => $value) {
             if (!is_null($value)) {
