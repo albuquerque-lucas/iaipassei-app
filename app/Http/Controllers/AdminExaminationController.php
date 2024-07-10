@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\BulkDeleteTrait;
 use App\Http\Requests\ExaminationManualStoreFormRequest;
+use Smalot\PdfParser\Parser;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 use Exception;
 
 class AdminExaminationController extends Controller
@@ -182,25 +185,56 @@ class AdminExaminationController extends Controller
 
         $file = $request->file('file');
 
-        $data = $this->processFileWithAI($file);
+        // Processar o arquivo PDF
+        $parser = new Parser();
+        $pdf = $parser->parseFile($file->getPathname());
+        $text = $pdf->getText();
 
-        return redirect()->route('admin.examinations.create')
-                        ->with('success', 'Arquivo importado com sucesso!')
-                        ->with('data', $data);
+        // Chamar a API da OpenAI para analisar o texto
+        $data = $this->processTextWithAI($text);
+
+        // Retornar os dados extraídos como JSON
+        return response()->json($data);
     }
 
-    private function processFileWithAI($file)
+
+    private function processTextWithAI($text)
     {
+        $client = new Client();
+        $response = $client->post('https://api.openai.com/v1/engines/davinci/completions', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+                'Content-Type' => 'application/json',
+            ],
+            'json' => [
+                'prompt' => "Extract the following information from the text: title, organization, number of exams, number of questions per exam, number of alternatives per question. Text: $text",
+                'max_tokens' => 150,
+            ],
+        ]);
 
-        $data = [
-            'education_level_id' => 1,
-            'title' => 'Título do Concurso',
-            'institution' => 'Nome da Instituição',
-            'num_exams' => 3,
-            'num_questions_per_exam' => 50,
-            'num_alternatives_per_question' => 5,
+        $result = json_decode($response->getBody(), true);
+        $analysis = $result['choices'][0]['text'];
+
+        // Parse the analysis text to extract the required fields
+        return [
+            'title' => $this->extractField('title', $analysis),
+            'institution' => $this->extractField('organization', $analysis),
+            'num_exams' => $this->extractField('number of exams', $analysis),
+            'num_questions_per_exam' => $this->extractField('number of questions per exam', $analysis),
+            'num_alternatives_per_question' => $this->extractField('number of alternatives per question', $analysis),
         ];
-
-        return $data;
     }
+
+
+    private function extractField($field, $text)
+    {
+        // Implement your parsing logic here based on the response format
+        $pattern = "/$field: (.*?)(\n|$)/i"; // 'i' for case-insensitive matching
+        if (preg_match($pattern, $text, $matches)) {
+            return trim($matches[1]);
+        }
+        return null;
+    }
+
+
 }
