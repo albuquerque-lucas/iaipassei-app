@@ -182,18 +182,15 @@ class AdminExaminationController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|mimes:txt|max:500000', // Alterado para aceitar arquivos .txt
+                'file' => 'required|file|mimes:pdf|max:500000',
             ]);
 
             $file = $request->file('file');
 
-            // Processar o arquivo TXT
-            $text = file_get_contents($file->getPathname());
-
-            // Processar o arquivo PDF (comentado)
-            // $parser = new Parser();
-            // $pdf = $parser->parseFile($file->getPathname());
-            // $text = $pdf->getText();
+            // Processar o arquivo PDF
+            $parser = new Parser();
+            $pdf = $parser->parseFile($file->getPathname());
+            $text = $pdf->getText();
 
             // Limpar o texto para evitar caracteres estranhos
             $cleanedText = $this->cleanText($text);
@@ -222,7 +219,11 @@ class AdminExaminationController extends Controller
     {
         // Remover ou substituir caracteres estranhos
         $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
-        return preg_replace('/[^\P{C}\n]+/u', ' ', $text); // Remove caracteres de controle, exceto nova linha
+        // Remover caracteres de controle, exceto nova linha
+        $text = preg_replace('/[^\P{C}\n]+/u', '', $text);
+        // Substituir múltiplos espaços por um único espaço
+        $text = preg_replace('/\s+/', ' ', $text);
+        return $text;
     }
 
     private function limitTextToTokens($text, $maxTokens)
@@ -256,11 +257,11 @@ class AdminExaminationController extends Controller
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'Extract the following information from the text: title, organization, number of exams, number of questions per exam, number of alternatives per question.'
+                        'content' => 'Você é um assistente que extrai informações específicas de textos.'
                     ],
                     [
                         'role' => 'user',
-                        'content' => $text
+                        'content' => "Texto: $text. Por favor, forneça o número do contrato identificado pela frase 'Número do Contrato:'"
                     ]
                 ],
                 'max_tokens' => 200, // Limite de tokens na resposta
@@ -270,26 +271,7 @@ class AdminExaminationController extends Controller
         $result = json_decode($response->getBody(), true);
         $analysis = $result['choices'][0]['message']['content'];
 
-        return $this->parseAnalysis($analysis);
+        return ['numero_contrato' => $analysis];
     }
 
-    private function parseAnalysis($analysis)
-    {
-        return [
-            'title' => $this->extractField('title', $analysis) ?? 'Informação não encontrada',
-            'institution' => $this->extractField('organization', $analysis) ?? 'Informação não encontrada',
-            'num_exams' => $this->extractField('number of exams', $analysis) ?? 'Informação não encontrada',
-            'num_questions_per_exam' => $this->extractField('number of questions per exam', $analysis) ?? 'Informação não encontrada',
-            'num_alternatives_per_question' => $this->extractField('number of alternatives per question', $analysis) ?? 'Informação não encontrada',
-        ];
-    }
-
-    private function extractField($field, $text)
-    {
-        $pattern = "/$field:\s*(.*?)(\n|$)/i";
-        if (preg_match($pattern, $text, $matches)) {
-            return trim($matches[1]);
-        }
-        return null;
-    }
 }
