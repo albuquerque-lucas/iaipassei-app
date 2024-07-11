@@ -17,6 +17,7 @@ use Smalot\PdfParser\Parser;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 
 class AdminExaminationController extends Controller
 {
@@ -179,62 +180,116 @@ class AdminExaminationController extends Controller
 
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|file|mimes:pdf|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'file' => 'required|file|mimes:txt|max:500000', // Alterado para aceitar arquivos .txt
+            ]);
 
-        $file = $request->file('file');
+            $file = $request->file('file');
 
-        // Processar o arquivo PDF
-        $parser = new Parser();
-        $pdf = $parser->parseFile($file->getPathname());
-        $text = $pdf->getText();
+            // Processar o arquivo TXT
+            $text = file_get_contents($file->getPathname());
 
-        // Chamar a API da OpenAI para analisar o texto
-        $data = $this->processTextWithAI($text);
+            // Processar o arquivo PDF (comentado)
+            // $parser = new Parser();
+            // $pdf = $parser->parseFile($file->getPathname());
+            // $text = $pdf->getText();
 
-        // Retornar os dados extraídos como JSON
-        return response()->json($data);
+            // Limpar o texto para evitar caracteres estranhos
+            $cleanedText = $this->cleanText($text);
+
+            // Limitar o texto para o máximo de 1000 tokens
+            $limitedText = $this->limitTextToTokens($cleanedText, 1000);
+
+            // Chamar a API da OpenAI para analisar o texto
+            $data = $this->processTextWithAI($limitedText);
+
+            // Retornar os dados extraídos como JSON
+            return response()->json($data);
+        } catch (RequestException $e) {
+            // Capturar e exibir detalhes adicionais do erro
+            $response = $e->getResponse();
+            $statusCode = $response->getStatusCode();
+            $responseBody = $response->getBody()->getContents();
+
+            return redirect()->back()->with('error', "Erro: $statusCode - $responseBody");
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro: ' . $e->getMessage());
+        }
     }
 
+    private function cleanText($text)
+    {
+        // Remover ou substituir caracteres estranhos
+        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+        return preg_replace('/[^\P{C}\n]+/u', ' ', $text); // Remove caracteres de controle, exceto nova linha
+    }
+
+    private function limitTextToTokens($text, $maxTokens)
+    {
+        // Ajuste o código para garantir que o texto seja limitado a 1000 tokens
+        $words = explode(' ', $text);
+        $currentTokens = 0;
+        $limitedText = '';
+
+        foreach ($words as $word) {
+            $currentTokens += strlen($word) / 4; // Aproximação: 1 token por 4 caracteres
+            if ($currentTokens > $maxTokens) {
+                break;
+            }
+            $limitedText .= $word . ' ';
+        }
+
+        return trim($limitedText);
+    }
 
     private function processTextWithAI($text)
     {
         $client = new Client();
-        $response = $client->post('https://api.openai.com/v1/engines/davinci/completions', [
+        $response = $client->post('https://api.openai.com/v1/chat/completions', [
             'headers' => [
                 'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
                 'Content-Type' => 'application/json',
             ],
             'json' => [
-                'prompt' => "Extract the following information from the text: title, organization, number of exams, number of questions per exam, number of alternatives per question. Text: $text",
-                'max_tokens' => 150,
+                'model' => 'gpt-4',
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'Extract the following information from the text: title, organization, number of exams, number of questions per exam, number of alternatives per question.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $text
+                    ]
+                ],
+                'max_tokens' => 200, // Limite de tokens na resposta
             ],
         ]);
 
         $result = json_decode($response->getBody(), true);
-        $analysis = $result['choices'][0]['text'];
+        $analysis = $result['choices'][0]['message']['content'];
 
-        // Parse the analysis text to extract the required fields
+        return $this->parseAnalysis($analysis);
+    }
+
+    private function parseAnalysis($analysis)
+    {
         return [
-            'title' => $this->extractField('title', $analysis),
-            'institution' => $this->extractField('organization', $analysis),
-            'num_exams' => $this->extractField('number of exams', $analysis),
-            'num_questions_per_exam' => $this->extractField('number of questions per exam', $analysis),
-            'num_alternatives_per_question' => $this->extractField('number of alternatives per question', $analysis),
+            'title' => $this->extractField('title', $analysis) ?? 'Informação não encontrada',
+            'institution' => $this->extractField('organization', $analysis) ?? 'Informação não encontrada',
+            'num_exams' => $this->extractField('number of exams', $analysis) ?? 'Informação não encontrada',
+            'num_questions_per_exam' => $this->extractField('number of questions per exam', $analysis) ?? 'Informação não encontrada',
+            'num_alternatives_per_question' => $this->extractField('number of alternatives per question', $analysis) ?? 'Informação não encontrada',
         ];
     }
 
-
     private function extractField($field, $text)
     {
-        // Implement your parsing logic here based on the response format
-        $pattern = "/$field: (.*?)(\n|$)/i"; // 'i' for case-insensitive matching
+        $pattern = "/$field:\s*(.*?)(\n|$)/i";
         if (preg_match($pattern, $text, $matches)) {
             return trim($matches[1]);
         }
         return null;
     }
-
-
 }

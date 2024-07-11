@@ -16,6 +16,9 @@
     <button type="button" class="btn btn-danger btn-sm mt-3" @click.stop="clearFileInput" x-show="fileName">
         <i class="fa-solid fa-xmark"></i>
     </button>
+    <button type="submit" class="btn btn-primary btn-sm mt-3" x-show="fileName">
+        Enviar
+    </button>
 </form>
 
 <script>
