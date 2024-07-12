@@ -54,7 +54,12 @@ class AdminExaminationController extends Controller
     {
         try {
             $educationLevels = EducationLevel::all();
-            return view('admin.examinations.create', compact('educationLevels'));
+
+            $importedData = session('imported_data');
+            // if (isset($importedData)) {
+            //     dd($importedData);
+            // }
+            return view('admin.examinations.create', compact('educationLevels', 'importedData'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
         }
@@ -201,8 +206,12 @@ class AdminExaminationController extends Controller
             // Chamar a API da OpenAI para analisar o texto
             $data = $this->processTextWithAI($limitedText);
 
+            session(['imported_data' => $data]);	// Salvar os dados extraídos na sessão
+
+            return redirect()->back()->with('success', 'Texto analisado com sucesso!');
+
             // Retornar os dados extraídos como JSON
-            return response()->json($data);
+            // return response()->json($data);
         } catch (RequestException $e) {
             // Capturar e exibir detalhes adicionais do erro
             $response = $e->getResponse();
