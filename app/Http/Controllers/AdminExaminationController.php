@@ -217,31 +217,38 @@ class AdminExaminationController extends Controller
 
     private function cleanText($text)
     {
-        // Remover ou substituir caracteres estranhos
-        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
-        // Remover caracteres de controle, exceto nova linha
-        $text = preg_replace('/[^\P{C}\n]+/u', '', $text);
-        // Substituir múltiplos espaços por um único espaço
-        $text = preg_replace('/\s+/', ' ', $text);
-        return $text;
+        try {
+            // Remover ou substituir caracteres estranhos
+            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+            // Remover caracteres de controle, exceto nova linha
+            $text = preg_replace('/[^\P{C}\n]+/u', '', $text);
+            // Substituir múltiplos espaços por um único espaço
+            $text = preg_replace('/\s+/', ' ', $text);
+            return $text;
+        } catch (Exception $e) {
+            throw new Exception("Erro na limpeza do texto: " . $e->getMessage());
+        }
     }
 
     private function limitTextToTokens($text, $maxTokens)
     {
-        // Ajuste o código para garantir que o texto seja limitado a 1000 tokens
-        $words = explode(' ', $text);
-        $currentTokens = 0;
-        $limitedText = '';
+        try {
+            $words = explode(' ', $text);
+            $currentTokens = 0;
+            $limitedText = '';
 
-        foreach ($words as $word) {
-            $currentTokens += strlen($word) / 4; // Aproximação: 1 token por 4 caracteres
-            if ($currentTokens > $maxTokens) {
-                break;
+            foreach ($words as $word) {
+                $currentTokens += strlen($word) / 4; // Aproximação: 1 token por 4 caracteres
+                if ($currentTokens > $maxTokens) {
+                    break;
+                }
+                $limitedText .= $word . ' ';
             }
-            $limitedText .= $word . ' ';
-        }
 
-        return trim($limitedText);
+            return trim($limitedText);
+        } catch (Exception $e) {
+            throw new Exception("Erro ao limitar o texto para tokens: " . $e->getMessage());
+        }
     }
 
     private function processTextWithAI($text)
@@ -262,9 +269,9 @@ class AdminExaminationController extends Controller
                     [
                         'role' => 'user',
                         'content' => "Texto: $text. O texto apresentado é um edital de concurso público. Extraia para mim os seguintes dados em formato de lista:
-                            - Título do edital
-                            - Instituição organizadora
-                            - Qual a quantidade exata de provas marcadas como Objetivas? Responsa apenas um nemro."
+                        - Título do edital
+                        - Instituição organizadora
+                        - Qual a quantidade exata de provas marcadas como Objetivas? Responda apenas um número."
                     ]
                 ],
                 'max_tokens' => 200, // Limite de tokens na resposta
@@ -274,7 +281,28 @@ class AdminExaminationController extends Controller
         $result = json_decode($response->getBody(), true);
         $analysis = $result['choices'][0]['message']['content'];
 
-        return ['Resposta' => $analysis];
+        // Extrair os dados específicos da resposta
+        $titulo = '';
+        $instituicao = '';
+        $quantidade_provas = '';
+
+        if (preg_match('/- Título do edital\s*:\s*(.*)/', $analysis, $matches)) {
+            $titulo = $matches[1];
+        }
+        if (preg_match('/- Instituição organizadora\s*:\s*(.*)/', $analysis, $matches)) {
+            $instituicao = $matches[1];
+        }
+        if (preg_match('/- Quantidade exata de provas marcadas como Objetivas\s*:\s*(\d+)/', $analysis, $matches)) {
+            $quantidade_provas = $matches[1];
+        }
+
+        return [
+            'titulo' => $titulo,
+            'instituicao' => $instituicao,
+            'quantidade_provas' => $quantidade_provas,
+        ];
     }
+
+
 
 }
