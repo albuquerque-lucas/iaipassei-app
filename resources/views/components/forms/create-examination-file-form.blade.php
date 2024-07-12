@@ -13,10 +13,10 @@
         <p class="text-muted mt-2" x-text="fileName ? fileName : 'Arraste e solte o arquivo PDF aqui ou clique para fazer upload'"></p>
     </div>
     <input type="file" x-ref="fileInput" id="fileInput" name="file" accept="application/pdf" style="display: none;" @change="handleFileInput">
-    <button type="button" class="btn btn-danger btn-sm mt-3" @click.stop="clearFileInput" x-show="fileName">
+    <button type="button" class="btn btn-danger btn-sm mt-3 ia-file-input-xmark-btn" @click.stop="clearFileInput" x-show="fileName">
         <i class="fa-solid fa-xmark"></i>
     </button>
-    <button type="submit" class="btn btn-primary btn-sm mt-3" x-show="fileName">
+    <button type="submit" class="btn btn-primary btn-sm mt-3 ia-file-input-submit-btn" x-show="fileName">
         Enviar
     </button>
 </form>

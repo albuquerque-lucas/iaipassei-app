@@ -261,7 +261,10 @@ class AdminExaminationController extends Controller
                     ],
                     [
                         'role' => 'user',
-                        'content' => "Texto: $text. Por favor, forneça o número do contrato identificado pela frase 'Número do Contrato:'"
+                        'content' => "Texto: $text. O texto apresentado é um edital de concurso público. Extraia para mim os seguintes dados em formato de lista:
+                            - Título do edital
+                            - Instituição organizadora
+                            - Qual a quantidade exata de provas marcadas como Objetivas? Responsa apenas um nemro."
                     ]
                 ],
                 'max_tokens' => 200, // Limite de tokens na resposta
@@ -271,7 +274,7 @@ class AdminExaminationController extends Controller
         $result = json_decode($response->getBody(), true);
         $analysis = $result['choices'][0]['message']['content'];
 
-        return ['numero_contrato' => $analysis];
+        return ['Resposta' => $analysis];
     }
 
 }
