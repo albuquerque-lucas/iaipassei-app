@@ -40,7 +40,7 @@
                     <td>{{ $subject->id }}</td>
                     <td>{{ $subject->title }}</td>
                     <td>
-                        <button type="button" class="btn btn-sm bg-dark text-white" data-bs-toggle="modal" data-bs-target="#confirmDeleteSubjectModal{{ $subject->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir Matéria">
+                        <button type="button" class="btn btn-sm btn-dark delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteSubjectModal{{ $subject->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir Matéria">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
