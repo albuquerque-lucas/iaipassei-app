@@ -3,9 +3,9 @@
 <form method="POST" action="{{ route('admin.examinations.store') }}" id="examinationForm" enctype="multipart/form-data">
     @csrf
 
-    @php
+    {{-- @php
         var_dump($importedData);
-    @endphp
+    @endphp --}}
     <div id="loadingBar" class="progress" style="height: 5px; display: none;">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;"></div>
     </div>
@@ -21,23 +21,23 @@
     </div>
     <div class="mb-3">
         <label for="title" class="form-label">Título</label>
-        <input type="text" class="form-control" id="title" name="title" required value="{{ old('title', $importedData['titulo'] ?? 'Informacao nao encontrada') }}">
+        <input type="text" class="form-control" id="title" name="title" required>
     </div>
     <div class="mb-3">
         <label for="institution" class="form-label">Instituição</label>
-        <input type="text" class="form-control" id="institution" name="institution" required value="{{ old('institution', $importedData['instituicao'] ?? '') }}">
+        <input type="text" class="form-control" id="institution" name="institution" required>
     </div>
     <div class="mb-3">
         <label for="num_exams" class="form-label">Número de Provas</label>
-        <input type="number" class="form-control" id="num_exams" name="num_exams" required value="{{ old('num_exams', $importedData['quantidade_provas'] ?? '') }}">
+        <input type="number" class="form-control" id="num_exams" name="num_exams" required>
     </div>
     <div class="mb-3">
         <label for="num_questions_per_exam" class="form-label">Número de Questões por Prova</label>
-        <input type="number" class="form-control" id="num_questions_per_exam" name="num_questions_per_exam" required value="{{ old('num_questions_per_exam', $importedData['num_questions_per_exam'] ?? '') }}">
+        <input type="number" class="form-control" id="num_questions_per_exam" name="num_questions_per_exam" required>
     </div>
     <div class="mb-3">
         <label for="num_alternatives_per_question" class="form-label">Número de Alternativas por Questão</label>
-        <input type="number" class="form-control" id="num_alternatives_per_question" name="num_alternatives_per_question" required value="{{ old('num_alternatives_per_question', $importedData['num_alternatives_per_question'] ?? '') }}">
+        <input type="number" class="form-control" id="num_alternatives_per_question" name="num_alternatives_per_question" required>
     </div>
     <div class="mb-3">
         <label for="notice" class="form-label">Edital do Concurso</label>

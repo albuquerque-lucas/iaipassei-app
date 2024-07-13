@@ -10,7 +10,7 @@
             <form action="{{ route('admin.notices.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" name="examination_id" value="{{ $examinationSlug }}">
+                    <input type="hidden" name="examination_slug" value="{{ $examinationSlug }}">
                     <div class="mb-3">
                         <label for="file" class="form-label">Arquivo (PDF)</label>
                         <input type="file" class="form-control" id="file" name="file" accept="application/pdf" required>
