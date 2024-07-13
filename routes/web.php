@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExamController;
 use App\Http\Controllers\AdminExamQuestionController;
 use App\Http\Controllers\AdminQuestionAlternativeController;
+use App\Http\Controllers\OpenAIAPIController;
 use App\Http\Middleware\CheckAccountLevel;
 use App\Http\Middleware\CheckAccessLevel;
 
@@ -42,7 +43,8 @@ Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
         'destroy' => 'admin.users.destroy',
     ]);
 
-    Route::post('admin/examinations/import', [AdminExaminationController::class, 'import'])->name('admin.examinations.import');
+    Route::post('admin/examinations/import', [OpenAIAPIController::class, 'import'])->name('admin.examinations.import');
+
     Route::delete('admin/examinations/bulk_delete', [AdminExaminationController::class, 'bulkDelete'])->name('admin.examinations.bulkDelete');
     Route::resource('admin/examinations', AdminExaminationController::class)->parameters([
         'examinations' => 'examination:slug'
