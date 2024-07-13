@@ -48,6 +48,10 @@
         }
     }
 
+    form {
+        position: relative
+    };
+
     a.btn,
     button.btn,
     .dashboard-table-container {
@@ -64,5 +68,16 @@
         background-color: $primary-bootstrap-color;
         border: 1px solid $primary-bootstrap-color;
         box-shadow: $hover-box-shadow;
+    }
+
+    .ia-file-input-xmark-btn {
+        position: absolute;
+        top: 15rem;
+        left: 55%;
+    }
+
+    .ia-file-input-submit-btn {
+        position: absolute;
+        top: 15rem;
     }
 }

@@ -18,9 +18,9 @@ class ExaminationManualStoreFormRequest extends FormRequest
             'title' => 'required|string|max:255',
             'institution' => 'required|string|max:255',
             'num_exams' => 'required|integer|min:1|max:5',
-            'num_questions_per_exam' => 'required|integer|min:1',
-            'num_alternatives_per_question' => 'required|integer|min:1|max:26',
-            'notice' => 'required|file|mimes:pdf|max:2048',
+            'num_questions_per_exam' => 'nullable|integer|min:1',
+            'num_alternatives_per_question' => 'nullable|integer|min:1|max:26',
+            'notice' => 'nullable|file|mimes:pdf|max:500000',
         ];
     }
 }

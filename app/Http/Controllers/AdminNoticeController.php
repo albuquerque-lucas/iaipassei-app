@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
+use App\Models\Examination;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,24 +28,30 @@ class AdminNoticeController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'examination_id' => 'required|exists:examinations,id',
-            'file' => 'required|mimes:pdf|max:10240',
-        ]);
+        try {
+            $validated = $request->validate([
+                'examination_slug' => 'required|exists:examinations,slug',
+                'file' => 'required|mimes:pdf|max:500000',
+            ]);
 
-        $file = $request->file('file');
-        $filePath = $file->store('notices', 'public');
-        $fileName = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
+            $examination = Examination::where('slug', $validated['examination_slug'])->firstOrFail();
 
-        Notice::create([
-            'examination_id' => $validated['examination_id'],
-            'file_path' => $filePath,
-            'file_name' => $fileName,
-            'extension' => $extension,
-        ]);
+            $file = $request->file('file');
+            $filePath = $file->store('notices', 'public');
+            $fileName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
 
-        return redirect()->back()->with('success', 'Edital criado com sucesso!');
+            Notice::create([
+                'examination_id' => $examination->id,
+                'file_path' => $filePath,
+                'file_name' => $fileName,
+                'extension' => $extension,
+            ]);
+
+            return redirect()->back()->with('success', 'Edital criado com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao criar o edital: ' . $e->getMessage());
+        }
     }
 
     public function edit($id)

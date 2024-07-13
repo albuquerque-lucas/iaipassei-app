@@ -15,11 +15,6 @@
                     Importar Arquivo
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="api-tab" data-bs-toggle="tab" data-bs-target="#api" type="button" role="tab" aria-controls="api" aria-selected="false">
-                    Importar de API
-                </button>
-            </li>
         </ul>
     </div>
     @if (session('success'))
@@ -30,18 +25,13 @@
     <div class="tab-content" id="createExaminationsTabContent">
         <div class="tab-pane fade show active" id="manual" role="tabpanel" aria-labelledby="manual-tab">
             <div class="mt-4">
-                <x-forms.create-examination-manual-form :educationLevels="$educationLevels" x-data="$data"/>
+                <x-forms.create-examination-manual-form :educationLevels="$educationLevels" x-data="$data" :importedData="$importedData"/>
             </div>
         </div>
         <div class="tab-pane fade" id="import" role="tabpanel" aria-labelledby="import-tab">
             <div class="mt-4">
                 <h4 class="my-5">Importar Arquivo</h4>
                 <x-forms.create-examination-file-form />
-            </div>
-        </div>
-        <div class="tab-pane fade" id="api" role="tabpanel" aria-labelledby="api-tab">
-            <div class="mt-4">
-                <p>Formulário para importar de API.</p>
             </div>
         </div>
     </div>
