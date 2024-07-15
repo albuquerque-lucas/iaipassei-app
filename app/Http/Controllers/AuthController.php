@@ -16,6 +16,12 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showPublicLoginForm()
+    {
+        $title = 'Login | IaiPassei';
+        return view('auth.public_login', compact('title'));
+    }
+
     public function login(Request $request)
     {
         $request->validate([

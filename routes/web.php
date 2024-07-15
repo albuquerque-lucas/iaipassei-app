@@ -12,20 +12,37 @@ use App\Http\Controllers\AdminExamController;
 use App\Http\Controllers\AdminExamQuestionController;
 use App\Http\Controllers\AdminQuestionAlternativeController;
 use App\Http\Controllers\OpenAIAPIController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckAccountLevel;
 use App\Http\Middleware\CheckAccessLevel;
 
+// Rota para página inicial
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Rotas de autenticação pública
+Route::get('login', [AuthController::class, 'showPublicLoginForm'])->name('public.login.index');
+Route::post('login', [AuthController::class, 'login'])->name('public.login.store');
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+// Rotas de autenticação de administrador
 Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login.index');
 Route::post('admin/login', [AuthController::class, 'login'])->middleware(CheckAccessLevel::class)->name('admin.login.store');
 Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 
+// Rotas públicas para usuários
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('perfil/{user:slug}', [UserProfileController::class, 'showProfile'])->name('public.profile.index');
+// });
+
+
+
+
+
+// Rotas protegidas para administradores
 Route::middleware(['auth', CheckAccountLevel::class])->group(function () {
 
     Route::get('admin/profile/{slug}', [AuthController::class, 'profile'])->name('admin.profile.index');
