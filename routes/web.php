@@ -19,11 +19,12 @@ use App\Http\Middleware\CheckAccessLevel;
 // Rota para página inicial
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // Rotas de autenticação pública
 Route::get('login', [AuthController::class, 'showPublicLoginForm'])->name('public.login.index');
-Route::post('login', [AuthController::class, 'login'])->name('public.login.store');
+Route::post('login', [AuthController::class, 'publicLogin'])->name('public.login.store');
+Route::post('logout', [AuthController::class, 'publicLogout'])->name('public.logout');
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
@@ -34,9 +35,11 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 
 
 // Rotas públicas para usuários
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('perfil/{user:slug}', [UserProfileController::class, 'showProfile'])->name('public.profile.index');
-// });
+Route::middleware(['auth'])->group(function () {
+    Route::get('perfil/{slug}', [UserProfileController::class, 'publicProfile'])->name('public.profile.index');
+
+});
+
 
 
 

@@ -1,3 +1,5 @@
+@props(['slug'])
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid container">
         <a class="navbar-brand" href="#">Iai Passei</a>
@@ -17,10 +19,11 @@
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user-circle me-2"></i>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                         </a>
+
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('public.profile.index', $slug) }}">Perfil</a></li>
                             <li>
-                                <form method="POST" action="#">
+                                <form method="POST" action="{{ route('public.logout', $slug) }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">Logout</button>
                                 </form>
@@ -34,7 +37,7 @@
                         <a class="nav-link" href="{{ route('public.login.index') }}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">Register</a>
+                        <a class="nav-link" href="#">Register</a>
                     </li>
                 </ul>
             @endauth
