@@ -50,9 +50,10 @@ class AuthController extends Controller
                 // 'disability' => $data['disability'],
             ]);
 
-            Auth::login($user, true);
+            // Autenticar o usuário após a criação
+            Auth::login($user);
 
-            return redirect()->route('public.profile.index')->with('success', 'Conta criada com sucesso.');
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Conta criada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => 'Ocorreu um erro ao tentar criar a conta: ' . $e->getMessage(),
