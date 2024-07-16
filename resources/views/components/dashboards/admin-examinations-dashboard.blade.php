@@ -2,12 +2,12 @@
     <table class="table table-hover entity-dashboard">
         <thead class="table-dark">
             <tr>
-                <th><input type="checkbox" id="selectAll"></th>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Instituição</th>
-                <th>Nível Educacional</th>
-                <th>Ações</th>
+                <th style="width: 5%;"><input type="checkbox" id="selectAll"></th>
+                <th style="width: 5%;">ID</th>
+                <th style="width: 35%;">Título</th>
+                <th style="width: 25%;">Instituição</th>
+                <th style="width: 15%;">Nível Educacional</th>
+                <th style="width: 15%;">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -15,30 +15,32 @@
                 <tr>
                     <td><input type="checkbox" class="select-item" value="{{ $item->id }}"></td>
                     <td><strong>{{ $item->id }}</strong></td>
-                    <td>{{ $item->title }}</td>
+                    <td class="text-wrap">{{ $item->title }}</td>
                     <td>{{ $item->institution }}</td>
                     <td>{{ optional($item->educationLevel)->name ?? 'Não informado' }}</td>
                     <td>
-                        <a
-                        href="{{ route($editRoute, $item->slug) }}"
-                        class="btn btn-sm btn-dark edit-btn"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Editar Concurso"
-                        >
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button
-                        type="button"
-                        class="btn btn-sm btn-dark delete-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#confirmDeleteModal{{ $item->slug }}"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Excluir Concurso"
-                        >
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="btn-group" role="group">
+                            <a
+                            href="{{ route($editRoute, $item->slug) }}"
+                            class="btn btn-sm btn-dark edit-btn"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Editar Concurso"
+                            >
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button
+                            type="button"
+                            class="btn btn-sm btn-dark delete-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#confirmDeleteModal{{ $item->slug }}"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Excluir Concurso"
+                            >
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 <x-popUps.confirm-delete-popUp :slug="$item->slug" :deleteRoute="$deleteRoute" />
