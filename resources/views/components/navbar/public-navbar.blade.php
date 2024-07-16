@@ -11,7 +11,6 @@
                 <x-navbar.nav-item link="#" name="Início" active="true" />
                 <x-navbar.nav-item link="#" name="Sobre" />
                 <x-navbar.nav-item link="#" name="Contato" />
-                <x-navbar.nav-item link="#" name="Serviços" />
             </ul>
             @auth
                 <ul class="navbar-nav">
@@ -37,7 +36,7 @@
                         <a class="nav-link" href="{{ route('public.login.index') }}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Register</a>
+                        <a class="nav-link" href="{{ route('public.register.index') }}">Register</a>
                     </li>
                 </ul>
             @endauth

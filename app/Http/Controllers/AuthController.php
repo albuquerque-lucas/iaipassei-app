@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PublicRegisterFormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -20,6 +22,42 @@ class AuthController extends Controller
     {
         $title = 'Login | IaiPassei';
         return view('auth.public_login', compact('title'));
+    }
+
+    public function showPublicRegisterForm()
+    {
+        $title = 'Cadastro | IaiPassei';
+        return view('auth.public_register', compact('title'));
+    }
+
+    public function publicRegister(PublicRegisterFormRequest $request)
+    {
+        $data = $request->validated();
+
+        try {
+            $user = User::create([
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'phone_number' => $data['phone_number'],
+                'account_plan_id' => 1,
+                'password' => Hash::make($data['password']),
+                // 'sex' => $data['sex'],
+                // 'sexual_orientation' => $data['sexual_orientation'],
+                // 'gender' => $data['gender'],
+                // 'race' => $data['race'],
+                // 'disability' => $data['disability'],
+            ]);
+
+            Auth::login($user);
+
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Conta criada com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Ocorreu um erro ao tentar criar a conta: ' . $e->getMessage(),
+            ])->withInput();
+        }
     }
 
     public function login(Request $request)

@@ -14,7 +14,7 @@
 
 <body class='body bg-secondary-subtle'>
     <header>
-        <x-navbar.public-navbar :slug="$slug"/>
+        <x-navbar.public-navbar :slug="$slug ?? ''"/>
     </header>
     <main>
         @yield('main-content')

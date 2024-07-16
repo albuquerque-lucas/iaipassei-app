@@ -22,6 +22,8 @@ Route::get('/', function () {
 })->name('welcome');
 
 // Rotas de autenticação pública
+Route::get('register', [AuthController::class, 'showPublicRegisterForm'])->name('public.register.index');
+Route::post('register', [AuthController::class, 'publicRegister'])->name('public.register.store');
 Route::get('login', [AuthController::class, 'showPublicLoginForm'])->name('public.login.index');
 Route::post('login', [AuthController::class, 'publicLogin'])->name('public.login.store');
 Route::post('logout', [AuthController::class, 'publicLogout'])->name('public.logout');
