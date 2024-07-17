@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -20,6 +21,11 @@ class AuthController extends Controller
 
     public function showPublicLoginForm()
     {
+        if (auth()->check()) {
+            $slug = auth()->user()->slug;
+            return redirect()->route('public.profile.index', ['slug' => $slug]);
+        }
+
         $title = 'Login | IaiPassei';
         return view('auth.public_login', compact('title'));
     }
@@ -43,17 +49,14 @@ class AuthController extends Controller
                 'phone_number' => $data['phone_number'],
                 'account_plan_id' => 1,
                 'password' => Hash::make($data['password']),
-                // 'sex' => $data['sex'],
-                // 'sexual_orientation' => $data['sexual_orientation'],
-                // 'gender' => $data['gender'],
-                // 'race' => $data['race'],
-                // 'disability' => $data['disability'],
             ]);
+
+            // Disparar evento de confirmação de e-mail
+            event(new Registered($user));
 
             // Autenticar o usuário após a criação
             Auth::login($user);
-
-            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Conta criada com sucesso!');
+            return redirect()->route('verification.notice')->with('success', 'Conta criada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => 'Ocorreu um erro ao tentar criar a conta: ' . $e->getMessage(),

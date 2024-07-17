@@ -15,6 +15,9 @@ use App\Http\Controllers\OpenAIAPIController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckAccountLevel;
 use App\Http\Middleware\CheckAccessLevel;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\EmailVerificationController;
 
 // Rota para página inicial
 Route::get('/', function () {
@@ -29,6 +32,18 @@ Route::post('login', [AuthController::class, 'publicLogin'])->name('public.login
 Route::post('logout', [AuthController::class, 'publicLogout'])->name('public.logout');
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+Route::get('/email/verify', [EmailVerificationController::class, 'show'])
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
 
 // Rotas de autenticação de administrador
 Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login.index');

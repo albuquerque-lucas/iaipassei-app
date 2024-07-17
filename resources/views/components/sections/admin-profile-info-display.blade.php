@@ -16,6 +16,22 @@
                 <p><strong>Email:</strong> {{ $user->email }}</p>
             </div>
             <div class="info-item d-flex justify-content-between">
+                <p><strong>Verificado:</strong>
+                    @if($user->email_verified_at)
+                        Verificado
+                    @else
+                        Não verificado
+                        <a href="{{ route('verification.send') }}"
+                           onclick="event.preventDefault(); document.getElementById('resend-verification-form').submit();">
+                            (Reenviar e-mail de confirmação)
+                        </a>
+                        <form id="resend-verification-form" action="{{ route('verification.send') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    @endif
+                </p>
+            </div>
+            <div class="info-item d-flex justify-content-between">
                 <p><strong>Telefone:</strong> {{ $user->phone_number ?? 'Não informado' }}</p>
             </div>
         </div>
