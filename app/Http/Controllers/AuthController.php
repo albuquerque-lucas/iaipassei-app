@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -50,6 +51,8 @@ class AuthController extends Controller
                 // 'disability' => $data['disability'],
             ]);
 
+            event(new Registered($user));
+            $user->sendEmailVerificationNotification();
             // Autenticar o usuário após a criação
             Auth::login($user);
 
