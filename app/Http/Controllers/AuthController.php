@@ -21,14 +21,13 @@ class AuthController extends Controller
 
     public function showPublicLoginForm()
     {
-        $title = 'Login | IaiPassei';
-        $slug = null;
-
         if (auth()->check()) {
             $slug = auth()->user()->slug;
+            return redirect()->route('public.profile.index', ['slug' => $slug]);
         }
 
-        return view('auth.public_login', compact('title', 'slug'));
+        $title = 'Login | IaiPassei';
+        return view('auth.public_login', compact('title'));
     }
 
     public function showPublicRegisterForm()
