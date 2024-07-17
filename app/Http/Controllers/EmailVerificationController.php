@@ -10,8 +10,11 @@ class EmailVerificationController extends Controller
     public function show()
     {
         $title = 'Confirme seu email';
-        return view('auth.verify-email', compact('title'));
+        $slug = auth()->check() ? auth()->user()->slug : null;
+
+        return view('auth.verify-email', compact('title', 'slug'));
     }
+
 
     public function verify(EmailVerificationRequest $request)
     {
