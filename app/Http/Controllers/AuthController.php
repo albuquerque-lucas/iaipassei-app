@@ -22,7 +22,13 @@ class AuthController extends Controller
     public function showPublicLoginForm()
     {
         $title = 'Login | IaiPassei';
-        return view('auth.public_login', compact('title'));
+        $slug = null;
+
+        if (auth()->check()) {
+            $slug = auth()->user()->slug;
+        }
+
+        return view('auth.public_login', compact('title', 'slug'));
     }
 
     public function showPublicRegisterForm()
@@ -51,7 +57,6 @@ class AuthController extends Controller
 
             // Autenticar o usuário após a criação
             Auth::login($user);
-            $title = 'Confira seu email';
             return redirect()->route('verification.notice')->with('success', 'Conta criada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->withErrors([

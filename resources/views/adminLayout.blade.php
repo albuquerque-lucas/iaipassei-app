@@ -15,7 +15,9 @@
 <body class='body bg-secondary-subtle'>
     <header>
         @auth
-            <x-navbar.admin-navbar />
+            @if(Auth::user()->accountPlan->access_level > 7)
+                <x-navbar.admin-navbar />
+            @endif
         @endauth
     </header>
     <main>
