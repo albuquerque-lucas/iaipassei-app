@@ -1,26 +1,24 @@
-<!-- resources/views/auth/verify-email.blade.php -->
-
 @extends('publicLayout')
 
-@section('content')
+@section('main-content')
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+                    <div class="card-header">Verifique seu endereço de e-mail</div>
 
                     <div class="card-body">
                         @if (session('resent'))
                             <div class="alert alert-success" role="alert">
-                                {{ __('A fresh verification link has been sent to your email address.') }}
+                                Um novo link de verificação foi enviado para seu endereço de e-mail.
                             </div>
                         @endif
 
-                        {{ __('Before proceeding, please check your email for a verification link.') }}
-                        {{ __('If you did not receive the email') }},
-                        <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+                        Antes de continuar, por favor, verifique seu e-mail para o link de verificação.
+                        Se você não recebeu o e-mail,
+                        <form class="d-inline" method="POST" action="{{ route('verification.send') }}">
                             @csrf
-                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                            <button type="submit" class="btn btn-success p-2 me-2 mt-1 align-baseline">clique aqui para solicitar outro.</button>
                         </form>
                     </div>
                 </div>
@@ -28,3 +26,4 @@
         </div>
     </div>
 @endsection
+

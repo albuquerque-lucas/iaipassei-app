@@ -44,19 +44,15 @@ class AuthController extends Controller
                 'phone_number' => $data['phone_number'],
                 'account_plan_id' => 1,
                 'password' => Hash::make($data['password']),
-                // 'sex' => $data['sex'],
-                // 'sexual_orientation' => $data['sexual_orientation'],
-                // 'gender' => $data['gender'],
-                // 'race' => $data['race'],
-                // 'disability' => $data['disability'],
             ]);
 
+            // Disparar evento de confirmação de e-mail
             event(new Registered($user));
-            $user->sendEmailVerificationNotification();
+
             // Autenticar o usuário após a criação
             Auth::login($user);
-
-            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Conta criada com sucesso!');
+            $title = 'Confira seu email';
+            return redirect()->route('verification.notice')->with('success', 'Conta criada com sucesso!');
         } catch (Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => 'Ocorreu um erro ao tentar criar a conta: ' . $e->getMessage(),

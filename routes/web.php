@@ -33,7 +33,8 @@ Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('au
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
 Route::get('/email/verify', function () {
-    return view('auth.verify-email');
+    $title = 'Confirme seu email';
+    return view('auth.verify-email', compact('title'));
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
