@@ -49,6 +49,7 @@ class AuthController extends Controller
                 'phone_number' => $data['phone_number'],
                 'account_plan_id' => 1,
                 'password' => Hash::make($data['password']),
+                'google_id' => $data['google_id'],
             ]);
 
             // Disparar evento de confirmação de e-mail
@@ -122,20 +123,28 @@ class AuthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
-            $user = User::firstOrCreate(
-                ['email' => $googleUser->getEmail()],
-                [
-                    'first_name' => $googleUser->getName(),
-                    'google_id' => $googleUser->getId(),
-                    'profile_img' => $googleUser->getAvatar(),
-                ]
-            );
+
+            $firstName = $googleUser->user['given_name'];
+            $lastName = $googleUser->user['family_name'];
+            $email = $googleUser->getEmail();
+            $googleId = $googleUser->getId();
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                return redirect()->route('public.register.index')->withInput([
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'email' => $email,
+                    'google_id' => $googleId,
+                ]);
+            }
 
             Auth::login($user, true);
 
-            return redirect()->route('admin.examinations.index')->with('success', 'Login com Google realizado com sucesso.');
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Login com Google realizado com sucesso.');
         } catch (Exception $e) {
-            return redirect()->route('admin.login.index')->withErrors([
+            return redirect()->route('public.login.index')->withErrors([
                 'error' => 'Ocorreu um erro ao tentar fazer login com Google: ' . $e->getMessage(),
             ]);
         }

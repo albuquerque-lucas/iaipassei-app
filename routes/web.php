@@ -30,8 +30,11 @@ Route::post('register', [AuthController::class, 'publicRegister'])->name('public
 Route::get('login', [AuthController::class, 'showPublicLoginForm'])->name('public.login.index');
 Route::post('login', [AuthController::class, 'publicLogin'])->name('public.login.store');
 Route::post('logout', [AuthController::class, 'publicLogout'])->name('public.logout');
+
+
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
 
 Route::get('/email/verify', [EmailVerificationController::class, 'show'])
     ->middleware('auth')

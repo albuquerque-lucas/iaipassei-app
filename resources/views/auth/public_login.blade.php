@@ -38,10 +38,16 @@
                             <input type="checkbox" class="form-check-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label class="form-check-label" for="remember">{{ __('Lembrar de mim') }}</label>
                         </div>
-                        <div class="d-grid">
+                        <div class="d-grid mb-2">
                             <button type="submit" class="btn btn-dark">
-                                {{ __('Entrar') }}
+                                Login
                             </button>
+                        </div>
+                        <div class="d-grid">
+                            <a href="{{ route('auth.google') }}" class="btn btn-primary d-flex justify-content-center align-items-center">
+                                <i class="fa-brands fa-google mx-3"></i>
+                                Logar com o Google
+                            </a>
                         </div>
                         @if (Route::has('password.request'))
                         <div class="mt-3 text-center">

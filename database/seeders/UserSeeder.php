@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'first_name' => 'Lucas',
             'last_name' => 'Albuquerque',
             'username' => 'albuquerque.lucas',
-            'email' => 'lucaslpra@gmail.com',
+            'email' => 'lucaslpra@yahoo.com.br',
             'phone_number' => '32988673808',
             'password' => Hash::make('12345678'),
             'sex' => 'Masculino',
@@ -31,21 +31,21 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        User::create([
-            'account_plan_id' => 2,
-            'first_name' => 'Yuri',
-            'last_name' => 'Duarte',
-            'username' => 'duarte.yuri',
-            'email' => 'yuri.duarte@example.com', // Gerando um email fictício
-            'phone_number' => '32988673809',
-            'password' => Hash::make('12345678'),
-            'sex' => 'Masculino',
-            'sexual_orientation' => 'Heterossexual',
-            'gender' => 'Homem Cis',
-            'race' => 'Branco',
-            'disability' => 'Nenhuma',
-            'email_verified_at' => now(),
-        ]);
+        // User::create([
+        //     'account_plan_id' => 2,
+        //     'first_name' => 'Yuri',
+        //     'last_name' => 'Duarte',
+        //     'username' => 'duarte.yuri',
+        //     'email' => 'yuri.duarte@example.com', // Gerando um email fictício
+        //     'phone_number' => '32988673809',
+        //     'password' => Hash::make('12345678'),
+        //     'sex' => 'Masculino',
+        //     'sexual_orientation' => 'Heterossexual',
+        //     'gender' => 'Homem Cis',
+        //     'race' => 'Branco',
+        //     'disability' => 'Nenhuma',
+        //     'email_verified_at' => now(),
+        // ]);
 
         $faker = Faker::create();
 
