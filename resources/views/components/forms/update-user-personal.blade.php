@@ -1,6 +1,6 @@
-@props(['user'])
+@props(['user', 'actionRoute'])
 
-<form method="POST" action="{{ route('admin.users.update', $user->slug) }}" enctype="multipart/form-data" class="mt-4">
+<form method="POST" action="{{ route($actionRoute, $user->slug) }}" enctype="multipart/form-data" class="mt-4">
     @csrf
     @method('PATCH')
 

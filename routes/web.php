@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExamController;
 use App\Http\Controllers\AdminExamQuestionController;
 use App\Http\Controllers\AdminQuestionAlternativeController;
+use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\OpenAIAPIController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckAccountLevel;
@@ -57,6 +58,15 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 // Rotas públicas para usuários
 Route::middleware(['auth'])->group(function () {
     Route::get('perfil/{slug}', [UserProfileController::class, 'publicProfile'])->name('public.profile.index');
+
+    Route::resource('public/users', PublicUserController::class)
+    ->only(['update'])
+    ->parameters([
+        'users' => 'user:slug'
+        ])
+        ->names([
+            'update' => 'public.users.update',
+        ]);
 
     Route::get('confirm-email-change/{id}/{hash}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
 });
