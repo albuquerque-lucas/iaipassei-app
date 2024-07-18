@@ -147,7 +147,7 @@ class AuthController extends Controller
 
             Auth::login($user, true);
 
-            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Login com Google realizado com sucesso.');
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Você está logado.');
         } catch (Exception $e) {
             return redirect()->route('public.login.index')->withErrors([
                 'error' => 'Ocorreu um erro ao tentar fazer login com Google: ' . $e->getMessage(),
