@@ -140,6 +140,11 @@ class AuthController extends Controller
                 ]);
             }
 
+            if (is_null($user->google_id)) {
+                $user->google_id = $googleId;
+                $user->save();
+            }
+
             Auth::login($user, true);
 
             return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'Login com Google realizado com sucesso.');
