@@ -26,6 +26,7 @@ class PublicRegisterFormRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
+            'google_id' => 'nullable|string|unique:users',
             'phone_number' => 'required|string|max:15|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'sex' => 'nullable|string',
