@@ -31,6 +31,8 @@ class PublicUserController extends Controller
             $validated['profile_img'] = $name;
         }
 
+        $emailUpdated = false;
+
         try {
             if (isset($validated['email']) && $validated['email'] !== $user->email) {
                 $newEmail = $validated['email'];
@@ -41,14 +43,30 @@ class PublicUserController extends Controller
                 Notification::route('mail', $newEmail)
                     ->notify(new VerifyEmail($newEmail, $user->id));
 
-                return redirect()->back()->with('success', 'Um e-mail de confirmação foi enviado para o novo endereço.');
+                unset($validated['email']);
+                $emailUpdated = true;
             }
 
             $user->update(array_filter($validated));
 
-            return redirect()->back()->with('success', 'Perfil atualizado com sucesso!');
+            $successMessage = 'Perfil atualizado com sucesso!';
+            if ($emailUpdated) {
+                $successMessage .= ' Um e-mail de confirmação também foi enviado para o novo endereço.';
+            }
+
+            $allNull = empty(array_filter($validated, function ($value) {
+                return !is_null($value);
+            }));
+
+            if ($allNull && $emailUpdated) {
+                return redirect()->back()->with('success', 'Um e-mail de confirmação foi enviado para o novo endereço.');
+            }
+
+            return redirect()->back()->with('success', $successMessage);
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Erro ao atualizar perfil: ' . $e->getMessage()]);
         }
     }
+
+
 }
