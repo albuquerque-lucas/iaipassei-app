@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Cviebrock\EloquentSluggable\Sluggable; // Importando a trait Sluggable
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, Sluggable; // Usando a trait Sluggable
+    use HasFactory, Notifiable, Sluggable;
 
     /**
      * The attributes that are mass assignable.
@@ -93,5 +93,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function getById(int $id): self | null
     {
         return self::where('id', $id)->first();
+    }
+
+    public function profileSettings(): HasOne
+    {
+        return $this->hasOne(ProfileSettings::class);
     }
 }
