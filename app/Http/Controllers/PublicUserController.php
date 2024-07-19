@@ -4,61 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 use Exception;
-use App\Notifications\VerifyEmail;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Controllers\Traits\ValidatesAndPreparesData;
+use App\Services\EmailService;
+use App\Helpers\MessageHelper;
 
 class PublicUserController extends Controller
 {
+    use ValidatesAndPreparesData;
+
+    protected $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
+
     public function update(UserUpdateRequest $request)
     {
-        $validated = $request->validated();
+        $validated = $this->validateAndPrepareData($request);
 
         $user = Auth::user();
-
-        if (isset($validated['password'])) {
-            $validated['password'] = bcrypt($validated['password']);
-        }
-
-        if ($request->hasFile('profile_img')) {
-            $image = $request->file('profile_img');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/storage/profile');
-            $image->move($destinationPath, $name);
-            $validated['profile_img'] = $name;
-        }
-
-        $emailUpdated = false;
+        $emailUpdated = $this->emailService->processEmailUpdate($validated, $user);
 
         try {
-            if (isset($validated['email']) && $validated['email'] !== $user->email) {
-                $newEmail = $validated['email'];
+            $this->updateUserProfile($validated, $user);
 
-                $user->new_email = $newEmail;
-                $user->save();
+            $successMessage = MessageHelper::generateSuccessMessage($emailUpdated);
 
-                Notification::route('mail', $newEmail)
-                    ->notify(new VerifyEmail($newEmail, $user->id));
-
-                unset($validated['email']);
-                $emailUpdated = true;
-            }
-
-            $user->update(array_filter($validated));
-
-            $successMessage = 'Perfil atualizado com sucesso!';
-            if ($emailUpdated) {
-                $successMessage .= ' Um e-mail de confirmação também foi enviado para o novo endereço.';
-            }
-
-            $allNull = empty(array_filter($validated, function ($value) {
-                return !is_null($value);
-            }));
-
-            if ($allNull && $emailUpdated) {
+            if ($this->allKeysAreNull($validated) && $emailUpdated) {
                 return redirect()->back()->with('success', 'Um e-mail de confirmação foi enviado para o novo endereço.');
             }
 
@@ -68,5 +44,15 @@ class PublicUserController extends Controller
         }
     }
 
+    private function updateUserProfile($validated, $user)
+    {
+        $user->update(array_filter($validated));
+    }
 
+    private function allKeysAreNull($validated)
+    {
+        return empty(array_filter($validated, function ($value) {
+            return !is_null($value);
+        }));
+    }
 }
