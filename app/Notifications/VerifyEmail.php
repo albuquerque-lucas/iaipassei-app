@@ -29,7 +29,7 @@ class VerifyEmail extends Notification
             Carbon::now()->addMinutes(60),
             [
                 'id' => $this->userId,
-                'hash' => Hash::make($this->newEmail),
+                'email' => $this->newEmail,
             ]
         );
     }

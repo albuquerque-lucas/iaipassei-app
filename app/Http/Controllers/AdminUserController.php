@@ -135,12 +135,17 @@ class AdminUserController extends Controller
         return $this->update($request, Auth::id());
     }
 
-    public function confirmEmailChange(Request $request, $id, $hash)
+    public function confirmEmailChange(Request $request, $id, $email)
     {
+        if (! $request->hasValidSignature()) {
+            return redirect()->route('public.profile.index', ['slug' => User::findOrFail($id)->slug])
+                            ->withErrors(['error' => 'Token inválido ou expirado.']);
+        }
+
         $user = User::findOrFail($id);
-        // dd($user);
-        if (! Hash::check($user->new_email, $hash)) {
-            return redirect()->route('public.profile.index', ['slug' => $user->slug])->withErrors(['error' => 'Token inválido ou expirado.']);
+        if ($user->new_email !== $email) {
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])
+                            ->withErrors(['error' => 'Token inválido ou expirado.']);
         }
 
         $user->email = $user->new_email;
@@ -149,6 +154,6 @@ class AdminUserController extends Controller
 
         event(new Verified($user));
 
-        return redirect()->route('public.profile.index', ['slug', $user->slug])->with('success', 'E-mail alterado com sucesso!');
+        return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'E-mail alterado com sucesso!');
     }
 }

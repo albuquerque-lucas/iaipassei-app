@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
             'update' => 'public.users.update',
         ]);
 
-    Route::get('confirm-email-change/{id}/{hash}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
+    Route::get('confirm-email-change/{id}/{email}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
 });
 
 
