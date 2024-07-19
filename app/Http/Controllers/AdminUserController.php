@@ -137,23 +137,32 @@ class AdminUserController extends Controller
 
     public function confirmEmailChange(Request $request, $id, $email)
     {
-        if (! $request->hasValidSignature()) {
+        try {
+            if (! $request->hasValidSignature()) {
+                return redirect()->route('public.profile.index', ['slug' => User::findOrFail($id)->slug])
+                                ->withErrors(['error' => 'Token inválido ou expirado.']);
+            }
+
+            $user = User::findOrFail($id);
+
+            if ($user->new_email !== $email) {
+                return redirect()->route('public.profile.index', ['slug' => $user->slug])
+                                ->withErrors(['error' => 'Token inválido ou expirado.']);
+            }
+
+            $user->email = $user->new_email;
+            $user->new_email = null;
+            $user->save();
+
+            event(new Verified($user));
+
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'E-mail alterado com sucesso!');
+        } catch (Exception $e) {
+            // Log::error($e->getMessage());
+
             return redirect()->route('public.profile.index', ['slug' => User::findOrFail($id)->slug])
-                            ->withErrors(['error' => 'Token inválido ou expirado.']);
+                            ->withErrors(['error' => 'Ocorreu um erro ao tentar alterar o e-mail. Por favor, tente novamente mais tarde.']);
         }
-
-        $user = User::findOrFail($id);
-        if ($user->new_email !== $email) {
-            return redirect()->route('public.profile.index', ['slug' => $user->slug])
-                            ->withErrors(['error' => 'Token inválido ou expirado.']);
-        }
-
-        $user->email = $user->new_email;
-        $user->new_email = null;
-        $user->save();
-
-        event(new Verified($user));
-
-        return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'E-mail alterado com sucesso!');
     }
+
 }
