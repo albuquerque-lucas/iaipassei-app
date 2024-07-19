@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AccountPlan;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\BulkDeleteTrait;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Notification;
 
 class AdminUserController extends Controller
 {
@@ -69,6 +72,7 @@ class AdminUserController extends Controller
     public function update(UserUpdateRequest $request, $slug)
     {
         $validated = $request->validated();
+        $user = User::where('slug', $slug)->firstOrFail();
 
         if (isset($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
@@ -83,7 +87,18 @@ class AdminUserController extends Controller
         }
 
         try {
-            $user = User::where('slug', $slug)->firstOrFail();
+            if (isset($validated['email']) && $validated['email'] !== $user->email) {
+                $newEmail = $validated['email'];
+
+                $user->new_email = $newEmail;
+                $user->save();
+
+                Notification::route('mail', $newEmail)
+                    ->notify(new VerifyEmail);
+
+                return redirect()->back()->with('success', 'Um e-mail de confirmação foi enviado para o novo endereço.');
+            }
+
             $user->update(array_filter($validated));
 
             return redirect()->back()->with('success', 'Usuário atualizado com sucesso!');
@@ -119,4 +134,35 @@ class AdminUserController extends Controller
     {
         return $this->update($request, Auth::id());
     }
+
+    public function confirmEmailChange(Request $request, $id, $email)
+    {
+        try {
+            if (! $request->hasValidSignature()) {
+                return redirect()->route('public.profile.index', ['slug' => User::findOrFail($id)->slug])
+                                ->withErrors(['error' => 'Token inválido ou expirado.']);
+            }
+
+            $user = User::findOrFail($id);
+
+            if ($user->new_email !== $email) {
+                return redirect()->route('public.profile.index', ['slug' => $user->slug])
+                                ->withErrors(['error' => 'Token inválido ou expirado.']);
+            }
+
+            $user->email = $user->new_email;
+            $user->new_email = null;
+            $user->save();
+
+            event(new Verified($user));
+
+            return redirect()->route('public.profile.index', ['slug' => $user->slug])->with('success', 'E-mail alterado com sucesso!');
+        } catch (Exception $e) {
+            // Log::error($e->getMessage());
+
+            return redirect()->route('public.profile.index', ['slug' => User::findOrFail($id)->slug])
+                            ->withErrors(['error' => 'Ocorreu um erro ao tentar alterar o e-mail. Por favor, tente novamente mais tarde.']);
+        }
+    }
+
 }

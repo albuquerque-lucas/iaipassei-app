@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExamController;
 use App\Http\Controllers\AdminExamQuestionController;
 use App\Http\Controllers\AdminQuestionAlternativeController;
+use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\OpenAIAPIController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckAccountLevel;
@@ -37,16 +38,16 @@ Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback
 
 
 Route::get('/email/verify', [EmailVerificationController::class, 'show'])
-    ->middleware('auth')
-    ->name('verification.notice');
+->middleware('auth')
+->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
-    ->middleware(['auth', 'signed'])
-    ->name('verification.verify');
+->middleware(['auth', 'signed'])
+->name('verification.verify');
 
 Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
-    ->middleware(['auth', 'throttle:6,1'])
-    ->name('verification.send');
+->middleware(['auth', 'throttle:6,1'])
+->name('verification.send');
 
 // Rotas de autenticação de administrador
 Route::get('admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login.index');
@@ -58,6 +59,16 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 Route::middleware(['auth'])->group(function () {
     Route::get('perfil/{slug}', [UserProfileController::class, 'publicProfile'])->name('public.profile.index');
 
+    Route::resource('public/users', PublicUserController::class)
+    ->only(['update'])
+    ->parameters([
+        'users' => 'user:slug'
+        ])
+        ->names([
+            'update' => 'public.users.update',
+        ]);
+
+    Route::get('confirm-email-change/{id}/{email}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
 });
 
 

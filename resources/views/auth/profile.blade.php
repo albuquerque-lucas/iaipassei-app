@@ -33,7 +33,7 @@
             </div>
             @if(auth()->user()->id == $user->id)
                 <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-                    <x-forms.update-user-personal :user="$user" />
+                    <x-forms.update-user-personal :user="$user" actionRoute="admin.users.update"/>
                     <hr>
                     <x-forms.update-user-race-gender :user="$user" />
                     <hr>
