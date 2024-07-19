@@ -7,17 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cviebrock\EloquentSluggable\Sluggable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, Sluggable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'account_plan_id',
         'first_name',
@@ -32,24 +28,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'gender',
         'race',
         'disability',
-        'slug', // Adicionando slug aos fillables
+        'slug',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -58,9 +44,21 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /**
-     * Retorna a configuração para geração de slugs.
-     */
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->profileSettings()->create([
+                'show_username' => true,
+                'show_email' => true,
+                'show_sex' => false,
+                'show_sexual_orientation' => false,
+                'show_gender' => false,
+                'show_race' => false,
+                'show_disability' => false,
+            ]);
+        });
+    }
+
     public function sluggable(): array
     {
         return [

@@ -11,6 +11,7 @@ class ProfileSettings extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'show_username',
         'show_email',
         'show_sex',
