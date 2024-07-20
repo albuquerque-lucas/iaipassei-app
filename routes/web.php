@@ -19,6 +19,7 @@ use App\Http\Middleware\CheckAccessLevel;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\ProfileSettingsController;
 
 // Rota para página inicial
 Route::get('/', function () {
@@ -69,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
     Route::get('confirm-email-change/{id}/{email}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
+
+    Route::post('/profile-settings/update', [ProfileSettingsController::class, 'update'])->name('profile-settings.update');
 });
 
 
