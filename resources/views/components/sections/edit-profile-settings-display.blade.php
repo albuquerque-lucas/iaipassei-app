@@ -1,6 +1,6 @@
 <div class="mt-4">
     <h4>Configurações do Perfil</h4>
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" id="settings-list">
         <li class="list-group-item d-flex justify-content-between align-items-center">
             Mostrar Nome de Usuário
             <div class="form-check form-switch">
@@ -44,37 +44,90 @@
             </div>
         </li>
     </ul>
+    <div class="mt-3 d-none" id="buttons-container">
+        <button class="btn btn-primary" id="save-button">Salvar</button>
+        <button class="btn btn-secondary" id="cancel-button">Cancelar</button>
+    </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const switches = document.querySelectorAll('.form-check-input');
+        const buttonsContainer = document.getElementById('buttons-container');
+        let originalSettings = {};
+        let modifiedSettings = [];
+
+        // Salvar os estados originais
+        switches.forEach(switchElement => {
+            originalSettings[switchElement.id] = switchElement.checked;
+        });
 
         switches.forEach(switchElement => {
             switchElement.addEventListener('change', function() {
                 const setting = this.id;
                 const value = this.checked;
 
-                fetch(`/profile-settings/update`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        setting: setting,
-                        value: value
-                    })
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('Configuração atualizada com sucesso.');
-                    } else {
-                        console.log('Erro ao atualizar configuração.');
+                // Verificar se a configuração foi modificada
+                if (originalSettings[setting] !== value) {
+                    if (!modifiedSettings.includes(setting)) {
+                        modifiedSettings.push(setting);
                     }
-                }).catch(error => console.log('Erro:', error));
+                } else {
+                    const index = modifiedSettings.indexOf(setting);
+                    if (index > -1) {
+                        modifiedSettings.splice(index, 1);
+                    }
+                }
+
+                // Mostrar ou esconder os botões
+                if (modifiedSettings.length > 0) {
+                    buttonsContainer.classList.remove('d-none');
+                } else {
+                    buttonsContainer.classList.add('d-none');
+                }
             });
+        });
+
+        // Salvar alterações
+        document.getElementById('save-button').addEventListener('click', function() {
+            const settingsToUpdate = {};
+            modifiedSettings.forEach(setting => {
+                const switchElement = document.getElementById(setting);
+                settingsToUpdate[setting] = switchElement.checked;
+            });
+
+            fetch(`/profile-settings/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(settingsToUpdate)
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Configurações atualizadas com sucesso.');
+                    // Atualizar os estados originais
+                    modifiedSettings.forEach(setting => {
+                        originalSettings[setting] = document.getElementById(setting).checked;
+                    });
+                    modifiedSettings = [];
+                    buttonsContainer.classList.add('d-none');
+                    // Recarregar a página
+                    location.reload();
+                } else {
+                    console.log('Erro ao atualizar configurações.');
+                }
+            }).catch(error => console.log('Erro:', error));
+        });
+
+        // Cancelar alterações
+        document.getElementById('cancel-button').addEventListener('click', function() {
+            switches.forEach(switchElement => {
+                switchElement.checked = originalSettings[switchElement.id];
+            });
+            modifiedSettings = [];
+            buttonsContainer.classList.add('d-none');
         });
     });
 </script>
-

@@ -13,16 +13,18 @@ class ProfileSettingsController extends Controller
         $user = Auth::user();
         $profileSettings = $user->profileSettings;
 
-        $setting = $request->input('setting');
-        $value = $request->input('value');
+        $settings = $request->all();
 
-        if (in_array($setting, ['show_username', 'show_email', 'show_sex', 'show_sexual_orientation', 'show_gender', 'show_race', 'show_disability'])) {
-            $profileSettings->$setting = $value;
-            $profileSettings->save();
+        $allowedSettings = ['show_username', 'show_email', 'show_sex', 'show_sexual_orientation', 'show_gender', 'show_race', 'show_disability'];
 
-            return response()->json(['success' => true]);
+        foreach ($settings as $setting => $value) {
+            if (in_array($setting, $allowedSettings)) {
+                $profileSettings->$setting = $value;
+            }
         }
 
-        return response()->json(['success' => false], 400);
+        $profileSettings->save();
+
+        return response()->json(['success' => true]);
     }
 }
