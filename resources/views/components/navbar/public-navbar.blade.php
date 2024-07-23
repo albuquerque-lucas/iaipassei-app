@@ -2,15 +2,16 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid container">
-        <a class="navbar-brand" href="#">Iai Passei</a>
+        <a class="navbar-brand" href="{{ route('welcome') }}">Iai Passei</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto">
-                <x-navbar.nav-item link="#" name="Início" active="true" />
+                <x-navbar.nav-item link="{{ route('welcome') }}" name="Início" active="true" />
                 <x-navbar.nav-item link="#" name="Sobre" />
                 <x-navbar.nav-item link="#" name="Contato" />
+                <x-navbar.nav-item link="{{ route('public.examinations.index') }}" name="Concursos" />
             </ul>
             @auth
                 <ul class="navbar-nav">
@@ -20,9 +21,9 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="{{ route('public.profile.index', $slug) }}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('public.profile.index', Auth::user()->slug) }}">Perfil</a></li>
                             <li>
-                                <form method="POST" action="{{ route('public.logout', $slug) }}">
+                                <form method="POST" action="{{ route('public.logout', Auth::user()->slug) }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">Logout</button>
                                 </form>

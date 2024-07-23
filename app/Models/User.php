@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Cviebrock\EloquentSluggable\Sluggable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -44,21 +45,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    protected static function booted()
-    {
-        static::created(function ($user) {
-            $user->profileSettings()->create([
-                'show_username' => true,
-                'show_email' => true,
-                'show_sex' => false,
-                'show_sexual_orientation' => false,
-                'show_gender' => false,
-                'show_race' => false,
-                'show_disability' => false,
-            ]);
-        });
-    }
-
     public function sluggable(): array
     {
         return [
@@ -91,10 +77,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function getById(int $id): self | null
     {
         return self::where('id', $id)->first();
-    }
-
-    public function profileSettings(): HasOne
-    {
-        return $this->hasOne(ProfileSettings::class);
     }
 }
