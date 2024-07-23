@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('concursos', [PublicPagesController::class, 'examinations'])->name('public.examinations.index');
     Route::get('concurso/{slug}', [PublicPagesController::class, 'examination'])->name('public.examinations.show');
     Route::post('concurso/{id}/subscribe', [PublicPagesController::class, 'subscribe'])->name('examinations.subscribe');
+    Route::delete('concurso/{id}/unsubscribe', [PublicPagesController::class, 'unsubscribe'])->name('examinations.unsubscribe');
 
     Route::resource('public/users', PublicUserController::class)
         ->only(['update'])

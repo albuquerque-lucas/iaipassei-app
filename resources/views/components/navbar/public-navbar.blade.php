@@ -21,9 +21,9 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="{{ route('public.profile.index', $slug) }}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('public.profile.index', Auth::user()->slug) }}">Perfil</a></li>
                             <li>
-                                <form method="POST" action="{{ route('public.logout', $slug) }}">
+                                <form method="POST" action="{{ route('public.logout', Auth::user()->slug) }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">Logout</button>
                                 </form>

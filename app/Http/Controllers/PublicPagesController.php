@@ -63,4 +63,21 @@ class PublicPagesController extends Controller
             return redirect()->back()->with('error', 'Erro ao realizar inscrição: ' . $e->getMessage());
         }
     }
+
+    public function unsubscribe($id)
+    {
+        try {
+            $examination = Examination::findOrFail($id);
+            $user = Auth::user();
+
+            if ($user->examinations->contains($examination->id)) {
+                $user->examinations()->detach($examination->id);
+                return redirect()->back()->with('success', 'Inscrição retirada com sucesso!');
+            }
+
+            return redirect()->back()->with('info', 'Você não está inscrito neste concurso.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao retirar inscrição: ' . $e->getMessage());
+        }
+    }
 }
