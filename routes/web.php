@@ -19,6 +19,7 @@ use App\Http\Middleware\CheckAccessLevel;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\PublicPagesController;
 
 // Rota para página inicial
 Route::get('/', function () {
@@ -58,19 +59,22 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 // Rotas públicas para usuários
 Route::middleware(['auth'])->group(function () {
     Route::get('perfil/{slug}', [UserProfileController::class, 'publicProfile'])->name('public.profile.index');
+    Route::get('concursos', [PublicPagesController::class, 'examinations'])->name('public.examinations.index');
+    Route::get('concurso/{slug}', [PublicPagesController::class, 'examination'])->name('public.examinations.show');
+    Route::post('concurso/{id}/subscribe', [PublicPagesController::class, 'subscribe'])->name('examinations.subscribe');
 
     Route::resource('public/users', PublicUserController::class)
-    ->only(['update'])
-    ->parameters([
-        'users' => 'user:slug'
+        ->only(['update'])
+        ->parameters([
+            'users' => 'user:slug'
         ])
         ->names([
             'update' => 'public.users.update',
         ]);
 
     Route::get('confirm-email-change/{id}/{email}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
-
 });
+
 
 
 

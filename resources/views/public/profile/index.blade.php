@@ -24,6 +24,11 @@
                         Editar Perfil
                     </button>
                 </li>
+                <li class="nav-item mx-1" role="presentation">
+                    <button class="nav-link" id="examination-tab" data-bs-toggle="tab" data-bs-target="#examination" type="button" role="tab" aria-controls="examination" aria-selected="false">
+                        Concursos
+                    </button>
+                </li>
             </ul>
         @endcan
 
@@ -42,6 +47,9 @@
                     <x-forms.update-user-password :user="$user" />
                 </div>
             @endif
+        </div>
+        <div class="tab-pane fade" id="examination" role="tabpanel" aria-labelledby="examination-tab">
+            Concursos Associados
         </div>
     </section>
 @endsection

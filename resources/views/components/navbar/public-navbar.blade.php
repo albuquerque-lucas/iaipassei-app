@@ -2,15 +2,16 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid container">
-        <a class="navbar-brand" href="#">Iai Passei</a>
+        <a class="navbar-brand" href="{{ route('welcome') }}">Iai Passei</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto">
-                <x-navbar.nav-item link="#" name="Início" active="true" />
+                <x-navbar.nav-item link="{{ route('welcome') }}" name="Início" active="true" />
                 <x-navbar.nav-item link="#" name="Sobre" />
                 <x-navbar.nav-item link="#" name="Contato" />
+                <x-navbar.nav-item link="{{ route('public.examinations.index') }}" name="Concursos" />
             </ul>
             @auth
                 <ul class="navbar-nav">
