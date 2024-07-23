@@ -47,9 +47,13 @@
                     <x-forms.update-user-password :user="$user" />
                 </div>
             @endif
-        </div>
-        <div class="tab-pane fade" id="examination" role="tabpanel" aria-labelledby="examination-tab">
-            Concursos Associados
+            <div class="tab-pane fade" id="examination" role="tabpanel" aria-labelledby="examination-tab">
+                @if($examinations)
+                    <x-sections.associated-examinations :examinations="$examinations" />
+                @else
+                    <p class="text-muted">Você não está inscrito em nenhum concurso.</p>
+                @endif
+            </div>
         </div>
     </section>
 @endsection
