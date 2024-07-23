@@ -12,7 +12,7 @@
             @endforeach
         @endif
 
-        @if(auth()->check() && auth()->user()->id == $user->id)
+        @can('viewSensitiveInfo', $user)
             <ul class="nav nav-tabs" id="profileTab" role="tablist">
                 <li class="nav-item mx-1" role="presentation">
                     <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
@@ -25,7 +25,7 @@
                     </button>
                 </li>
             </ul>
-        @endif
+        @endcan
 
         <div class="tab-content" id="profileTabContent">
             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">

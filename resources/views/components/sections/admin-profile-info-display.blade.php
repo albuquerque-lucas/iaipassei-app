@@ -8,13 +8,19 @@
     </div>
     <div class="card-body">
         <div class="info-section">
+            @can('viewSensitiveInfo', $user)
             <h6 class="card-title">Informações Pessoais</h6>
-
+            @endcan
+            @cannot('viewSensitiveInfo', $user)
+            <h6 class="card-title">Perfil</h6>
+            @endcannot
             <div class="info-item d-flex justify-content-between">
                 <p><strong>Usuário:</strong> {{ $user->username }}</p>
             </div>
+        </div>
 
-
+        @can('viewSensitiveInfo', $user)
+        <div class="info-section">
             <div class="info-item d-flex justify-content-between">
                 <p><strong>Email:</strong> {{ $user->email }}</p>
             </div>
@@ -60,9 +66,7 @@
             <div class="info-item d-flex justify-content-between">
                 <p><strong>Gênero:</strong> {{ $user->gender ?? 'Não informado' }}</p>
             </div>
-
         </div>
-
 
         <div class="info-section">
             <h6 class="card-title">Deficiência</h6>
@@ -71,12 +75,12 @@
             </div>
         </div>
 
-
         <div class="info-section">
             <h6 class="card-title">Conta</h6>
             <div class="info-item d-flex justify-content-between">
                 <p>{{ $user->accountPlan->name ?? 'Não informado' }}</p>
             </div>
         </div>
+        @endcan
     </div>
 </div>
