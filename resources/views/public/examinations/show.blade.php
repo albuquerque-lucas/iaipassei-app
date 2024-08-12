@@ -49,7 +49,7 @@
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-primary">Ver detalhes</a>
+                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-primary">Simulado</a>
                     </div>
                 </li>
                 @endforeach
