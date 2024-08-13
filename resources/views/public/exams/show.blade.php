@@ -23,10 +23,24 @@
             @foreach ($questions as $question)
                 <div class="col-md-12 mb-4">
                     <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Questão {{ $question->question_number }}</h5>
-                            <p class="card-text">{{ $question->statement }}</p>
-                            <ul class="list-group list-group-flush">
+                        <div class="card-body" x-data="{
+                            selected: (document.querySelector('input[name=question_{{ $question->id }}]:checked') ? document.querySelector('input[name=question_{{ $question->id }}]:checked').value : null)
+                        }">
+                            <div class="d-flex justify-content-between" style="height:6rem">
+                                <h5 class="card-title">Questão {{ $question->question_number }}</h5>
+                                <p class="card-text">
+                                    {{ $question->statement }}
+                                </p>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-primary ms-3"
+                                    style="max-height: 2.5rem"
+                                    x-show="selected !== null"
+                                    @click="selected = null; $refs['question_{{ $question->id }}'].querySelector('input:checked').checked = false;">
+                                    Desmarcar
+                                </button>
+                            </div>
+                            <ul class="list-group list-group-flush" x-ref="question_{{ $question->id }}">
                                 @foreach ($question->alternatives as $alternative)
                                     <li class="list-group-item d-flex mx-2">
                                         <span class="mx-2 fw-bold">
@@ -39,6 +53,7 @@
                                                 name="question_{{ $question->id }}"
                                                 id="alternative_{{ $alternative->id }}"
                                                 value="{{ $alternative->id }}"
+                                                x-model="selected"
                                                 required>
                                             <label class="form-check-label" for="alternative_{{ $alternative->id }}">
                                                 {{ $alternative->text }}
