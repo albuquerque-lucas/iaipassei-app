@@ -7,7 +7,6 @@
     }
 </style>
 
-<!-- Exibir mensagens de sucesso ou erro -->
 @if (session('success'))
     <x-cards.flash-message-card type="success" :message="session('success')" />
 @elseif (session('error'))
@@ -33,9 +32,17 @@
             @foreach ($questions as $question)
                 <div class="col-md-12 mb-4">
                     <div class="card">
-                        <div class="card-body" x-data="{
-                            selected: {{ $markedAlternatives->has($question->id) ? $markedAlternatives->get($question->id) : 'null' }}
-                        }">
+                        <div class="card-body"
+                            x-data="{
+                                selected: {{ $markedAlternatives->has($question->id) ? $markedAlternatives->get($question->id) : 'null' }},
+                                showEraser: false
+                            }"
+                            x-init="
+                                showEraser = false;
+                                if (selected !== null && selected != {{ $markedAlternatives->get($question->id) ?? 'null' }}) {
+                                    showEraser = true;
+                                }
+                            ">
                             <div class="d-flex justify-content-between align-items-start" style="min-height:3rem">
                                 <h5 class="card-title">Questão {{ $question->question_number }}</h5>
                                 <p class="card-text">
@@ -44,8 +51,8 @@
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-primary ms-3"
-                                    x-show="selected !== null"
-                                    @click="selected = null; $refs['question_{{ $question->id }}'].querySelector('input:checked').checked = false;">
+                                    x-show="showEraser"
+                                    @click="selected = null; showEraser = false; $refs['question_{{ $question->id }}'].querySelector('input:checked').checked = false;">
                                     <i class="fa-solid fa-eraser"></i> Apagar
                                 </button>
                             </div>
@@ -64,6 +71,7 @@
                                                     id="alternative_{{ $alternative->id }}"
                                                     value="{{ $alternative->id }}"
                                                     x-model="selected"
+                                                    @change="showEraser = true"
                                                     required
                                                     @if($markedAlternatives->has($question->id) && $markedAlternatives->get($question->id) == $alternative->id) checked @endif
                                                     >
