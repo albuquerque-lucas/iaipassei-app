@@ -54,7 +54,8 @@
                                                 id="alternative_{{ $alternative->id }}"
                                                 value="{{ $alternative->id }}"
                                                 x-model="selected"
-                                                required>
+                                                required
+                                                >
                                             <label class="form-check-label" for="alternative_{{ $alternative->id }}">
                                                 {{ $alternative->text }}
                                             </label>
