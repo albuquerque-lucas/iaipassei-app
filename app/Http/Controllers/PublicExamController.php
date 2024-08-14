@@ -75,7 +75,7 @@ class PublicExamController extends Controller
             return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'percentages'));
         } catch (Exception $e) {
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
-            return redirect()->route('public.exams.index')->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
+            return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
     }
 
