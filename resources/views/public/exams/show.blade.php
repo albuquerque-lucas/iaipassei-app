@@ -7,15 +7,18 @@
     }
 </style>
 
-@if (session('success'))
-    <x-cards.flash-message-card type="success" :message="session('success')" />
-@elseif (session('error'))
-    <x-cards.flash-message-card type="error" :message="session('error')" />
-@endif
 
 <section class="quiz-page container mt-5">
     <h4 class="mb-4">{{ $exam->title }}</h4>
-    <div class="d-flex flex-column align-items-center mt-5 mb-3">
+    <div style="height:5rem">
+        @if (session('success'))
+            <x-cards.flash-message-card type="success" :message="session('success')" />
+        @elseif (session('error'))
+            <x-cards.flash-message-card type="error" :message="session('error')" />
+        @endif
+
+    </div>
+    <div class="d-flex flex-column align-items-center mb-3">
         <div>
             {{ $questions->links('pagination::bootstrap-4') }}
         </div>
@@ -58,7 +61,7 @@
                             </div>
                             <ul class="list-group list-group-flush" x-ref="question_{{ $question->id }}">
                                 @foreach ($question->alternatives as $alternative)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center mx-2">
+                                    <label for="alternative_{{ $alternative->id }}" class="list-group-item d-flex justify-content-between align-items-center mx-2">
                                         <div class="d-flex align-items-center">
                                             <span class="mx-2 fw-bold">
                                                 {{ $alternative->letter }} -
@@ -81,11 +84,11 @@
                                             </div>
                                         </div>
                                         @if($markedAlternatives->has($question->id) && $markedAlternatives->get($question->id) == $alternative->id)
-                                            <span class=" badge rounded-pill bg-success">
+                                            <span class="badge rounded-pill bg-success">
                                                 <i class="fa-solid fa-check"></i>
                                             </span>
                                         @endif
-                                    </li>
+                                    </label>
                                 @endforeach
                             </ul>
                         </div>
