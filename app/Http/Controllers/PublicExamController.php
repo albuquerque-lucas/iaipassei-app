@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 class PublicExamController extends Controller
 {
@@ -22,7 +23,7 @@ class PublicExamController extends Controller
 
             $title = $exam->title;
             return view('public.exams.show', compact('exam', 'questions', 'title', 'markedAlternatives'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Erro ao carregar o exame: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocorreu um erro ao carregar o exame. Por favor, tente novamente mais tarde.');
         }
@@ -51,7 +52,7 @@ class PublicExamController extends Controller
             } else {
                 return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'Respostas enviadas com sucesso! Prossiga para a próxima página.');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Erro ao enviar as respostas: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocorreu um erro ao enviar as respostas. Por favor, tente novamente mais tarde.');
         }
@@ -63,8 +64,9 @@ class PublicExamController extends Controller
     {
         try {
             $exam = Exam::where('slug', $slug)->firstOrFail();
-            return view('public.exams.results', compact('exam'));
-        } catch (\Exception $e) {
+            $title = "Resultados | $exam->title";
+            return view('public.exams.results', compact('exam', 'title'));
+        } catch (Exception $e) {
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.index')->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
