@@ -69,15 +69,16 @@ class PublicExamController extends Controller
             $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
 
-            $percentages = $this->calculatePercentages($markedAlternatives);
+            $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
 
             $title = "Resultados | $exam->title";
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'percentages'));
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
         } catch (Exception $e) {
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
     }
+
 
     private function getExamBySlug($slug)
     {
@@ -101,23 +102,34 @@ class PublicExamController extends Controller
         });
     }
 
-    private function calculatePercentages($markedAlternatives)
+    private function calculateAlternativeStatistics($markedAlternatives)
     {
         return $markedAlternatives->mapWithKeys(function($alternative) {
-            $totalUsersForQuestion = User::whereHas('markedAlternatives', function($query) use ($alternative) {
+            // Total de usuários que marcaram qualquer alternativa para a questão
+            $totalUsersForQuestion = \App\Models\User::whereHas('markedAlternatives', function($query) use ($alternative) {
                 $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id);
             })->count();
 
-            $usersWithSameAlternative = User::whereHas('markedAlternatives', function($query) use ($alternative) {
+            // Usuários que marcaram a mesma alternativa
+            $usersWithSameAlternative = \App\Models\User::whereHas('markedAlternatives', function($query) use ($alternative) {
                 $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id)
                     ->where('user_question_alternatives.question_alternative_id', $alternative->id);
             })->count();
 
+            // Calcular a porcentagem
             $percentage = $totalUsersForQuestion > 0 ? ($usersWithSameAlternative / $totalUsersForQuestion) * 100 : 0;
 
-            return [$alternative->id => $percentage];
+            // Retornar os dados como uma matriz associativa
+            return [
+                $alternative->id => [
+                    'percentage' => $percentage,
+                    'users_with_alternative' => $usersWithSameAlternative,
+                    'total_users_for_question' => $totalUsersForQuestion
+                ]
+            ];
         });
     }
+
 
 
 

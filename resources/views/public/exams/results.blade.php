@@ -23,7 +23,7 @@
         <!-- Tab 1: Resultados por Questão -->
         <div class="tab-pane fade show active" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
             <x-sections.examResults.result-per-question
-                :percentages="$percentages"
+                :statistics="$statistics"
                 :markedAlternatives="$markedAlternatives"
             />
         </div>

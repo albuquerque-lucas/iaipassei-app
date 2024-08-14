@@ -1,4 +1,4 @@
-@props(['markedAlternatives', 'percentages'])
+@props(['markedAlternatives', 'statistics'])
 
 <div>
     @if ($markedAlternatives->isEmpty())
@@ -13,7 +13,8 @@
                     </div>
                     <div>
                         <span>
-                            {{ fmod($percentages[$alternative->id], 1) == 0 ? number_format($percentages[$alternative->id], 0) : number_format($percentages[$alternative->id], 2) }}%
+                            {{ $statistics[$alternative->id]['users_with_alternative'] }} de {{ $statistics[$alternative->id]['total_users_for_question'] }} usuários
+                            ({{ fmod($statistics[$alternative->id]['percentage'], 1) == 0 ? number_format($statistics[$alternative->id]['percentage'], 0) : number_format($statistics[$alternative->id]['percentage'], 2) }}%)
                         </span>
                     </div>
                 </li>
