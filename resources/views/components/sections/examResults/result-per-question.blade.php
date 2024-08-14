@@ -1,1 +1,23 @@
-<p>Aqui serão exibidos os resultados por questão.</p>
+@props(['markedAlternatives', 'percentages'])
+
+<div>
+    @if ($markedAlternatives->isEmpty())
+        <p>Você não marcou nenhuma questão.</p>
+    @else
+        <ul class="list-group">
+            @foreach ($markedAlternatives as $alternative)
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <span class="d-inline-block fw-bold" style="width: 150px;">Questão {{ $alternative->examQuestion->question_number }}:</span>
+                        <span class="d-inline-block fw-bold" style="width: 50px;">{{ $alternative->letter }}</span>
+                    </div>
+                    <div>
+                        <span>
+                            {{ fmod($percentages[$alternative->id], 1) == 0 ? number_format($percentages[$alternative->id], 0) : number_format($percentages[$alternative->id], 2) }}%
+                        </span>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    @endif
+</div>

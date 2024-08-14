@@ -22,7 +22,10 @@
     <div class="tab-content mt-3" id="resultTabsContent">
         <!-- Tab 1: Resultados por Questão -->
         <div class="tab-pane fade show active" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
-            <x-sections.examResults.result-per-question />
+            <x-sections.examResults.result-per-question
+                :percentages="$percentages"
+                :markedAlternatives="$markedAlternatives"
+            />
         </div>
 
         <!-- Tab 2: Resultados Completos -->
