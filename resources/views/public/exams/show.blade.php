@@ -81,7 +81,7 @@
                                             </div>
                                         </div>
                                         @if($markedAlternatives->has($question->id) && $markedAlternatives->get($question->id) == $alternative->id)
-                                            <span class="badge bg-success">
+                                            <span class=" badge rounded-pill bg-success">
                                                 <i class="fa-solid fa-check"></i>
                                             </span>
                                         @endif
