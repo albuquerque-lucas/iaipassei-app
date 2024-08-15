@@ -9,7 +9,12 @@
 
 
 <section class="quiz-page container mt-5">
-    <h4 class="mb-4">{{ $exam->title }}</h4>
+    <div class="w-100 d-flex justify-content-between align-items-start p-2">
+        <h4 class="mb-4 text-start">{{ $exam->title }}</h4>
+        <a href="{{ route('public.examinations.show', ['slug' => $exam->examination->slug]) }}" class="btn btn-secondary">
+            Voltar
+        </a>
+    </div>
     <div style="height:5rem">
         @if (session('success'))
             <x-cards.flash-message-card type="success" :message="session('success')" />
