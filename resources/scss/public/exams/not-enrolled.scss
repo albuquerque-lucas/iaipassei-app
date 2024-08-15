@@ -1,0 +1,28 @@
+.form-check-input {
+    background-color: #ddd;
+}
+
+.alert {
+    background-color: transparent;
+    color: #333;
+    text-align: center;
+}
+
+.quiz-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.not-enrolled-alert {
+    font-size: 1.2rem;
+    color: #333;
+}

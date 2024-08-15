@@ -37,7 +37,27 @@ class PublicPagesController extends Controller
     public function examination($slug)
     {
         try {
-            $examination = Examination::with(['educationLevel', 'exams'])->where('slug', $slug)->firstOrFail();
+            $examination = Examination::with(['educationLevel', 'exams.examQuestions'])
+                                    ->where('slug', $slug)
+                                    ->firstOrFail();
+
+            $user = auth()->user();
+
+            foreach ($examination->exams as $exam) {
+                $totalQuestions = $exam->examQuestions->count();
+                $answeredQuestions = $user->markedAlternatives()
+                                        ->whereIn('user_question_alternatives.exam_question_id', $exam->examQuestions->pluck('id'))
+                                        ->count();
+
+                if ($answeredQuestions === 0) {
+                    $exam->resultStatus = null;
+                } elseif ($answeredQuestions < $totalQuestions) {
+                    $exam->resultStatus = 'partial';
+                } else {
+                    $exam->resultStatus = 'final';
+                }
+            }
+
             return view('public.examinations.show', [
                 'examination' => $examination,
                 'title' => $examination->title . ' | Concursos | IaiPassei',
@@ -46,6 +66,7 @@ class PublicPagesController extends Controller
             return redirect()->back()->with('error', 'Erro ao carregar concurso: ' . $e->getMessage());
         }
     }
+
 
     public function subscribe($id)
     {

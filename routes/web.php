@@ -20,6 +20,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\PublicPagesController;
+use App\Http\Controllers\PublicExamController;
 
 // Rota para página inicial
 Route::get('/', function () {
@@ -63,6 +64,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('concurso/{slug}', [PublicPagesController::class, 'examination'])->name('public.examinations.show');
     Route::post('concurso/{id}/subscribe', [PublicPagesController::class, 'subscribe'])->name('examinations.subscribe');
     Route::delete('concurso/{id}/unsubscribe', [PublicPagesController::class, 'unsubscribe'])->name('examinations.unsubscribe');
+
+    Route::post('provas/{exam:slug}/submit', [PublicExamController::class, 'submit'])->name('public.exams.submit');
+    Route::get('provas/{exam:slug}/resultados', [PublicExamController::class, 'results'])->name('public.exams.results');
+    Route::resource('provas', PublicExamController::class)
+        ->only(['show'])
+        ->parameters([
+            'provas' => 'exam:slug'
+        ])
+        ->names([
+            'index' => 'public.exams.index',
+            'show' => 'public.exams.show',
+        ]);
 
     Route::resource('public/users', PublicUserController::class)
         ->only(['update'])

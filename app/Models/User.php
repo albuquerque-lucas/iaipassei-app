@@ -64,6 +64,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(AccountPlan::class);
     }
 
+    public function markedAlternatives(): BelongsToMany
+    {
+        return $this->belongsToMany(QuestionAlternative::class, 'user_question_alternatives')
+                    ->withPivot('exam_question_id')
+                    ->withTimestamps();
+    }
+
     public static function getAll(string $order, string $orderBy = 'id'): LengthAwarePaginator
     {
         return self::orderBy($orderBy, $order)->paginate();
@@ -78,4 +85,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return self::where('id', $id)->first();
     }
+
 }

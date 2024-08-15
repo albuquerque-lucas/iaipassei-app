@@ -48,9 +48,19 @@
                         <p class="mb-1"><strong>Data:</strong> {{ $exam->date->format('d/m/Y') }}</p>
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
-                    <div>
-                        <a href="#" class="btn btn-primary">Ver detalhes</a>
+                    <div class="d-flex flex-column">
+                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-primary btn-sm my-1">Simulado</a>
+                        @can('canAccessExam', $exam)
+                            @if($exam->resultStatus === 'final')
+                                <a href="#" class="btn btn-secondary btn-sm my-1">Resultado Final</a>
+                            @elseif($exam->resultStatus === 'partial')
+                                <a href="#" class="btn btn-secondary btn-sm my-1">Resultados Parciais</a>
+                            @else
+                                <a href="#" class="btn btn-secondary btn-sm my-1">Resultado</a>
+                            @endif
+                        @endcan
                     </div>
+
                 </li>
                 @endforeach
             </ul>

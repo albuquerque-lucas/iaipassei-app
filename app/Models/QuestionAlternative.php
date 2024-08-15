@@ -29,6 +29,14 @@ class QuestionAlternative extends Model
         return $this->belongsTo(ExamQuestion::class);
     }
 
+    public function markedByUsers(): BelongsToMany
+{
+    return $this->belongsToMany(User::class, 'user_question_alternatives')
+                ->withPivot('exam_question_id')
+                ->withTimestamps();
+}
+
+
     public static function getAll(string $order, string $orderBy = 'id'): LengthAwarePaginator
     {
         return self::orderBy($orderBy, $order)->paginate();
