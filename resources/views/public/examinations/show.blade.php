@@ -19,17 +19,17 @@
         <div class="card-body examination-card-body">
             <h5 class="card-title">{{ $examination->title }}</h5>
             <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
-            <p class="card-text"><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
+            <p class="card-text"><strong>Escolaridade:</strong> {{ $examination->educationLevel->name }}</p>
             @auth
                 @if(auth()->user()->examinations->contains($examination->id))
                     <span class="badge position-absolute top-0 end-0 m-3 p-2 rounded-pill badge-custom">
                         Inscrito
                         <i class="fa-solid fa-check ms-1"></i>
                     </span>
-                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="">
+                    <form id="unsubscribeForm" action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-secondary delete-btn btn-sm">
+                        <button type="button" id="unsubscribeBtn" class="btn btn-secondary delete-btn btn-sm">
                             Retirar Inscrição
                             <i class="fa-solid fa-ban ms-1"></i>
                         </button>
