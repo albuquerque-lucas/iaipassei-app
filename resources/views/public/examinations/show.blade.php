@@ -29,7 +29,10 @@
                     <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Retirar Inscrição</button>
+                        <button type="submit" class="btn btn-secondary delete-btn btn-sm">
+                            Retirar Inscrição
+                            <i class="fa-solid fa-ban ms-1"></i>
+                        </button>
                     </form>
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
@@ -48,21 +51,30 @@
 
             <ul class="list-group">
                 @foreach($examination->exams as $exam)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h6 class="mb-1">{{ $exam->title }}</h6>
                         <p class="mb-1"><strong>Data:</strong> {{ $exam->date->format('d/m/Y') }}</p>
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
-                    <div class="d-flex flex-column">
-                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-primary btn-sm my-1">Simulado</a>
+                    <div class="d-flex flex-column align-items-end w-25">
+                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-primary btn-sm my-1 w-50">
+                            Simulado
+                            <i class="fa-solid fa-file-signature ms-1"></i>
+                        </a>
                         @can('canAccessExam', $exam)
                             @if($exam->resultStatus === 'final')
-                                <a href="#" class="btn btn-secondary btn-sm my-1">Resultado Final</a>
+                                <a href="#" class="btn btn-secondary btn-sm my-1 w-50">
+                                    Resultado Final
+                                </a>
                             @elseif($exam->resultStatus === 'partial')
-                                <a href="#" class="btn btn-secondary btn-sm my-1">Resultados Parciais</a>
+                                <a href="#" class="btn btn-secondary btn-sm my-1 w-50">
+                                    Resultados Parciais
+                                </a>
                             @else
-                                <a href="#" class="btn btn-secondary btn-sm my-1">Resultado</a>
+                                <a href="#" class="btn btn-secondary btn-sm my-1 w-50">
+                                    Resultado
+                                </a>
                             @endif
                         @endcan
                     </div>
