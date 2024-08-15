@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Exception;
+use App\Policies\UserPolicy;
 
 class PublicExamController extends Controller
 {
@@ -14,6 +18,12 @@ class PublicExamController extends Controller
     {
         try {
             $exam = Exam::where('slug', $slug)->firstOrFail();
+            $user = Auth::user();
+            if ($user->cannot('canAccessExam', $exam)) {
+                $title = $exam->title;
+                return view('public.exams.not-enrolled', compact('exam', 'title'));
+            }
+
             $page = $request->input('page', 1);
             $questions = ExamQuestion::where('exam_id', $exam->id)->paginate(5);
 
