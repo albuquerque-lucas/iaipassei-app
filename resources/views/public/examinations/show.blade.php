@@ -64,15 +64,15 @@
                         </a>
                         @can('canAccessExam', $exam)
                             @if($exam->resultStatus === 'final')
-                                <a href="#" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
                                     Resultado Final
                                 </a>
                             @elseif($exam->resultStatus === 'partial')
-                                <a href="#" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
                                     Resultados Parciais
                                 </a>
                             @else
-                                <a href="#" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
                                     Resultado
                                 </a>
                             @endif

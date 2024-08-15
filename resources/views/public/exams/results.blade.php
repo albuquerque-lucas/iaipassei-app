@@ -5,18 +5,25 @@
     <h1 class="mb-4">Resultados da prova</h1>
 
     <!-- Sistema de Tabs -->
-    <ul class="nav nav-tabs" id="resultTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
-                Resultados por Questão
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
-                Resultados Completos
-            </button>
-        </li>
-    </ul>
+    <div class="d-flex align-items-center justify-content-between p-1">
+        <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
+                    Resultados por Questão
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
+                    Resultados Completos
+                </button>
+            </li>
+        </ul>
+        <div class="w-25 d-flex align-items-center justify-content-end">
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-secondary">
+                Voltar
+            </a>
+        </div>
+    </div>
 
     <!-- Conteúdo das Tabs -->
     <div class="tab-content mt-3" id="resultTabsContent">
