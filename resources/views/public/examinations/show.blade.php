@@ -4,23 +4,28 @@
 <div class="container my-5">
     <h3 class="mb-4">{{ $examination->title }}</h3>
 
-    @if(session('success'))
-        <x-cards.flash-message-card type="success" :message="session('success')" />
-    @elseif(session('error'))
-        <x-cards.flash-message-card type="error" :message="session('error')" />
-    @elseif(session('info'))
-        <x-cards.flash-message-card type="info" :message="session('info')" />
-    @endif
+    <div style="min-height: 5rem">
+        @if(session('success'))
+            <x-cards.flash-message-card type="success" :message="session('success')" />
+        @elseif(session('error'))
+            <x-cards.flash-message-card type="error" :message="session('error')" />
+        @elseif(session('info'))
+            <x-cards.flash-message-card type="info" :message="session('info')" />
+        @endif
+    </div>
 
     <div class="card mb-4 position-relative">
-        <div class="card-body">
+        <div class="card-body" style="min-height:13rem">
             <h5 class="card-title">{{ $examination->title }}</h5>
             <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
             <p class="card-text"><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
             @auth
                 @if(auth()->user()->examinations->contains($examination->id))
-                    <span class="badge bg-success position-absolute top-0 end-0 m-3 p-2">Inscrito</span>
-                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="position-absolute bottom-0 end-0 m-3">
+                    <span class="badge bg-success position-absolute top-0 end-0 m-3 p-2">
+                        Inscrito
+                        <i class="fa-solid fa-check ms-1"></i>
+                    </span>
+                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Retirar Inscrição</button>
@@ -28,7 +33,7 @@
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-success mt-3">Inscrever-se</button>
+                        <button type="submit" class="btn btn-success btn-sm">Inscrever</button>
                     </form>
                 @endif
             @endauth
