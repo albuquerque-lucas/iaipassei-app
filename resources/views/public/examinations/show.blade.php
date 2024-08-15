@@ -86,7 +86,10 @@
     </div>
 
     <div class="mt-4">
-        <a href="{{ route('public.examinations.index') }}" class="btn btn-secondary">Voltar para Concursos</a>
+        <a href="{{ route('public.examinations.index') }}" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left me-1"></i>
+            Concursos
+        </a>
     </div>
 </div>
 @endsection

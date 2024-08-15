@@ -2,9 +2,8 @@
 
 @section('main-content')
 <div class="container mt-5">
-    <h1 class="mb-4">Resultados da prova</h1>
+    <h3 class="mb-4">Resultados</h3>
 
-    <!-- Sistema de Tabs -->
     <div class="d-flex align-items-center justify-content-between p-1">
         <ul class="nav nav-tabs" id="resultTabs" role="tablist">
             <li class="nav-item" role="presentation">
