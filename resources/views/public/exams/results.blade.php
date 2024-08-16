@@ -1,7 +1,7 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5">
+<div class="container mt-5" x-data="{ highlight: false }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
     <h3 class="mb-4">Resultados</h3>
 
     <div class="d-flex align-items-center justify-content-between p-1">
@@ -17,8 +17,15 @@
                 </button>
             </li>
         </ul>
-        <div class="w-25 d-flex align-items-center justify-content-end">
-            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-secondary">
+        <div class="w-50 d-flex align-items-center justify-content-end">
+            <button class="btn btn-dark edit-btn mx-1" @click="highlight = !highlight">
+                <span x-text="highlight ? 'Retirar Destaque' : 'Destacar Resultados'"></span>
+            </button>
+            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-dark edit-btn mx-1">
+                Ver Simulado
+                <i class="fa-solid fa-file-signature ms-1"></i>
+            </a>
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1">
                 Voltar
             </a>
         </div>
@@ -31,6 +38,7 @@
             <x-sections.examResults.result-per-question
                 :statistics="$statistics"
                 :markedAlternatives="$markedAlternatives"
+                x-bind:highlight="highlight"
             />
         </div>
 

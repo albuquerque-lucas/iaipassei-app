@@ -60,7 +60,7 @@ class PublicExamController extends Controller
             if ($request->input('page') == $questions->lastPage()) {
                 return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'Respostas enviadas com sucesso!');
             } else {
-                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'Respostas enviadas com sucesso! Prossiga para a próxima página.');
+                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'Respostas enviadas com sucesso');
             }
         } catch (Exception $e) {
             Log::error('Erro ao enviar as respostas: ' . $e->getMessage());
@@ -114,33 +114,51 @@ class PublicExamController extends Controller
 
     private function calculateAlternativeStatistics($markedAlternatives)
     {
-        return $markedAlternatives->mapWithKeys(function($alternative) {
-            // Total de usuários que marcaram qualquer alternativa para a questão
-            $totalUsersForQuestion = \App\Models\User::whereHas('markedAlternatives', function($query) use ($alternative) {
-                $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id);
-            })->count();
+        // Agrupar as alternativas por questão
+        $groupedByQuestion = $markedAlternatives->groupBy('exam_question_id');
 
-            // Usuários que marcaram a mesma alternativa
-            $usersWithSameAlternative = \App\Models\User::whereHas('markedAlternatives', function($query) use ($alternative) {
-                $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id)
-                    ->where('user_question_alternatives.question_alternative_id', $alternative->id);
-            })->count();
+        $statistics = collect();
 
-            // Calcular a porcentagem
-            $percentage = $totalUsersForQuestion > 0 ? ($usersWithSameAlternative / $totalUsersForQuestion) * 100 : 0;
+        // Para cada grupo de alternativas (por questão)
+        foreach ($groupedByQuestion as $questionId => $alternatives) {
+            $maxPercentage = 0;
 
-            // Retornar os dados como uma matriz associativa
-            return [
-                $alternative->id => [
+            // Primeiro, calcular a maior porcentagem
+            foreach ($alternatives as $alternative) {
+                $totalUsersForQuestion = User::whereHas('markedAlternatives', function($query) use ($alternative) {
+                    $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id);
+                })->count();
+
+                $usersWithSameAlternative = User::whereHas('markedAlternatives', function($query) use ($alternative) {
+                    $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id)
+                        ->where('user_question_alternatives.question_alternative_id', $alternative->id);
+                })->count();
+
+                $percentage = $totalUsersForQuestion > 0 ? ($usersWithSameAlternative / $totalUsersForQuestion) * 100 : 0;
+
+                // Atualizar a maior porcentagem encontrada
+                if ($percentage > $maxPercentage) {
+                    $maxPercentage = $percentage;
+                }
+
+                $statistics->put($alternative->id, [
                     'percentage' => $percentage,
                     'users_with_alternative' => $usersWithSameAlternative,
-                    'total_users_for_question' => $totalUsersForQuestion
-                ]
-            ];
-        });
+                    'total_users_for_question' => $totalUsersForQuestion,
+                    'is_max' => false // Inicialmente, não é o máximo
+                ]);
+            }
+
+            // Atualizar o campo 'is_max' para a alternativa com a maior porcentagem
+            foreach ($alternatives as $alternative) {
+                if ($statistics->get($alternative->id)['percentage'] == $maxPercentage) {
+                    $statistics->put($alternative->id, array_merge($statistics->get($alternative->id), ['is_max' => true]));
+                }
+            }
+        }
+
+        return $statistics;
     }
-
-
 
 
 }

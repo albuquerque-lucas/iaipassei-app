@@ -69,7 +69,7 @@
                                 </a>
                             @elseif($exam->resultStatus === 'partial')
                                 <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
-                                    Resultados Parciais
+                                    Resultado Parcial
                                 </a>
                             @else
                                 <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
