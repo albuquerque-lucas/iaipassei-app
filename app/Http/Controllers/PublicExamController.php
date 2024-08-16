@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
-use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Exception;
-use App\Policies\UserPolicy;
+use App\AlternativeStatisticsTrait;
 
 class PublicExamController extends Controller
 {
+    use AlternativeStatisticsTrait;
+
     public function show($slug, Request $request)
     {
         try {
@@ -68,8 +68,6 @@ class PublicExamController extends Controller
         }
     }
 
-
-
     public function results($slug)
     {
         try {
@@ -88,7 +86,6 @@ class PublicExamController extends Controller
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
     }
-
 
     private function getExamBySlug($slug)
     {
@@ -111,54 +108,4 @@ class PublicExamController extends Controller
             return $alternative->examQuestion->question_number;
         });
     }
-
-    private function calculateAlternativeStatistics($markedAlternatives)
-    {
-        // Agrupar as alternativas por questão
-        $groupedByQuestion = $markedAlternatives->groupBy('exam_question_id');
-
-        $statistics = collect();
-
-        // Para cada grupo de alternativas (por questão)
-        foreach ($groupedByQuestion as $questionId => $alternatives) {
-            $maxPercentage = 0;
-
-            // Primeiro, calcular a maior porcentagem
-            foreach ($alternatives as $alternative) {
-                $totalUsersForQuestion = User::whereHas('markedAlternatives', function($query) use ($alternative) {
-                    $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id);
-                })->count();
-
-                $usersWithSameAlternative = User::whereHas('markedAlternatives', function($query) use ($alternative) {
-                    $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id)
-                        ->where('user_question_alternatives.question_alternative_id', $alternative->id);
-                })->count();
-
-                $percentage = $totalUsersForQuestion > 0 ? ($usersWithSameAlternative / $totalUsersForQuestion) * 100 : 0;
-
-                // Atualizar a maior porcentagem encontrada
-                if ($percentage > $maxPercentage) {
-                    $maxPercentage = $percentage;
-                }
-
-                $statistics->put($alternative->id, [
-                    'percentage' => $percentage,
-                    'users_with_alternative' => $usersWithSameAlternative,
-                    'total_users_for_question' => $totalUsersForQuestion,
-                    'is_max' => false // Inicialmente, não é o máximo
-                ]);
-            }
-
-            // Atualizar o campo 'is_max' para a alternativa com a maior porcentagem
-            foreach ($alternatives as $alternative) {
-                if ($statistics->get($alternative->id)['percentage'] == $maxPercentage) {
-                    $statistics->put($alternative->id, array_merge($statistics->get($alternative->id), ['is_max' => true]));
-                }
-            }
-        }
-
-        return $statistics;
-    }
-
-
 }
