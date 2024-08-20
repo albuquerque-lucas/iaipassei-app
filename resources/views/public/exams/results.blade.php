@@ -18,9 +18,12 @@
             </li>
         </ul>
         <div class="w-50 d-flex align-items-center justify-content-end">
-            <button class="btn btn-dark edit-btn mx-1" @click="highlight = !highlight">
-                <span x-text="highlight ? 'Retirar Destaque' : 'Destacar Resultados'"></span>
+            <button class="edit-btn mx-1 w-25"
+                    :class="highlight ? 'btn btn-primary' : 'btn btn-dark'"
+                    @click="highlight = !highlight">
+                <span x-text="highlight ? 'Retirar Destaque' : 'Destacar'"></span>
             </button>
+
             <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-dark edit-btn mx-1">
                 Ver Simulado
                 <i class="fa-solid fa-file-signature ms-1"></i>

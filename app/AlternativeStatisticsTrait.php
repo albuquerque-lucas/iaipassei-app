@@ -9,7 +9,6 @@ trait AlternativeStatisticsTrait
     public function calculateAlternativeStatistics($markedAlternatives): Collection
     {
         $groupedByQuestion = $this->groupAlternativesByQuestion($markedAlternatives);
-
         $statistics = collect();
 
         foreach ($groupedByQuestion as $questionId => $alternatives) {
@@ -26,27 +25,18 @@ trait AlternativeStatisticsTrait
 
     private function calculateStatisticsForAlternatives($alternatives, $statistics): Collection
     {
-        $maxPercentage = 0;
-        $maxAlternativeId = null;
-
         foreach ($alternatives as $alternative) {
             [$percentage, $usersWithSameAlternative, $totalUsersForQuestion] = $this->calculatePercentage($alternative);
 
-            if ($percentage > $maxPercentage) {
-                $maxPercentage = $percentage;
-                $maxAlternativeId = $alternative->id;
-            }
+            // Calcular is_max baseado na comparação entre usuários que escolheram essa alternativa e o total de usuários para a questão
+            $isMax = $usersWithSameAlternative == $totalUsersForQuestion;
 
             $statistics->put($alternative->id, [
                 'percentage' => $percentage,
                 'users_with_alternative' => $usersWithSameAlternative,
                 'total_users_for_question' => $totalUsersForQuestion,
-                'is_max' => false
+                'is_max' => $isMax
             ]);
-        }
-
-        if ($maxAlternativeId !== null) {
-            $statistics->put($maxAlternativeId, array_merge($statistics->get($maxAlternativeId), ['is_max' => true]));
         }
 
         return $statistics;

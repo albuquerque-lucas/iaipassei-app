@@ -82,4 +82,12 @@
         position: absolute;
         top: 15rem;
     }
+
+    .result_correct__alternative {
+        background-color: $soft-success-color;
+    }
+
+    .result_incorrect__alternative {
+        background-color: $soft-danger-color;
+    }
 }

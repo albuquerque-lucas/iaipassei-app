@@ -7,7 +7,7 @@
         <ul class="list-group">
             @foreach ($markedAlternatives as $alternative)
                 <li class="list-group-item d-flex justify-content-between"
-                    x-bind:class="highlight && {{ $statistics[$alternative->id]['is_max'] ? 'true' : 'false' }} ? 'bg-success' : (highlight ? 'bg-danger' : '')">
+                    x-bind:class="highlight && {{ $statistics[$alternative->id]['is_max'] ? 'true' : 'false' }} ? 'result_correct__alternative' : (highlight ? 'result_incorrect__alternative' : '')">
                     <div>
                         <span class="d-inline-block fw-bold" style="width: 150px;">Questão {{ $alternative->examQuestion->question_number }}:</span>
                         <span class="d-inline-block fw-bold" style="width: 50px;">{{ $alternative->letter }}</span>
