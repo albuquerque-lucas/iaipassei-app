@@ -12,6 +12,7 @@ trait AlternativeStatisticsTrait
         $statistics = collect();
 
         foreach ($groupedByQuestion as $questionId => $alternatives) {
+            // dd($questionId);
             $statistics = $this->calculateStatisticsForAlternatives($alternatives, $statistics);
         }
 
@@ -25,16 +26,32 @@ trait AlternativeStatisticsTrait
 
     private function calculateStatisticsForAlternatives($alternatives, $statistics): Collection
     {
-        foreach ($alternatives as $alternative) {
-            [$percentage, $usersWithSameAlternative, $totalUsersForQuestion] = $this->calculatePercentage($alternative);
+        // 1. Identificar os diferentes question_alternative_id e contar quantos são
+        $examQuestionId = $alternatives->first()->exam_question_id; // Assumindo que todos os alternatives têm o mesmo exam_question_id
+        $alternativeCounts = \DB::table('user_question_alternatives')
+            ->select('question_alternative_id', \DB::raw('count(*) as count'))
+            ->where('exam_question_id', $examQuestionId)
+            ->groupBy('question_alternative_id')
+            ->get();
 
-            // Calcular is_max baseado na comparação entre usuários que escolheram essa alternativa e o total de usuários para a questão
-            $isMax = ($usersWithSameAlternative / $totalUsersForQuestion) > 0.5;
+        // 2. Calcular a proporção de cada question_alternative_id
+        $totalResponses = $alternativeCounts->sum('count');
+        $proportions = $alternativeCounts->mapWithKeys(function($item) use ($totalResponses) {
+            return [$item->question_alternative_id => $item->count / $totalResponses];
+        });
+
+        // 3. Identificar a maior proporção
+        $maxProportion = $proportions->max();
+        $maxAlternativeId = $proportions->search($maxProportion);
+
+        // 4. Comparar o question_alternative_id que o usuário marcou com a maior proporção
+        foreach ($alternatives as $alternative) {
+            $isMax = $alternative->id == $maxAlternativeId;
 
             $statistics->put($alternative->id, [
-                'percentage' => $percentage,
-                'users_with_alternative' => $usersWithSameAlternative,
-                'total_users_for_question' => $totalUsersForQuestion,
+                'percentage' => $proportions[$alternative->id] * 100, // Proporção em percentual
+                'users_with_alternative' => $proportions[$alternative->id] * $totalResponses,
+                'total_users_for_question' => $totalResponses,
                 'is_max' => $isMax
             ]);
         }
