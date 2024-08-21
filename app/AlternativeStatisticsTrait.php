@@ -3,6 +3,7 @@
 namespace App;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 trait AlternativeStatisticsTrait
 {
@@ -27,9 +28,9 @@ trait AlternativeStatisticsTrait
     private function calculateStatisticsForAlternatives($alternatives, $statistics): Collection
     {
         // 1. Identificar os diferentes question_alternative_id e contar quantos são
-        $examQuestionId = $alternatives->first()->exam_question_id; // Assumindo que todos os alternatives têm o mesmo exam_question_id
-        $alternativeCounts = \DB::table('user_question_alternatives')
-            ->select('question_alternative_id', \DB::raw('count(*) as count'))
+        $examQuestionId = $alternatives->first()->exam_question_id;
+        $alternativeCounts = DB::table('user_question_alternatives')
+            ->select('question_alternative_id', DB::raw('count(*) as count'))
             ->where('exam_question_id', $examQuestionId)
             ->groupBy('question_alternative_id')
             ->get();
