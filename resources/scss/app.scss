@@ -15,6 +15,7 @@
 @import "./admin/study-areas/study-areas-edit.scss";
 @import "./admin/auth/admin-profile-info.scss";
 @import "./public/exams/not-enrolled.scss";
+@import "./public/examinations/show-examination.scss";
 
 
 .body {
@@ -25,11 +26,14 @@
             button {
                 background-color: white;
                 color: black;
+                border-bottom: 5px solid $default-light-background;
+                border-radius: 0;
             }
 
             button.active {
-                background-color: $default-dark-background;
-                color: white;
+                // background-color: $default-dark-background;
+                // color: white;
+                border-bottom: 5px solid $default-dark-background
             }
 
         }
@@ -80,5 +84,13 @@
     .ia-file-input-submit-btn {
         position: absolute;
         top: 15rem;
+    }
+
+    .result_correct__alternative {
+        background-color: $soft-success-color;
+    }
+
+    .result_incorrect__alternative {
+        background-color: $soft-danger-color;
     }
 }

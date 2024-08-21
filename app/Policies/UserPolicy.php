@@ -11,7 +11,11 @@ class UserPolicy
 {
     public function viewSensitiveInfo(User $authenticatedUser, User $user)
     {
-        Log::info('viewSensitiveInfo policy called');
         return $authenticatedUser->id === $user->id;
+    }
+
+    public function viewAdminInfo(User $authenticatedUser, User $user)
+    {
+        return $authenticatedUser->accountPlan->name === 'Admin';
     }
 }

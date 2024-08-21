@@ -14,17 +14,17 @@
 
         @can('viewSensitiveInfo', $user)
             <ul class="nav nav-tabs" id="profileTab" role="tablist">
-                <li class="nav-item mx-1" role="presentation">
+                <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
                         Informações
                     </button>
                 </li>
-                <li class="nav-item mx-1" role="presentation">
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">
                         Editar Perfil
                     </button>
                 </li>
-                <li class="nav-item mx-1" role="presentation">
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="examination-tab" data-bs-toggle="tab" data-bs-target="#examination" type="button" role="tab" aria-controls="examination" aria-selected="false">
                         Concursos
                     </button>

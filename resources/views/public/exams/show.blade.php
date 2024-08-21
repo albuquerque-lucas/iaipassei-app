@@ -15,7 +15,7 @@
             Voltar
         </a>
     </div>
-    <div style="height:5rem">
+    <div style="height:5rem" class="mb-4 w-100">
         @if (session('success'))
             <x-cards.flash-message-card type="success" :message="session('success')" />
         @elseif (session('error'))
@@ -36,9 +36,9 @@
         @csrf
         <input type="hidden" name="page" value="{{ $questions->currentPage() }}">
 
-        <div class="row">
+        <div class="row d-flex flex-column align-items-center">
             @foreach ($questions as $question)
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-4" style="width:80rem">
                     <div class="card">
                         <div class="card-body"
                             x-data="{

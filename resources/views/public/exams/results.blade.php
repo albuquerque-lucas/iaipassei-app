@@ -1,22 +1,38 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5">
-    <h1 class="mb-4">Resultados da prova</h1>
+<div class="container mt-5" x-data="{ highlight: true }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
+    <h3 class="mb-4">Resultados</h3>
 
-    <!-- Sistema de Tabs -->
-    <ul class="nav nav-tabs" id="resultTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
-                Resultados por Questão
+    <div class="d-flex align-items-center justify-content-between p-1">
+        <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active rounded-0" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
+                    Resultados por Questão
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-0" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
+                    Resultados Completos
+                </button>
+            </li>
+        </ul>
+        <div class="w-50 d-flex align-items-center justify-content-end">
+            <button class="edit-btn mx-1 w-25"
+                    :class="highlight ? 'btn btn-primary' : 'btn btn-dark'"
+                    @click="highlight = !highlight">
+                <span x-text="highlight ? 'Retirar Destaque' : 'Destacar'"></span>
             </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
-                Resultados Completos
-            </button>
-        </li>
-    </ul>
+
+            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-dark edit-btn mx-1">
+                Ver Simulado
+                <i class="fa-solid fa-file-signature ms-1"></i>
+            </a>
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1">
+                Voltar
+            </a>
+        </div>
+    </div>
 
     <!-- Conteúdo das Tabs -->
     <div class="tab-content mt-3" id="resultTabsContent">
@@ -25,6 +41,7 @@
             <x-sections.examResults.result-per-question
                 :statistics="$statistics"
                 :markedAlternatives="$markedAlternatives"
+                x-bind:highlight="highlight"
             />
         </div>
 

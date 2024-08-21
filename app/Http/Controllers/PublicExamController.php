@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
-use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Exception;
-use App\Policies\UserPolicy;
+use App\AlternativeStatisticsTrait;
 
 class PublicExamController extends Controller
 {
+    use AlternativeStatisticsTrait;
+
     public function show($slug, Request $request)
     {
         try {
@@ -60,15 +60,13 @@ class PublicExamController extends Controller
             if ($request->input('page') == $questions->lastPage()) {
                 return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'Respostas enviadas com sucesso!');
             } else {
-                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'Respostas enviadas com sucesso! Prossiga para a próxima página.');
+                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'Respostas enviadas com sucesso');
             }
         } catch (Exception $e) {
             Log::error('Erro ao enviar as respostas: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocorreu um erro ao enviar as respostas. Por favor, tente novamente mais tarde.');
         }
     }
-
-
 
     public function results($slug)
     {
@@ -88,7 +86,6 @@ class PublicExamController extends Controller
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
     }
-
 
     private function getExamBySlug($slug)
     {
@@ -111,36 +108,4 @@ class PublicExamController extends Controller
             return $alternative->examQuestion->question_number;
         });
     }
-
-    private function calculateAlternativeStatistics($markedAlternatives)
-    {
-        return $markedAlternatives->mapWithKeys(function($alternative) {
-            // Total de usuários que marcaram qualquer alternativa para a questão
-            $totalUsersForQuestion = \App\Models\User::whereHas('markedAlternatives', function($query) use ($alternative) {
-                $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id);
-            })->count();
-
-            // Usuários que marcaram a mesma alternativa
-            $usersWithSameAlternative = \App\Models\User::whereHas('markedAlternatives', function($query) use ($alternative) {
-                $query->where('user_question_alternatives.exam_question_id', $alternative->exam_question_id)
-                    ->where('user_question_alternatives.question_alternative_id', $alternative->id);
-            })->count();
-
-            // Calcular a porcentagem
-            $percentage = $totalUsersForQuestion > 0 ? ($usersWithSameAlternative / $totalUsersForQuestion) * 100 : 0;
-
-            // Retornar os dados como uma matriz associativa
-            return [
-                $alternative->id => [
-                    'percentage' => $percentage,
-                    'users_with_alternative' => $usersWithSameAlternative,
-                    'total_users_for_question' => $totalUsersForQuestion
-                ]
-            ];
-        });
-    }
-
-
-
-
 }
