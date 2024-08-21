@@ -7,12 +7,12 @@
     <div class="d-flex align-items-center justify-content-between p-1">
         <ul class="nav nav-tabs" id="resultTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
+                <button class="nav-link active rounded-0" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
                     Resultados por Questão
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
+                <button class="nav-link rounded-0" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
                     Resultados Completos
                 </button>
             </li>

@@ -29,7 +29,7 @@ trait AlternativeStatisticsTrait
             [$percentage, $usersWithSameAlternative, $totalUsersForQuestion] = $this->calculatePercentage($alternative);
 
             // Calcular is_max baseado na comparação entre usuários que escolheram essa alternativa e o total de usuários para a questão
-            $isMax = $usersWithSameAlternative == $totalUsersForQuestion;
+            $isMax = ($usersWithSameAlternative / $totalUsersForQuestion) > 0.5;
 
             $statistics->put($alternative->id, [
                 'percentage' => $percentage,

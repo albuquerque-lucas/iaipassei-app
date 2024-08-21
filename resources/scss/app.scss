@@ -26,11 +26,14 @@
             button {
                 background-color: white;
                 color: black;
+                border-bottom: 5px solid $default-light-background;
+                border-radius: 0;
             }
 
             button.active {
-                background-color: $default-dark-background;
-                color: white;
+                // background-color: $default-dark-background;
+                // color: white;
+                border-bottom: 5px solid $default-dark-background
             }
 
         }
