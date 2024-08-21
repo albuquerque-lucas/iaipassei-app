@@ -23,9 +23,7 @@ use App\Http\Controllers\PublicPagesController;
 use App\Http\Controllers\PublicExamController;
 
 // Rota para página inicial
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [PublicPagesController::class, 'home'])->name('welcome');
 
 // Rotas de autenticação pública
 Route::get('register', [AuthController::class, 'showPublicRegisterForm'])->name('public.register.index');

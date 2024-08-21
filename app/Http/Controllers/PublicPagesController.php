@@ -10,6 +10,12 @@ use Exception;
 
 class PublicPagesController extends Controller
 {
+    public function home(Request $request)
+    {
+        $title = "Iai Passei";
+        return view('welcome', compact('title'));
+    }
+
     public function examinations(Request $request)
     {
         try {

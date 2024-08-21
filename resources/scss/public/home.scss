@@ -1,0 +1,34 @@
+.home-main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+
+    .home-main-inner {
+        margin-top: 10rem;
+        min-height: 10rem;
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+}
+
+.home-main h1, h5 {
+    font-weight: 300;
+}
+
+.home-main h1 {
+    font-size: 5rem;
+    display: inline;
+}
+
+.title-passei {
+    color: $secondary-bootstrap-color;
+}
