@@ -17,6 +17,7 @@
 @import "./public/exams/not-enrolled.scss";
 @import "./public/examinations/show-examination.scss";
 @import "./public/home.scss";
+@import "./public/aboutUs.scss";
 
 
 .body {
@@ -32,11 +33,8 @@
             }
 
             button.active {
-                // background-color: $default-dark-background;
-                // color: white;
                 border-bottom: 5px solid $default-dark-background
             }
-
         }
     }
 
@@ -50,7 +48,6 @@
             background-color: $default-dark-background;
             border: none;
             outline: none;
-
         }
     }
 

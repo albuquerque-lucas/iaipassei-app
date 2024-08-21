@@ -177,7 +177,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->route('welcome')->with('success', 'Logout realizado com sucesso.');
+            return redirect()->route('public.home')->with('success', 'Logout realizado com sucesso.');
         } catch (Exception $e) {
             return redirect()->route('public.login.index')->withErrors([
                 'error' => 'Ocorreu um erro ao tentar fazer logout: ' . $e->getMessage(),
