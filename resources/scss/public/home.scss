@@ -9,6 +9,15 @@
         margin-top: 10rem;
         min-height: 10rem;
     }
+
+    h1 {
+        font-size: 5rem;
+        display: inline;
+    }
+
+    h1, h5 {
+        font-weight: 300;
+    }
 }
 
 .fade-in {
@@ -18,15 +27,6 @@
 
 .fade-in.show {
     opacity: 1;
-}
-
-.home-main h1, h5 {
-    font-weight: 300;
-}
-
-.home-main h1 {
-    font-size: 5rem;
-    display: inline;
 }
 
 .title-passei {
