@@ -1,7 +1,7 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5" x-data="{ highlight: true }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
+<div class="container mt-5" x-data="{ highlight: false }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
     <h3 class="mb-4">Resultados</h3>
 
     <div class="d-flex align-items-center justify-content-between p-1">
@@ -18,17 +18,18 @@
             </li>
         </ul>
         <div class="w-50 d-flex align-items-center justify-content-end">
-            <button class="edit-btn mx-1 w-25"
-                    :class="highlight ? 'btn btn-primary' : 'btn btn-dark'"
+            <button class="btn mx-1 w-25"
+                    :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
                     @click="highlight = !highlight">
                 <span x-text="highlight ? 'Retirar Destaque' : 'Destacar'"></span>
             </button>
 
-            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-dark edit-btn mx-1">
+            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1">
                 Ver Simulado
                 <i class="fa-solid fa-file-signature ms-1"></i>
             </a>
-            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1">
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-indigo-500 mx-1">
+                <i class="fa-solid fa-arrow-left me-1"></i>
                 Voltar
             </a>
         </div>

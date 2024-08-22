@@ -1,5 +1,5 @@
-@props(['link', 'name', 'active' => false])
+@props(['link', 'name'])
 
 <li class="nav-item">
-    <a class="nav-link {{ $active ? 'active' : '' }}" href="{{ $link }}">{{ $name }}</a>
+    <a class="nav-link {{ request()->url() == $link ? 'active' : '' }}" href="{{ $link }}">{{ $name }}</a>
 </li>

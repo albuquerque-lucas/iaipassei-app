@@ -21,7 +21,10 @@
                 <p class="mb-1"><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
             </div>
             <div>
-                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-link btn-sm">Ver detalhes</a>
+                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-link text-dark btn-sm">
+                    Visualizar
+                    <i class="fa-solid fa-eye ms-2"></i>
+                </a>
             </div>
         </div>
         @endforeach

@@ -1,7 +1,7 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="about-us-container container d-flex flex-column justify-content-center pb-5 ps-5 bg-light">
+<div class="about-us-container container d-flex flex-column justify-content-start pt-5 ps-5 bg-light">
     <h1 class="about-us-title">Sobre</h1>
     <p class="about-us-text">
         Bem-vindo ao portal dedicado aos concurseiros!

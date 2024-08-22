@@ -33,7 +33,7 @@
             }
 
             button.active {
-                border-bottom: 5px solid $default-dark-background
+                border-bottom: 5px solid $indigo-500
             }
         }
     }
@@ -90,5 +90,34 @@
 
     .result_incorrect__alternative {
         background-color: $soft-danger-color;
+    }
+}
+
+.bd-indigo-700 {
+    background-color: $indigo-700!important;
+}
+
+.btn-indigo-700 {
+    background-color: $indigo-700!important;
+    color: #fff!important;
+
+    &:hover {
+        background-color: $indigo-600!important;
+    }
+}
+
+.bg-indigo-500-hover {
+    &:hover {
+        background-color: $indigo-500!important;
+        border-color: $indigo-500!important;
+    }
+}
+
+.btn-indigo-500 {
+    background-color: $indigo-500!important;
+    color: #fff!important;
+
+    &:hover {
+        background-color: $indigo-400!important;
     }
 }

@@ -37,7 +37,7 @@
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-success btn-sm">Inscrever</button>
+                        <button type="submit" class="btn btn-indigo-700 btn-sm">Inscrever</button>
                     </form>
                 @endif
             @endauth
@@ -58,7 +58,7 @@
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
                     <div class="d-flex flex-column align-items-end w-25">
-                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-primary btn-sm my-1 w-50">
+                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-50">
                             Simulado
                             <i class="fa-solid fa-file-signature ms-1"></i>
                         </a>
@@ -86,7 +86,7 @@
     </div>
 
     <div class="mt-4">
-        <a href="{{ route('public.examinations.index') }}" class="btn btn-secondary">
+        <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-500">
             <i class="fa-solid fa-arrow-left me-1"></i>
             Concursos
         </a>
