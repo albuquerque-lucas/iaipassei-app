@@ -40,7 +40,7 @@
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-dark">
-                                {{ __('Login') }}
+                                Login
                             </button>
                         </div>
                         @if (Route::has('password.request'))

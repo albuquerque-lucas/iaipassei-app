@@ -11,7 +11,8 @@
 <section class="quiz-page container mt-5">
     <div class="w-100 d-flex justify-content-between align-items-start p-2">
         <h4 class="mb-4 text-start">{{ $exam->title }}</h4>
-        <a href="{{ route('public.examinations.show', ['slug' => $exam->examination->slug]) }}" class="btn btn-secondary">
+        <a href="{{ route('public.examinations.show', ['slug' => $exam->examination->slug]) }}" class="btn btn-indigo-500">
+            <i class="fa-solid fa-arrow-left me-1"></i>
             Voltar
         </a>
     </div>
@@ -58,10 +59,11 @@
                                 </p>
                                 <button
                                     type="button"
-                                    class="btn btn-sm btn-primary ms-3"
+                                    class="btn btn-sm btn-indigo-500 ms-3"
                                     x-show="showEraser"
                                     @click="selected = null; showEraser = false; $refs['question_{{ $question->id }}'].querySelector('input:checked').checked = false;">
-                                    <i class="fa-solid fa-eraser"></i> Apagar
+                                    <i class="fa-solid fa-eraser"></i>
+                                    Apagar
                                 </button>
                             </div>
                             <ul class="list-group list-group-flush" x-ref="question_{{ $question->id }}">
@@ -107,7 +109,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-primary">Enviar Respostas</button>
+            <button type="submit" class="btn btn-indigo-500">Enviar Respostas</button>
         </div>
     </form>
 </section>

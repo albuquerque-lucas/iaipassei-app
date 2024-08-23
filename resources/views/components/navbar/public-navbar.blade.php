@@ -1,18 +1,24 @@
 @props(['slug'])
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bd-indigo-700">
     <div class="container-fluid container">
-        <a class="navbar-brand" href="{{ route('welcome') }}">Iai Passei</a>
+        <a class="navbar-brand title-logo me-5" href="{{ route('public.home') }}">
+            <i class="fa-solid fa-graduation-cap me-1"></i>
+            Iai Passei
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto">
-                <x-navbar.nav-item link="{{ route('welcome') }}" name="Início" active="true" />
-                <x-navbar.nav-item link="#" name="Sobre" />
-                <x-navbar.nav-item link="#" name="Contato" />
-                <x-navbar.nav-item link="{{ route('public.examinations.index') }}" name="Concursos" />
+                <x-navbar.nav-item link="{{ route('public.home') }}" name="Início" />
+                <x-navbar.nav-item link="{{ route('public.aboutUs') }}" name="Sobre" />
+                {{-- <x-navbar.nav-item link="#" name="Contato" /> --}}
+                @auth
+                    <x-navbar.nav-item link="{{ route('public.examinations.index') }}" name="Concursos" />
+                @endauth
             </ul>
+
             @auth
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">

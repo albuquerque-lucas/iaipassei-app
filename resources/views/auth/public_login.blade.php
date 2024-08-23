@@ -39,7 +39,7 @@
                             <label class="form-check-label" for="remember">{{ __('Lembrar de mim') }}</label>
                         </div>
                         <div class="d-grid mb-2">
-                            <button type="submit" class="btn btn-dark">
+                            <button type="submit" class="btn btn-dark fw-bold">
                                 Login
                             </button>
                         </div>
@@ -57,7 +57,7 @@
                         </div>
                         @endif
                         <div class="mt-3 text-center">
-                            <a class="btn btn-secondary w-100" href="{{ route('public.register.index') }}">
+                            <a class="btn btn-indigo-500 w-100" href="{{ route('public.register.index') }}">
                                 {{ __('Crie uma Conta') }}
                             </a>
                         </div>

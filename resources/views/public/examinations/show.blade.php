@@ -2,7 +2,7 @@
 
 @section('main-content')
 
-<div class="container my-5">
+<div class="container margin-top-7 m-height-100">
     <h3 class="mb-4">{{ $examination->title }}</h3>
 
     <div class="flash-message-container">
@@ -15,7 +15,7 @@
         @endif
     </div>
 
-    <div class="card mb-4 position-relative">
+    <div class="card mb-4 position-relative rounded-0">
         <div class="card-body examination-card-body">
             <h5 class="card-title">{{ $examination->title }}</h5>
             <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
@@ -29,7 +29,7 @@
                     <form id="unsubscribeForm" action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="button" id="unsubscribeBtn" class="btn btn-secondary delete-btn btn-sm">
+                        <button type="button" id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm">
                             Retirar Inscrição
                             <i class="fa-solid fa-ban ms-1"></i>
                         </button>
@@ -37,14 +37,14 @@
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-success btn-sm">Inscrever</button>
+                        <button type="submit" class="btn btn-teal-500 btn-sm">Inscrever</button>
                     </form>
                 @endif
             @endauth
         </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card mb-4 rounded-0">
         <div class="card-body">
             <h5 class="card-title">Provas</h5>
             <p class="card-text"><strong>Quantidade de Provas:</strong> {{ $examination->exams->count() }}</p>
@@ -58,21 +58,21 @@
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
                     <div class="d-flex flex-column align-items-end w-25">
-                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-primary btn-sm my-1 w-50">
+                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-50">
                             Simulado
                             <i class="fa-solid fa-file-signature ms-1"></i>
                         </a>
                         @can('canAccessExam', $exam)
                             @if($exam->resultStatus === 'final')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
                                     Resultado Final
                                 </a>
                             @elseif($exam->resultStatus === 'partial')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
                                     Resultado Parcial
                                 </a>
                             @else
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
                                     Resultado
                                 </a>
                             @endif
@@ -86,7 +86,7 @@
     </div>
 
     <div class="mt-4">
-        <a href="{{ route('public.examinations.index') }}" class="btn btn-secondary">
+        <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-500">
             <i class="fa-solid fa-arrow-left me-1"></i>
             Concursos
         </a>
