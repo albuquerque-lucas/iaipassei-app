@@ -1,31 +1,37 @@
 @extends('publicLayout')
 
 @section('main-content')
-    <section class="container mt-5">
-        @if(session('success'))
-            <x-cards.flash-message-card type="success" :message="session('success')" />
-        @endif
+    <section class="container mt-5 page-height">
 
-        @if($errors->any())
-            @foreach ($errors->all() as $error)
-                <x-cards.flash-message-card type="danger" :message="$error" />
-            @endforeach
-        @endif
+        <div style="height:5rem">
+            @if(session('success'))
+                <x-cards.flash-message-card type="success" :message="session('success')" />
+            @endif
+
+            @if($errors->any())
+                @foreach ($errors->all() as $error)
+                    <x-cards.flash-message-card type="danger" :message="$error" />
+                @endforeach
+            @endif
+        </div>
 
         @can('viewSensitiveInfo', $user)
             <ul class="nav nav-tabs" id="profileTab" role="tablist">
-                <li class="nav-item" role="presentation">
+                <li class="nav-item me-1" role="presentation">
                     <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
+                    <i class="fa-solid fa-circle-info me-1"></i>
                         Informações
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item me-1" role="presentation">
                     <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">
+                    <i class="fa-solid fa-pen-to-square me-1"></i>
                         Editar Perfil
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item me-1" role="presentation">
                     <button class="nav-link" id="examination-tab" data-bs-toggle="tab" data-bs-target="#examination" type="button" role="tab" aria-controls="examination" aria-selected="false">
+                        <i class="fa-solid fa-book me-1"></i>
                         Concursos
                     </button>
                 </li>

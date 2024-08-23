@@ -2,7 +2,7 @@
 
 @section('main-content')
 
-<div class="container my-5">
+<div class="container margin-top-7 m-height-100">
     <h3 class="mb-4">{{ $examination->title }}</h3>
 
     <div class="flash-message-container">
@@ -29,7 +29,7 @@
                     <form id="unsubscribeForm" action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="button" id="unsubscribeBtn" class="btn btn-secondary delete-btn btn-sm">
+                        <button type="button" id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm">
                             Retirar Inscrição
                             <i class="fa-solid fa-ban ms-1"></i>
                         </button>
@@ -37,7 +37,7 @@
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-indigo-700 btn-sm">Inscrever</button>
+                        <button type="submit" class="btn btn-teal-500 btn-sm">Inscrever</button>
                     </form>
                 @endif
             @endauth
@@ -64,15 +64,15 @@
                         </a>
                         @can('canAccessExam', $exam)
                             @if($exam->resultStatus === 'final')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
                                     Resultado Final
                                 </a>
                             @elseif($exam->resultStatus === 'partial')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
                                     Resultado Parcial
                                 </a>
                             @else
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-secondary btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
                                     Resultado
                                 </a>
                             @endif

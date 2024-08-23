@@ -1,0 +1,9 @@
+.navbar-item {
+    border-bottom: 2px solid transparent;
+    .active {
+        border-bottom: 2px solid white;
+    }
+    &:hover {
+        border-bottom: 2px solid white;
+    }
+}

@@ -1,7 +1,7 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5" x-data="{ highlight: false }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
+<div class="container mt-5 m-height-100" x-data="{ highlight: false }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
     <h3 class="mb-4">Resultados</h3>
 
     <div class="d-flex align-items-center justify-content-between p-1">

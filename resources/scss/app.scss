@@ -1,5 +1,6 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+@import url(https://fonts.bunny.net/css?family=acme:400);
+@import url('https://fonts.googleapis.com/css2?family=Qwitcher+Grypen:wght@400;700&display=swap');
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
@@ -12,6 +13,7 @@
 @import "@fortawesome/fontawesome-free/css/all.css";
 
 @import "./components/dashboards.scss";
+@import "./components/navbar.scss";
 @import "./admin/study-areas/study-areas-edit.scss";
 @import "./admin/auth/admin-profile-info.scss";
 @import "./public/exams/not-enrolled.scss";
@@ -19,10 +21,13 @@
 @import "./public/home.scss";
 @import "./public/aboutUs.scss";
 
-
 .body {
-    margin-bottom: 10rem;
-
+    font-family: "Roboto", sans-serif;
+    height: 100vh;
+    .title-logo {
+        font-family: "Acme", sans-serif;
+        font-size: 1.5rem;
+    }
     .nav-tabs {
         .nav-item {
             button {
@@ -33,21 +38,8 @@
             }
 
             button.active {
-                border-bottom: 5px solid $indigo-500
+                border-bottom: 5px solid $blue-600
             }
-        }
-    }
-
-    .page-link {
-        margin: 0 0.5rem;
-        box-shadow:  $default-box-shadow;
-    }
-
-    .page-item.active {
-        span {
-            background-color: $default-dark-background;
-            border: none;
-            outline: none;
         }
     }
 
@@ -93,31 +85,62 @@
     }
 }
 
+.page-height {
+    min-height: 100vh;
+}
+
+// Backgrounds
+
 .bd-indigo-700 {
-    background-color: $indigo-700!important;
+    background-color: $blue-700!important;
 }
 
 .btn-indigo-700 {
-    background-color: $indigo-700!important;
+    background-color: $blue-700!important;
     color: #fff!important;
 
     &:hover {
-        background-color: $indigo-600!important;
+        background-color: $blue-600!important;
     }
 }
 
 .bg-indigo-500-hover {
     &:hover {
-        background-color: $indigo-500!important;
-        border-color: $indigo-500!important;
+        background-color: $blue-600!important;
+        border-color: $blue-600!important;
     }
 }
 
+// Buttons
+
 .btn-indigo-500 {
-    background-color: $indigo-500!important;
+    background-color: $blue-600!important;
     color: #fff!important;
 
     &:hover {
-        background-color: $indigo-400!important;
+        background-color: $blue-400!important;
     }
+}
+
+.btn-teal-500 {
+    background-color: $teal-600!important;
+    color: #fff!important;
+
+    &:hover {
+        background-color: $teal-500!important;
+    }
+}
+
+
+// Margin
+
+.margin-top-7 {
+    margin-top: 7rem;
+}
+
+
+// Sizing
+
+.m-height-100 {
+    min-height: 100vh;
 }

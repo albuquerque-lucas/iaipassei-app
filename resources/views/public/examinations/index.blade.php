@@ -1,16 +1,16 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container my-5">
+<div class="container my-5 d-flex flex-column align-items-center">
     <h3 class="mb-4">{{ $title }}</h3>
 
     <div class="d-flex justify-content-center mt-4">
         {!! $paginationLinks !!}
     </div>
 
-    <div class="list-group">
+    <div class="list-group w-75">
         @foreach($examinations as $examination)
-        <div class="list-group-item list-group-item-action d-flex align-items-center py-3">
+        <div class="list-group-item d-flex align-items-center py-3">
             <div class="me-3">
                 <!-- Placeholder for an icon or image if needed -->
                 <i class="bi bi-journal" style="font-size: 2rem;"></i>
@@ -21,7 +21,7 @@
                 <p class="mb-1"><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
             </div>
             <div>
-                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-link text-dark btn-sm">
+                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-teal-500 btn-sm">
                     Visualizar
                     <i class="fa-solid fa-eye ms-2"></i>
                 </a>
