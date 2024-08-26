@@ -4,12 +4,18 @@
     @csrf
     @method('PATCH')
 
-    <div class="mb-3 d-flex justify-content-between align-items-center">
+    <div class="mb-3 d-flex justify-content-between align-items-center"
+    data-bs-toggle="collapse"
+    data-bs-target="#personalInfoCollapse"
+    aria-expanded="false"
+    aria-controls="personalInfoCollapse"
+    style="cursor: pointer;">
         <h5>Informações Pessoais</h5>
-        <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="collapse" data-bs-target="#personalInfoCollapse" aria-expanded="false" aria-controls="personalInfoCollapse">
-            <i class="fa-solid fa-cog" aria-hidden="true"></i>
+        <button type="button" class="btn btn-dark btn-sm">
+            <i class="fa-solid fa-angle-down"></i>
         </button>
     </div>
+
 
     <div class="collapse" id="personalInfoCollapse">
         <div class="mb-3">

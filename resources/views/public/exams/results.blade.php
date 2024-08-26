@@ -1,7 +1,14 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5 m-height-100" x-data="{ highlight: false }" x-init="console.log('initial highlight:', highlight); $watch('highlight', value => console.log('highlight changed to:', value))">
+<div class="container mt-5 m-height-100" x-data="{
+    highlight: JSON.parse(localStorage.getItem('highlight')) || false
+}" x-init="
+    $watch('highlight', value => {
+        console.log('highlight changed to:', value ? 'destacado' : 'sem destaque');
+        localStorage.setItem('highlight', JSON.stringify(value));
+    })
+">
     <h3 class="mb-4">Resultados</h3>
 
     <div class="d-flex align-items-center justify-content-between p-1">
@@ -36,7 +43,7 @@
     </div>
 
     <!-- Conteúdo das Tabs -->
-    <div class="tab-content mt-3" id="resultTabsContent">
+    <div class="tab-content mt-3 mb-5" id="resultTabsContent">
         <!-- Tab 1: Resultados por Questão -->
         <div class="tab-pane fade show active" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
             <x-sections.examResults.result-per-question
