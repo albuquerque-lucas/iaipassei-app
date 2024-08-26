@@ -35,6 +35,11 @@ class Exam extends Model
         ];
     }
 
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function examination()
     {
         return $this->belongsTo(Examination::class);
