@@ -108,7 +108,7 @@
             {{ $questions->links('pagination::bootstrap-4') }}
         </div>
 
-        <div class="d-flex justify-content-center mt-4">
+        <div class="d-flex justify-content-center mt-4 mb-5">
             <button type="submit" class="btn btn-indigo-500">Enviar Respostas</button>
         </div>
     </form>

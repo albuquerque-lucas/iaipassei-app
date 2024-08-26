@@ -4,10 +4,17 @@
     @csrf
     @method('PATCH')
 
-    <div class="mb-3 d-flex justify-content-between align-items-center">
+    <div
+        class="mb-3 d-flex justify-content-between align-items-center"
+        data-bs-toggle="collapse"
+        data-bs-target="#raceGenderCollapse"
+        aria-expanded="false"
+        aria-controls="raceGenderCollapse"
+        style="cursor: pointer;"
+        >
         <h5>Informações de Raça e Gênero</h5>
-        <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="collapse" data-bs-target="#raceGenderCollapse" aria-expanded="false" aria-controls="raceGenderCollapse">
-            <i class="fa-solid fa-cog" aria-hidden="true"></i>
+        <button type="button" class="btn btn-dark btn-sm">
+            <i class="fa-solid fa-angle-down"></i>
         </button>
     </div>
 

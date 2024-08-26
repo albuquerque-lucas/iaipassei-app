@@ -4,10 +4,15 @@
     @csrf
     @method('PATCH')
 
-    <div class="mb-3 d-flex justify-content-between align-items-center">
+    <div class="mb-3 d-flex justify-content-between align-items-center"
+    data-bs-toggle="collapse"
+    data-bs-target="#disabilityCollapse"
+    aria-expanded="false"
+    aria-controls="disabilityCollapse"
+    style="cursor: pointer;">
         <h5>Informações de Deficiência</h5>
-        <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="collapse" data-bs-target="#disabilityCollapse" aria-expanded="false" aria-controls="disabilityCollapse">
-            <i class="fa-solid fa-cog" aria-hidden="true"></i>
+        <button type="button" class="btn btn-dark btn-sm">
+            <i class="fa-solid fa-angle-down"></i>
         </button>
     </div>
 

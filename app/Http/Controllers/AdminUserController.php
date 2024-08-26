@@ -81,7 +81,7 @@ class AdminUserController extends Controller
         if ($request->hasFile('profile_img')) {
             $image = $request->file('profile_img');
             $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/storage/admin/profile');
+            $destinationPath = public_path("/storage/profile/$user->slug/");
             $image->move($destinationPath, $name);
             $validated['profile_img'] = $name;
         }

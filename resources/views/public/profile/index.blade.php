@@ -19,14 +19,14 @@
             <ul class="nav nav-tabs" id="profileTab" role="tablist">
                 <li class="nav-item me-1" role="presentation">
                     <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
-                    <i class="fa-solid fa-circle-info me-1"></i>
-                        Informações
+                    <i class="fa-solid fa-user-circle me-1"></i>
+                        Perfil
                     </button>
                 </li>
                 <li class="nav-item me-1" role="presentation">
                     <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">
                     <i class="fa-solid fa-pen-to-square me-1"></i>
-                        Editar Perfil
+                        Editar
                     </button>
                 </li>
                 <li class="nav-item me-1" role="presentation">
