@@ -14,7 +14,7 @@
         >
         <h5>Informações de Raça e Gênero</h5>
         <button type="button" class="btn btn-dark btn-sm">
-            <i class="fa-solid fa-angle-down"></i>
+            <i class="fa-solid fa-chevron-down"></i>
         </button>
     </div>
 
