@@ -54,7 +54,6 @@ class PublicPagesController extends Controller
             $examination = Examination::with(['educationLevel', 'exams.examQuestions'])
                                     ->where('slug', $slug)
                                     ->firstOrFail();
-
             $user = auth()->user();
 
             foreach ($examination->exams as $exam) {

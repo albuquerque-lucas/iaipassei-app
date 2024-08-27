@@ -16,6 +16,7 @@ use App\Http\Controllers\OpenAIAPIController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckAccountLevel;
 use App\Http\Middleware\CheckAccessLevel;
+use App\Http\Middleware\CheckExamAccess;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EmailVerificationController;
@@ -64,19 +65,31 @@ Route::middleware(['auth'])->group(function () {
     Route::post('concurso/{id}/subscribe', [PublicPagesController::class, 'subscribe'])->name('examinations.subscribe');
     Route::delete('concurso/{id}/unsubscribe', [PublicPagesController::class, 'unsubscribe'])->name('examinations.unsubscribe');
 
-    Route::post('provas/{exam:slug}/submit', [PublicExamController::class, 'submit'])->name('public.exams.submit');
-    Route::get('provas/{exam:slug}/resultados', [PublicExamController::class, 'results'])->name('public.exams.results');
-    Route::post('provas/{exam}/subscribe', [PublicExamController::class, 'subscribe'])->name('public.exams.subscribe');
-    Route::delete('/provas/{exam}/unsubscribe', [PublicExamController::class, 'unsubscribe'])->name('public.exams.unsubscribe');
+    Route::post('provas/{exam:slug}/submit', [PublicExamController::class, 'submit'])
+        ->name('public.exams.submit')
+        ->middleware(CheckExamAccess::class);
+
+    Route::get('provas/{exam:slug}/resultados', [PublicExamController::class, 'results'])
+        ->name('public.exams.results')
+        ->middleware(CheckExamAccess::class);
+
+    Route::post('provas/{exam}/subscribe', [PublicExamController::class, 'subscribe'])
+    ->name('public.exams.subscribe');
+
+    Route::delete('/provas/{exam}/unsubscribe', [PublicExamController::class, 'unsubscribe'])
+    ->name('public.exams.unsubscribe')
+    ->middleware(CheckExamAccess::class);
+
     Route::resource('provas', PublicExamController::class)
         ->only(['show'])
         ->parameters([
             'provas' => 'exam:slug'
         ])
         ->names([
-            'index' => 'public.exams.index',
+            // 'index' => 'public.exams.index',
             'show' => 'public.exams.show',
-        ]);
+        ])
+        ->middleware(CheckExamAccess::class);
 
     Route::resource('public/users', PublicUserController::class)
         ->only(['update'])
