@@ -29,7 +29,7 @@
                     <form id="unsubscribeForm" action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="button" id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm">
+                        <button type="button" id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm rounded-0">
                             Retirar Inscrição
                             <i class="fa-solid fa-ban ms-1"></i>
                         </button>
@@ -37,7 +37,7 @@
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-teal-500 btn-sm">Inscrever</button>
+                        <button type="submit" class="btn btn-teal-500 btn-sm rounded-0">Inscrever</button>
                     </form>
                 @endif
             @endauth
@@ -58,21 +58,21 @@
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
                     <div class="d-flex flex-column align-items-end w-25">
-                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-50">
+                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-50 rounded-0">
                             Simulado
                             <i class="fa-solid fa-file-signature ms-1"></i>
                         </a>
                         @can('canAccessExam', $exam)
                             @if($exam->resultStatus === 'final')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50 rounded-0">
                                     Resultado Final
                                 </a>
                             @elseif($exam->resultStatus === 'partial')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50 rounded-0">
                                     Resultado Parcial
                                 </a>
                             @else
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50 rounded-0">
                                     Resultado
                                 </a>
                             @endif
@@ -86,7 +86,7 @@
     </div>
 
     <div class="mt-4">
-        <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-500">
+        <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-500 rounded-0">
             <i class="fa-solid fa-arrow-left me-1"></i>
             Concursos
         </a>

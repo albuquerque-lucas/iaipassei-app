@@ -1,5 +1,5 @@
 // Fonts
-@import url(https://fonts.bunny.net/css?family=acme:400);
+@import url(https://fonts.bunny.net/css?family=acme:400|aldrich:400);
 @import url('https://fonts.googleapis.com/css2?family=Qwitcher+Grypen:wght@400;700&display=swap');
 
 // Bootstrap
@@ -25,7 +25,7 @@
     font-family: "Roboto", sans-serif;
     height: 100vh;
     .title-logo {
-        font-family: "Acme", sans-serif;
+        font-family: "Aldrich", sans-serif;
         font-size: 1.5rem;
     }
     .nav-tabs {
@@ -87,6 +87,12 @@
 
 .page-height {
     min-height: 100vh;
+}
+
+// Colors
+
+.color-indigo-900 {
+    color: $blue-900!important;
 }
 
 // Backgrounds
@@ -155,6 +161,14 @@
 
 .w-15 {
     width: 15%;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.w-55 {
+    width: 55%;
 }
 
 .w-8-rem {

@@ -10,8 +10,9 @@
         min-height: 10rem;
     }
 
-    h1 {
-        font-size: 5rem;
+    h1.title-iai,
+    h1.title-passei {
+        font-size: 15rem;
         display: inline;
     }
 
@@ -29,6 +30,25 @@
     opacity: 1;
 }
 
+.title-iai,
+.title-passei {
+    font-weight: 300;
+    font-family: 'Aldrich', sans-serif;
+}
+
+.title-iai {
+    opacity: 0.9;
+}
+
 .title-passei {
     color: $secondary-bootstrap-color;
+    opacity: 0.5;
+}
+
+.home-subtitle {
+    font-weight: 300;
+    color: $secondary-bootstrap-color;
+    opacity: 0.4;
+    font-size: 150%;
+    font-family: 'Aldrich', sans-serif;
 }
