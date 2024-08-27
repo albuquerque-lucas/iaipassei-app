@@ -1,6 +1,6 @@
 @props(['user'])
 
-<div class="card mb-3 profile-info rounded-0">
+<div class="card mb-3 profile-info rounded-0 shadow">
     <div class="card-header d-flex align-items-center py-4">
         <img src="{{ $user->profile_img ? asset("storage/profile/$user->slug/" . $user->profile_img) : asset('storage/admin/profile/profile-no-image.jpg') }}"
             alt="Profile Image" class="ms-3 me-5 rounded-circle" style="width: 180px; height: 180px; object-fit: cover; box-shadow:1px 1px 3px #888">
