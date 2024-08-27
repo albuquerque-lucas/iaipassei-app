@@ -2,7 +2,7 @@
     <h4 class="ps-1 ms-3 mb-3">Concursos Associados</h4>
     <div class="list-group">
         @forelse($examinations as $examination)
-            <div class="list-group-item d-flex justify-content-between align-items-center rounded-0">
+            <div class="list-group-item d-flex justify-content-between align-items-center rounded-0 shadow">
                 <div>
                     <h5>{{ $examination->title }}</h5>
                     <p><strong>Instituição:</strong> {{ $examination->institution }}</p>

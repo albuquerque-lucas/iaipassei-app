@@ -20,7 +20,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link rounded-0" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
-                    Resultados Completos
+                    Ranking
                 </button>
             </li>
         </ul>
@@ -55,7 +55,7 @@
 
         <!-- Tab 2: Resultados Completos -->
         <div class="tab-pane fade" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
-            <x-sections.examResults.result-complete />
+            <x-sections.examResults.exam-ranking />
         </div>
     </div>
 </div>
