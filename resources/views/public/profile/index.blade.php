@@ -1,7 +1,7 @@
 @extends('publicLayout')
 
 @section('main-content')
-    <section class="container mt-5 page-height">
+    <section class="container mt-5 page-height mb-10rem">
 
         <div style="height:5rem">
             @if(session('success'))

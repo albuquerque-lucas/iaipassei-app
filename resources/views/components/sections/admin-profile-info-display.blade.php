@@ -1,6 +1,6 @@
 @props(['user'])
 
-<div class="card mb-3 profile-info">
+<div class="card mb-3 profile-info rounded-0">
     <div class="card-header d-flex align-items-center py-4">
         <img src="{{ $user->profile_img ? asset("storage/profile/$user->slug/" . $user->profile_img) : asset('storage/admin/profile/profile-no-image.jpg') }}"
             alt="Profile Image" class="ms-3 me-5 rounded-circle" style="width: 180px; height: 180px; object-fit: cover; box-shadow:1px 1px 3px #888">
@@ -28,9 +28,9 @@
             <div class="info-item d-flex justify-content-between">
                 <p><strong>Verificado:</strong>
                     @if($user->email_verified_at)
-                        Verificado
+                        <i class="fa-solid fa-check bg-success-subtle text-light p-1 rounded-pill"></i>
                     @else
-                        Não verificado
+                        <i class="fa-solid fa-xmark bg-danger text-light p-1 rounded-pill"></i>
                         <a href="{{ route('verification.send') }}"
                         onclick="event.preventDefault(); document.getElementById('resend-verification-form').submit();">
                             (Reenviar e-mail de confirmação)
@@ -41,7 +41,7 @@
                     @endif
                 </p>
             </div>
-            <div class="info-item d-flex justify-content-between">
+            <div class="info-item d-flex justify-content-between" >
                 <p><strong>Telefone:</strong> {{ $user->phone_number ?? 'Não informado' }}</p>
             </div>
         </div>
