@@ -69,25 +69,6 @@ class PublicExamController extends Controller
         }
     }
 
-    // public function results($slug)
-    // {
-    //     try {
-    //         $exam = $this->getExamBySlug($slug);
-    //         $user = auth()->user();
-
-    //         $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
-    //         $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
-
-    //         $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
-
-    //         $title = "Resultados | $exam->title";
-    //         return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
-    //     } catch (Exception $e) {
-    //         Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
-    //         return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
-    //     }
-    // }
-
     public function results($slug)
     {
         try {
@@ -98,9 +79,6 @@ class PublicExamController extends Controller
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
-            // dd($statistics);
-            // dd('Teste antes de chamar calculareUserRankings');
-            // Calcular o ranking dos usuários
             $userRankings = $this->calculateUserRankings($exam->id);
 
             $title = "Resultados | $exam->title";
