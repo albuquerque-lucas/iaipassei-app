@@ -83,6 +83,26 @@
     .result_incorrect__alternative {
         background-color: $soft-danger-color;
     }
+
+    .flash-success {
+        background-color: $soft-success-color;
+        color: white;
+        opacity: 0.9;
+        border-radius: 0;
+        button {
+            color: white!important;
+        }
+    }
+
+    .flash-danger {
+        background-color: $soft-danger-color;
+        color: white;
+        opacity: 0.9;
+        border-radius: 0;
+        button {
+            color: white!important;
+        }
+    }
 }
 
 .page-height {
@@ -96,6 +116,11 @@
 }
 
 // Backgrounds
+
+.bg-indigo-900 {
+    background-color: $blue-900!important;
+    color: white!important;
+}
 
 .bd-indigo-700 {
     background-color: $blue-700!important;
@@ -150,6 +175,10 @@
 
 
 // Sizing
+
+.h-5-rem {
+    height: 5rem;
+}
 
 .m-height-100 {
     min-height: 100vh;
