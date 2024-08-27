@@ -2,18 +2,18 @@
 
 @section('main-content')
 
-<div class="container margin-top-7 m-height-100">
-    <h3 class="mb-4">{{ $examination->title }}</h3>
+<div class="flash-message-container container mt-4 mb-2">
+    @if(session('success'))
+        <x-cards.flash-message-card type="success" :message="session('success')" />
+    @elseif(session('error'))
+        <x-cards.flash-message-card type="error" :message="session('error')" />
+    @elseif(session('info'))
+        <x-cards.flash-message-card type="info" :message="session('info')" />
+    @endif
+</div>
 
-    <div class="flash-message-container">
-        @if(session('success'))
-            <x-cards.flash-message-card type="success" :message="session('success')" />
-        @elseif(session('error'))
-            <x-cards.flash-message-card type="error" :message="session('error')" />
-        @elseif(session('info'))
-            <x-cards.flash-message-card type="info" :message="session('info')" />
-        @endif
-    </div>
+<div class="container mt-4 m-height-100">
+    <h3 class="mb-4">{{ $examination->title }}</h3>
 
     <div class="card mb-4 position-relative rounded-0">
         <div class="card-body examination-card-body">
