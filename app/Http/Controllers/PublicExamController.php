@@ -8,11 +8,12 @@ use App\Models\ExamQuestion;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Exception;
-use App\AlternativeStatisticsTrait;
+use App\ExamStatisticsTrait;
+;
 
 class PublicExamController extends Controller
 {
-    use AlternativeStatisticsTrait;
+    use ExamStatisticsTrait;
 
     public function show($slug, Request $request)
     {
@@ -68,6 +69,25 @@ class PublicExamController extends Controller
         }
     }
 
+    // public function results($slug)
+    // {
+    //     try {
+    //         $exam = $this->getExamBySlug($slug);
+    //         $user = auth()->user();
+
+    //         $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
+    //         $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
+
+    //         $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
+
+    //         $title = "Resultados | $exam->title";
+    //         return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
+    //     } catch (Exception $e) {
+    //         Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
+    //         return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
+    //     }
+    // }
+
     public function results($slug)
     {
         try {
@@ -78,9 +98,13 @@ class PublicExamController extends Controller
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
+            // dd($statistics);
+            // dd('Teste antes de chamar calculareUserRankings');
+            // Calcular o ranking dos usuários
+            $userRankings = $this->calculateUserRankings($exam->id);
 
             $title = "Resultados | $exam->title";
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings'));
         } catch (Exception $e) {
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
@@ -90,22 +114,5 @@ class PublicExamController extends Controller
     private function getExamBySlug($slug)
     {
         return Exam::where('slug', $slug)->firstOrFail();
-    }
-
-    private function getMarkedAlternatives($user, $exam)
-    {
-        return $user->markedAlternatives()
-            ->whereHas('examQuestion', function($query) use ($exam) {
-                $query->where('exam_id', $exam->id);
-            })
-            ->with(['examQuestion'])
-            ->get();
-    }
-
-    private function sortAlternativesByQuestionNumber($markedAlternatives)
-    {
-        return $markedAlternatives->sortBy(function($alternative) {
-            return $alternative->examQuestion->question_number;
-        });
     }
 }

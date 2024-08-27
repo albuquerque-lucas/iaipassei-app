@@ -55,7 +55,9 @@
 
         <!-- Tab 2: Resultados Completos -->
         <div class="tab-pane fade" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
-            <x-sections.examResults.exam-ranking />
+            <x-sections.examResults.exam-ranking
+                :userRankings="$userRankings"
+            />
         </div>
     </div>
 </div>
