@@ -66,6 +66,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('provas/{exam:slug}/submit', [PublicExamController::class, 'submit'])->name('public.exams.submit');
     Route::get('provas/{exam:slug}/resultados', [PublicExamController::class, 'results'])->name('public.exams.results');
+    Route::post('provas/{exam}/subscribe', [PublicExamController::class, 'subscribe'])->name('public.exams.subscribe');
+    Route::delete('/provas/{exam}/unsubscribe', [PublicExamController::class, 'unsubscribe'])->name('public.exams.unsubscribe');
     Route::resource('provas', PublicExamController::class)
         ->only(['show'])
         ->parameters([

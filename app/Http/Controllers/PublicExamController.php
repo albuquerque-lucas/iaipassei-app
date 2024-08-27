@@ -93,4 +93,32 @@ class PublicExamController extends Controller
     {
         return Exam::where('slug', $slug)->firstOrFail();
     }
+
+    public function subscribe($examId)
+    {
+        try {
+            $user = auth()->user();
+            $exam = Exam::findOrFail($examId);
+
+            if (!$user->exams->contains($examId)) {
+                $user->exams()->attach($examId);
+                return redirect()->back()->with('success', 'Inscrição realizada com sucesso.');
+            }
+
+            return redirect()->back()->with('info', 'Você já está inscrito nesta prova.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao realizar inscrição: ' . $e->getMessage());
+        }
+    }
+
+    public function unsubscribe(Request $request, $examId)
+    {
+        $user = $request->user();
+        $exam = Exam::findOrFail($examId);
+
+        $user->exams()->detach($exam->id);
+
+        return redirect()->back()->with('success', 'Sua inscrição na prova foi removida com sucesso.');
+    }
+
 }

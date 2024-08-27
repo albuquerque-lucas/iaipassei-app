@@ -23,21 +23,24 @@
             @auth
                 @if(auth()->user()->examinations->contains($examination->id))
                     <span class="badge position-absolute top-0 end-0 m-3 p-2 rounded-pill badge-custom">
-                        Inscrito
+                        Listado
                         <i class="fa-solid fa-check ms-1"></i>
                     </span>
                     <form id="unsubscribeForm" action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="button" id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm rounded-0">
-                            Retirar Inscrição
+                            Remover da lista
                             <i class="fa-solid fa-ban ms-1"></i>
                         </button>
                     </form>
                 @else
                     <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-teal-500 btn-sm rounded-0">Inscrever</button>
+                        <button type="submit" class="btn btn-teal-500 btn-sm rounded-0">
+                            <i class="fa-solid fa-plus-circle me-2"></i>
+                            Listar
+                        </button>
                     </form>
                 @endif
             @endauth
@@ -58,29 +61,48 @@
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
                     <div class="d-flex flex-column align-items-end w-25">
-                        <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-50 rounded-0">
-                            Simulado
-                            <i class="fa-solid fa-file-signature ms-1"></i>
-                        </a>
                         @can('canAccessExam', $exam)
+                            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-8-rem rounded-0">
+                                Simulado
+                                <i class="fa-solid fa-file-signature ms-1"></i>
+                            </a>
+
                             @if($exam->resultStatus === 'final')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50 rounded-0">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-8-rem rounded-0">
                                     Resultado Final
                                 </a>
                             @elseif($exam->resultStatus === 'partial')
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50 rounded-0">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-8-rem rounded-0">
                                     Resultado Parcial
                                 </a>
                             @else
-                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-50 rounded-0">
+                                <a href="{{ route('public.exams.results', $exam->slug) }}" class="btn btn-dark btn-sm my-1 w-8-rem rounded-0">
                                     Resultado
                                 </a>
                             @endif
+
+                            <form action="{{ route('public.exams.unsubscribe', $exam->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-dark btn-sm delete-btn my-1 w-8-rem rounded-0">
+                                    Retirar Inscrição
+                                </button>
+                            </form>
+
+                        @else
+                            <form action="{{ route('public.exams.subscribe', $exam->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-teal-500 btn-sm my-1 w-8-rem rounded-0">
+                                    <i class="fa-solid fa-plus-circle me-2"></i>
+                                    Inscrever
+                                </button>
+                            </form>
                         @endcan
                     </div>
-
                 </li>
                 @endforeach
+
+
             </ul>
         </div>
     </div>
