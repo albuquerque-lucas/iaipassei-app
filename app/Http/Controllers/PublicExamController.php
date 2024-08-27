@@ -7,6 +7,7 @@ use App\Models\Exam;
 use App\Models\ExamQuestion;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Exception;
 use App\ExamStatisticsTrait;
 ;
@@ -116,9 +117,25 @@ class PublicExamController extends Controller
         $user = $request->user();
         $exam = Exam::findOrFail($examId);
 
-        $user->exams()->detach($exam->id);
+        // Verifique se o usuário está inscrito no exame
+        if ($user->exams->contains($exam->id)) {
+            // Obtenha os IDs das questões associadas ao exame
+            $examQuestionIds = $exam->examQuestions->pluck('id');
 
-        return redirect()->back()->with('success', 'Sua inscrição na prova foi removida com sucesso.');
+            // Remova as alternativas respondidas pelo usuário para essas questões
+            DB::table('user_question_alternatives')
+                ->where('user_id', $user->id)
+                ->whereIn('exam_question_id', $examQuestionIds)
+                ->delete();
+
+            // Remova a inscrição do usuário no exame
+            $user->exams()->detach($exam->id);
+
+            return redirect()->back()->with('success', 'Sua inscrição na prova foi removida com sucesso.');
+        }
+
+        return redirect()->back()->with('info', 'Você não está inscrito nesta prova.');
     }
+
 
 }

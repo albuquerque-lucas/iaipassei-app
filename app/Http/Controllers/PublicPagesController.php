@@ -110,11 +110,6 @@ class PublicPagesController extends Controller
                     $query->where('examination_id', $examination->id);
                 })->pluck('id');
 
-                DB::table('user_question_alternatives')
-                    ->where('user_id', $user->id)
-                    ->whereIn('exam_question_id', $examQuestionIds)
-                    ->delete();
-
                 $user->examinations()->detach($examination->id);
 
                 return redirect()->back()->with('success', 'Inscrição retirada com sucesso!');

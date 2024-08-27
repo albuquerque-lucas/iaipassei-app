@@ -26,10 +26,10 @@
                         Listado
                         <i class="fa-solid fa-check ms-1"></i>
                     </span>
-                    <form id="unsubscribeForm" action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
+                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="button" id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm rounded-0">
+                        <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm rounded-0">
                             Remover da lista
                             <i class="fa-solid fa-ban ms-1"></i>
                         </button>
@@ -81,10 +81,10 @@
                                 </a>
                             @endif
 
-                            <form action="{{ route('public.exams.unsubscribe', $exam->id) }}" method="POST">
+                            <form id="unsubscribeExamForm-{{ $exam->id }}" action="{{ route('public.exams.unsubscribe', $exam->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-dark btn-sm delete-btn my-1 w-8-rem rounded-0">
+                                <button type="button" class="btn btn-dark btn-sm delete-exam-btn my-1 w-8-rem rounded-0" data-exam-id="{{ $exam->id }}">
                                     Retirar Inscrição
                                 </button>
                             </form>
@@ -101,8 +101,6 @@
                     </div>
                 </li>
                 @endforeach
-
-
             </ul>
         </div>
     </div>
