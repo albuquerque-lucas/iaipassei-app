@@ -101,7 +101,15 @@ class PublicExamController extends Controller
             $user = auth()->user();
             $exam = Exam::findOrFail($examId);
 
+            // Verifica se o usuário já está inscrito no examination associado ao exam
+            if (!$user->examinations->contains($exam->examination_id)) {
+                // Inscreve o usuário no examination
+                $user->examinations()->attach($exam->examination_id);
+            }
+
+            // Verifica se o usuário já está inscrito no exam
             if (!$user->exams->contains($examId)) {
+                // Inscreve o usuário no exam
                 $user->exams()->attach($examId);
                 return redirect()->back()->with('success', 'Inscrição realizada com sucesso.');
             }
@@ -112,30 +120,37 @@ class PublicExamController extends Controller
         }
     }
 
+
     public function unsubscribe(Request $request, $examId)
     {
         $user = $request->user();
         $exam = Exam::findOrFail($examId);
 
-        // Verifique se o usuário está inscrito no exame
         if ($user->exams->contains($exam->id)) {
-            // Obtenha os IDs das questões associadas ao exame
             $examQuestionIds = $exam->examQuestions->pluck('id');
 
-            // Remova as alternativas respondidas pelo usuário para essas questões
             DB::table('user_question_alternatives')
                 ->where('user_id', $user->id)
                 ->whereIn('exam_question_id', $examQuestionIds)
                 ->delete();
 
-            // Remova a inscrição do usuário no exame
             $user->exams()->detach($exam->id);
+
+            $remainingExams = $user->exams()
+                ->where('examination_id', $exam->examination_id)
+                ->count();
+
+            if ($remainingExams === 0) {
+                $user->examinations()->detach($exam->examination_id);
+                return redirect()->back()->with('success', 'Sua inscrição na prova e no concurso foram removidas com sucesso.');
+            }
 
             return redirect()->back()->with('success', 'Sua inscrição na prova foi removida com sucesso.');
         }
 
         return redirect()->back()->with('info', 'Você não está inscrito nesta prova.');
     }
+
 
 
 }

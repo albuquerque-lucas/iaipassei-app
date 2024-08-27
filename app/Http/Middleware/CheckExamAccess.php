@@ -15,9 +15,9 @@ class CheckExamAccess
     {
         $examSlug = $request->route('exam');
         $user = Auth::user();
+        $exam = Exam::where('slug', $examSlug)->firstOrFail();
 
         try {
-            $exam = Exam::where('slug', $examSlug)->firstOrFail();
 
             if ($user && $user->can('canAccessExam', $exam)) {
                 return $next($request);

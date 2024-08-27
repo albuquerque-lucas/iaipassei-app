@@ -77,8 +77,7 @@ Route::middleware(['auth'])->group(function () {
     ->name('public.exams.subscribe');
 
     Route::delete('/provas/{exam}/unsubscribe', [PublicExamController::class, 'unsubscribe'])
-    ->name('public.exams.unsubscribe')
-    ->middleware(CheckExamAccess::class);
+    ->name('public.exams.unsubscribe');
 
     Route::resource('provas', PublicExamController::class)
         ->only(['show'])
