@@ -22,7 +22,7 @@
             <p class="card-text"><strong>Escolaridade:</strong> {{ $examination->educationLevel->name }}</p>
             @auth
                 @if(auth()->user()->examinations->contains($examination->id))
-                    <span class="badge position-absolute top-0 end-0 m-3 p-2 rounded-pill badge-custom">
+                    <span class="badge rounded-pill mb-2 badge-custom">
                         Listado
                         <i class="fa-solid fa-check ms-1"></i>
                     </span>
@@ -30,12 +30,12 @@
                         @csrf
                         @method('DELETE')
                         <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm rounded-0">
-                            Remover da lista
-                            <i class="fa-solid fa-ban ms-1"></i>
+                            <i class="fa-solid fa-ban me-1"></i>
+                            Remover
                         </button>
                     </form>
                 @else
-                    <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST">
+                    <form action="{{ route('examinations.subscribe', $examination->id) }}" method="POST" class="mt-5">
                         @csrf
                         <button type="submit" class="btn btn-teal-500 btn-sm rounded-0">
                             <i class="fa-solid fa-plus-circle me-2"></i>
