@@ -115,10 +115,20 @@ trait ExamStatisticsTrait
 
     private function calculateRankings(Collection $users, $examId): Collection
     {
-        return $users->map(function ($user) use ($examId) {
+        $totalQuestions = Exam::findOrFail($examId)->examQuestions->count();
+
+        return $users->map(function ($user) use ($examId, $totalQuestions) {
             Log::info('Processando usuário', ['userId' => $user->id]);
 
             $markedAlternatives = $this->getMarkedAlternatives($user, $examId);
+            $answeredQuestionsCount = $markedAlternatives->groupBy('exam_question_id')->count();
+
+            // Verifica se o usuário respondeu todas as questões
+            if ($answeredQuestionsCount < $totalQuestions) {
+                Log::info('Usuário não respondeu a todas as questões', ['userId' => $user->id]);
+                return null; // Se não respondeu todas, exclui do ranking
+            }
+
             Log::info('Alternativas marcadas', ['markedAlternatives' => $markedAlternatives->pluck('id')]);
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
@@ -136,7 +146,7 @@ trait ExamStatisticsTrait
                 'user' => $user,
                 'correct_answers' => $correctAnswers
             ];
-        })->sortBy([
+        })->filter()->sortBy([
             ['correct_answers', 'desc'],
             ['user.slug', 'asc'],
         ])->values();
@@ -162,7 +172,6 @@ trait ExamStatisticsTrait
         return $positionedRankings;
     }
 
-
     public function sortAlternativesByQuestionNumber($markedAlternatives)
     {
         return $markedAlternatives->sortBy(function ($alternative) {
@@ -183,5 +192,4 @@ trait ExamStatisticsTrait
             ->with(['examQuestion'])
             ->get();
     }
-
 }

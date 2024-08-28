@@ -1,8 +1,16 @@
-@props(['userRankings'])
+@props(['userRankings', 'userAnsweredAllQuestions', 'exam'])
 
 <div class="container mt-5">
     <h3 class="mb-4">Ranking de Usuários</h3>
-
+    <div class="m-height-5-rem ">
+        @if (!$userAnsweredAllQuestions)
+            <p class="alert alert-warning">
+                Atenção: Você não respondeu todas as questões desta prova.
+                Complete todas as questões para participar do ranking.
+                <a href="{{ route('public.exams.show', $exam->slug) }}" class="alert-link">Clique aqui para continuar respondendo.</a>
+            </p>
+        @endif
+    </div>
     @if ($userRankings->isEmpty())
         <p>Nenhum usuário participou desta prova.</p>
     @else

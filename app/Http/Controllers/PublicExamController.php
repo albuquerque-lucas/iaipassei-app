@@ -76,14 +76,18 @@ class PublicExamController extends Controller
             $exam = $this->getExamBySlug($slug);
             $user = auth()->user();
 
+            $totalQuestions = $exam->examQuestions->count();
+
             $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
+
+            $userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
             $userRankings = $this->calculateUserRankings($exam->id);
 
             $title = "Resultados | $exam->title";
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings'));
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings', 'userAnsweredAllQuestions'));
         } catch (Exception $e) {
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
