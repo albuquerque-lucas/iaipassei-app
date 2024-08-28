@@ -1,6 +1,6 @@
 @props(['slug'])
 
-<nav class="navbar navbar-expand-lg navbar-dark bd-indigo-700">
+<nav class="navbar navbar-expand-lg navbar-dark bd-indigo-700 shadow">
     <div class="container-fluid container">
         <a class="navbar-brand title-logo me-5" href="{{ route('public.home') }}">
             <i class="fa-solid fa-graduation-cap me-1"></i>

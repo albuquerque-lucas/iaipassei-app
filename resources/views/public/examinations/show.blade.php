@@ -15,7 +15,7 @@
 <div class="container mt-4 m-height-100">
     <h3 class="mb-4">{{ $examination->title }}</h3>
 
-    <div class="card mb-4 position-relative rounded-0">
+    <div class="card mb-4 position-relative rounded-0 shadow">
         <div class="card-body examination-card-body">
             <h5 class="card-title">{{ $examination->title }}</h5>
             <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="card mb-4 rounded-0">
+    <div class="card mb-4 rounded-0 shadow">
         <div class="card-body">
             <h5 class="card-title">Provas</h5>
             <p class="card-text"><strong>Quantidade de Provas:</strong> {{ $examination->exams->count() }}</p>
