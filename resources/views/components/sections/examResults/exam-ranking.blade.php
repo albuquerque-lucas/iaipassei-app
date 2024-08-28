@@ -5,7 +5,11 @@
     <div class="m-height-5-rem ">
         @if (!$userAnsweredAllQuestions)
             <p class="alert alert-warning">
-                Atenção: Você não respondeu todas as questões desta prova.
+                <strong>
+                    <i class="fa-solid fa-exclamation-triangle me-1"></i>
+                    Atenção:
+                </strong>
+                Você não respondeu todas as questões deste simulado.
                 Complete todas as questões para participar do ranking.
                 <a href="{{ route('public.exams.show', $exam->slug) }}" class="alert-link">Clique aqui para continuar respondendo.</a>
             </p>
