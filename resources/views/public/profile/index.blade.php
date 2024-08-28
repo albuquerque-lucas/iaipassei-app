@@ -1,9 +1,9 @@
 @extends('publicLayout')
 
 @section('main-content')
-    <section class="container mt-5 page-height">
+    <section class="container mt-5 page-height mb-10rem">
 
-        <div style="height:5rem">
+        <div class="h-5-rem text-start">
             @if(session('success'))
                 <x-cards.flash-message-card type="success" :message="session('success')" />
             @endif

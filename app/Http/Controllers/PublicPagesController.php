@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Examination;
 use App\Models\ExamQuestion;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Exception;
 
 class PublicPagesController extends Controller
@@ -53,7 +54,6 @@ class PublicPagesController extends Controller
             $examination = Examination::with(['educationLevel', 'exams.examQuestions'])
                                     ->where('slug', $slug)
                                     ->firstOrFail();
-
             $user = auth()->user();
 
             foreach ($examination->exams as $exam) {
@@ -108,11 +108,6 @@ class PublicPagesController extends Controller
                 $examQuestionIds = ExamQuestion::whereHas('exam', function ($query) use ($examination) {
                     $query->where('examination_id', $examination->id);
                 })->pluck('id');
-
-                \DB::table('user_question_alternatives')
-                    ->where('user_id', $user->id)
-                    ->whereIn('exam_question_id', $examQuestionIds)
-                    ->delete();
 
                 $user->examinations()->detach($examination->id);
 

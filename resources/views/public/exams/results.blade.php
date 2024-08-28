@@ -20,22 +20,22 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link rounded-0" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
-                    Resultados Completos
+                    Ranking
                 </button>
             </li>
         </ul>
         <div class="w-50 d-flex align-items-center justify-content-end">
-            <button class="btn mx-1 w-25"
+            <button class="btn mx-1 w-25 rounded-0"
                     :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
                     @click="highlight = !highlight">
                 <span x-text="highlight ? 'Retirar Destaque' : 'Destacar'"></span>
             </button>
 
-            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1">
+            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1 rounded-0">
                 Ver Simulado
                 <i class="fa-solid fa-file-signature ms-1"></i>
             </a>
-            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-indigo-500 mx-1">
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1 rounded-0">
                 <i class="fa-solid fa-arrow-left me-1"></i>
                 Voltar
             </a>
@@ -55,7 +55,11 @@
 
         <!-- Tab 2: Resultados Completos -->
         <div class="tab-pane fade" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
-            <x-sections.examResults.result-complete />
+            <x-sections.examResults.exam-ranking
+                :userRankings="$userRankings"
+                :userAnsweredAllQuestions="$userAnsweredAllQuestions"
+                :exam="$exam"
+            />
         </div>
     </div>
 </div>

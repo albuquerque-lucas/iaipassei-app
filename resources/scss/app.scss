@@ -1,5 +1,5 @@
 // Fonts
-@import url(https://fonts.bunny.net/css?family=acme:400);
+@import url(https://fonts.bunny.net/css?family=acme:400|aldrich:400);
 @import url('https://fonts.googleapis.com/css2?family=Qwitcher+Grypen:wght@400;700&display=swap');
 
 // Bootstrap
@@ -25,7 +25,7 @@
     font-family: "Roboto", sans-serif;
     height: 100vh;
     .title-logo {
-        font-family: "Acme", sans-serif;
+        font-family: "Aldrich", sans-serif;
         font-size: 1.5rem;
     }
     .nav-tabs {
@@ -83,13 +83,44 @@
     .result_incorrect__alternative {
         background-color: $soft-danger-color;
     }
+
+    .flash-success {
+        background-color: $soft-success-color;
+        color: white;
+        opacity: 0.9;
+        border-radius: 0;
+        button {
+            color: white!important;
+        }
+    }
+
+    .flash-danger {
+        background-color: $soft-danger-color;
+        color: white;
+        opacity: 0.9;
+        border-radius: 0;
+        button {
+            color: white!important;
+        }
+    }
 }
 
 .page-height {
     min-height: 100vh;
 }
 
+// Colors
+
+.color-indigo-900 {
+    color: $blue-900!important;
+}
+
 // Backgrounds
+
+.bg-indigo-900 {
+    background-color: $blue-900!important;
+    color: white!important;
+}
 
 .bd-indigo-700 {
     background-color: $blue-700!important;
@@ -138,9 +169,45 @@
     margin-top: 7rem;
 }
 
+.mb-10rem {
+    margin-bottom: 10rem;
+}
+
 
 // Sizing
 
+.m-height-5-rem {
+    min-height: 5rem;
+}
+
+.h-5-rem {
+    height: 5rem;
+}
+
 .m-height-100 {
     min-height: 100vh;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-15 {
+    width: 15%;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.w-55 {
+    width: 55%;
+}
+
+.w-8-rem {
+    width: 8rem;
+}
+
+.w-10-rem {
+    width: 10rem;
 }

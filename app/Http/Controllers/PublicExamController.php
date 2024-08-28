@@ -7,12 +7,14 @@ use App\Models\Exam;
 use App\Models\ExamQuestion;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Exception;
-use App\AlternativeStatisticsTrait;
+use App\ExamStatisticsTrait;
+;
 
 class PublicExamController extends Controller
 {
-    use AlternativeStatisticsTrait;
+    use ExamStatisticsTrait;
 
     public function show($slug, Request $request)
     {
@@ -58,9 +60,9 @@ class PublicExamController extends Controller
             }
 
             if ($request->input('page') == $questions->lastPage()) {
-                return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'Respostas enviadas com sucesso!');
+                return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'As respostas foram enviadas com sucesso');
             } else {
-                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'Respostas enviadas com sucesso');
+                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'As respostas foram enviadas com sucesso');
             }
         } catch (Exception $e) {
             Log::error('Erro ao enviar as respostas: ' . $e->getMessage());
@@ -74,13 +76,18 @@ class PublicExamController extends Controller
             $exam = $this->getExamBySlug($slug);
             $user = auth()->user();
 
+            $totalQuestions = $exam->examQuestions->count();
+
             $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
 
+            $userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
+
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
+            $userRankings = $this->calculateUserRankings($exam->id);
 
             $title = "Resultados | $exam->title";
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings', 'userAnsweredAllQuestions'));
         } catch (Exception $e) {
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
@@ -92,20 +99,62 @@ class PublicExamController extends Controller
         return Exam::where('slug', $slug)->firstOrFail();
     }
 
-    private function getMarkedAlternatives($user, $exam)
+    public function subscribe($examId)
     {
-        return $user->markedAlternatives()
-            ->whereHas('examQuestion', function($query) use ($exam) {
-                $query->where('exam_id', $exam->id);
-            })
-            ->with(['examQuestion'])
-            ->get();
+        try {
+            $user = auth()->user();
+            $exam = Exam::findOrFail($examId);
+
+            // Verifica se o usuário já está inscrito no examination associado ao exam
+            if (!$user->examinations->contains($exam->examination_id)) {
+                // Inscreve o usuário no examination
+                $user->examinations()->attach($exam->examination_id);
+            }
+
+            // Verifica se o usuário já está inscrito no exam
+            if (!$user->exams->contains($examId)) {
+                // Inscreve o usuário no exam
+                $user->exams()->attach($examId);
+                return redirect()->back()->with('success', 'Inscrição realizada com sucesso.');
+            }
+
+            return redirect()->back()->with('info', 'Você já está inscrito nesta prova.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao realizar inscrição: ' . $e->getMessage());
+        }
     }
 
-    private function sortAlternativesByQuestionNumber($markedAlternatives)
+
+    public function unsubscribe(Request $request, $examId)
     {
-        return $markedAlternatives->sortBy(function($alternative) {
-            return $alternative->examQuestion->question_number;
-        });
+        $user = $request->user();
+        $exam = Exam::findOrFail($examId);
+
+        if ($user->exams->contains($exam->id)) {
+            $examQuestionIds = $exam->examQuestions->pluck('id');
+
+            DB::table('user_question_alternatives')
+                ->where('user_id', $user->id)
+                ->whereIn('exam_question_id', $examQuestionIds)
+                ->delete();
+
+            $user->exams()->detach($exam->id);
+
+            $remainingExams = $user->exams()
+                ->where('examination_id', $exam->examination_id)
+                ->count();
+
+            if ($remainingExams === 0) {
+                $user->examinations()->detach($exam->examination_id);
+                return redirect()->back()->with('success', 'Sua inscrição na prova e no concurso foram removidas com sucesso.');
+            }
+
+            return redirect()->back()->with('success', 'Sua inscrição na prova foi removida com sucesso.');
+        }
+
+        return redirect()->back()->with('info', 'Você não está inscrito nesta prova.');
     }
+
+
+
 }

@@ -36,15 +36,15 @@
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember">{{ __('Lembrar de mim') }}</label>
+                            <label class="form-check-label" for="remember"> Lembrar </label>
                         </div>
                         <div class="d-grid mb-2">
-                            <button type="submit" class="btn btn-dark fw-bold">
+                            <button type="submit" class="btn bg-indigo-900 rounded-0">
                                 Login
                             </button>
                         </div>
                         <div class="d-grid">
-                            <a href="{{ route('auth.google') }}" class="btn btn-primary d-flex justify-content-center align-items-center">
+                            <a href="{{ route('auth.google') }}" class="btn btn-primary d-flex justify-content-center align-items-center rounded-0">
                                 <i class="fa-brands fa-google mx-3"></i>
                                 Logar com o Google
                             </a>
@@ -57,7 +57,7 @@
                         </div>
                         @endif
                         <div class="mt-3 text-center">
-                            <a class="btn btn-indigo-500 w-100" href="{{ route('public.register.index') }}">
+                            <a class="btn btn-indigo-500 w-100 rounded-0" href="{{ route('public.register.index') }}">
                                 {{ __('Crie uma Conta') }}
                             </a>
                         </div>

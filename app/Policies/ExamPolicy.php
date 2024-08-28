@@ -8,15 +8,11 @@ use App\Models\Exam;
 class ExamPolicy
 {
     /**
-     * Create a new policy instance.
+     * Verifica se o usuário pode acessar o exame.
      */
-    public function __construct()
-    {
-        //
-    }
-
     public function canAccessExam(User $user, Exam $exam): bool
     {
-        return $user->examinations()->where('examinations.id', $exam->examination_id)->exists();
+        // Verifica se o usuário está inscrito no exame
+        return $user->exams()->where('exams.id', $exam->id)->exists();
     }
 }

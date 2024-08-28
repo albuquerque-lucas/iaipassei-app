@@ -20,8 +20,8 @@
                 <p class="mb-1"><strong>Instituição:</strong> {{ $examination->institution }}</p>
                 <p class="mb-1"><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
             </div>
-            <div>
-                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-teal-500 btn-sm">
+            <div class="align-self-start">
+                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-teal-500 btn-sm rounded-0">
                     Visualizar
                     <i class="fa-solid fa-eye ms-2"></i>
                 </a>

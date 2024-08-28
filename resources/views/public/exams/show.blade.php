@@ -11,7 +11,7 @@
 <section class="quiz-page container mt-5">
     <div class="w-100 d-flex justify-content-between align-items-start p-2">
         <h4 class="mb-4 text-start">{{ $exam->title }}</h4>
-        <a href="{{ route('public.examinations.show', ['slug' => $exam->examination->slug]) }}" class="btn btn-indigo-500">
+        <a href="{{ route('public.examinations.show', ['slug' => $exam->examination->slug]) }}" class="btn btn-indigo-500 rounded-0">
             <i class="fa-solid fa-arrow-left me-1"></i>
             Voltar
         </a>
@@ -109,7 +109,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-4 mb-5">
-            <button type="submit" class="btn btn-indigo-500">Enviar Respostas</button>
+            <button type="submit" class="btn btn-indigo-500 rounded-0">Enviar Respostas</button>
         </div>
     </form>
 </section>
