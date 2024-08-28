@@ -55,11 +55,11 @@
 
         <!-- Tab 2: Resultados Completos -->
         <div class="tab-pane fade" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
-            <x-sections.examResults.exam-ranking
-                :userRankings="$userRankings"
-                :userAnsweredAllQuestions="$userAnsweredAllQuestions"
-                :exam="$exam"
-            />
+            {{-- <x-sections.examResults.exam-ranking
+
+            /> --}}
+            <livewire:exam-ranking :exam="$exam" wire:init="loadRanking"/>
+
         </div>
     </div>
 </div>
