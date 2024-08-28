@@ -7,6 +7,7 @@ use App\Models\Exam;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 trait ExamStatisticsTrait
 {
@@ -64,7 +65,7 @@ trait ExamStatisticsTrait
                 ]);
             } else {
                 Log::error('Alternative ID is missing', ['alternative' => $alternative]);
-                throw new \Exception('Invalid alternative object: Missing ID.');
+                throw new Exception('Invalid alternative object: Missing ID.');
             }
         }
 
@@ -93,7 +94,7 @@ trait ExamStatisticsTrait
             $users = $this->getUsersForExam($examId);
             $rankings = $this->calculateRankings($users, $examId);
             return $this->assignPositions($rankings);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Erro ao calcular o ranking dos usuários', [
                 'examId' => $examId,
                 'error' => $e->getMessage()
