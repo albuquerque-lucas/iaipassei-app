@@ -1,60 +1,64 @@
 @props(['userRankings', 'userAnsweredAllQuestions', 'exam'])
 
 <div class="container mt-5">
-    <h3 class="mb-4">Ranking de Usuários</h3>
+    <div class="d-flex justify-content-between align-items-center">
 
-    <!-- Botão para calcular o ranking -->
-    <button wire:click="loadUserRankings" class="btn btn-primary mt-3">
-        Calcular Ranking
-    </button>
+        <!-- Botão para calcular o ranking -->
+        <button wire:click="loadUserRankings" class="btn btn-indigo-500 rounded-0">
+            Calcular Ranking
+            <i class="fa-solid fa-crown ms-1"></i>
+        </button>
 
-    <div class="m-height-5-rem">
-        @if (!$userAnsweredAllQuestions)
-            <p class="alert alert-warning">
-                <strong>
-                    <i class="fa-solid fa-exclamation-triangle me-1"></i>
-                    Atenção:
-                </strong>
-                Você não respondeu todas as questões deste simulado.
-                Complete todas as questões para participar do ranking.
-                <a href="{{ route('public.exams.show', $exam->slug) }}" class="alert-link">Clique aqui para continuar respondendo.</a>
-            </p>
-        @endif
     </div>
 
+    @if (!$userAnsweredAllQuestions)
+        <p class="alert alert-warning">
+            <strong>
+                <i class="fa-solid fa-exclamation-triangle me-1"></i>
+                Atenção:
+            </strong>
+            Você não respondeu todas as questões deste simulado.
+            Complete todas as questões para participar do ranking.
+            <a href="{{ route('public.exams.show', $exam->slug) }}" class="alert-link">Clique aqui para continuar respondendo.</a>
+        </p>
+    @endif
+
     <!-- Spinner de carregamento -->
+    <div class="text-center w-100 p-3">
     <div wire:loading>
-        <div class="text-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Carregando...</span>
             </div>
-            <p class="mt-3">Calculando ranking. Aguarde alguns instantes.</p>
+            <p>Calculando. Aguarde alguns instantes...</p>
         </div>
     </div>
 
     <!-- Conteúdo do ranking -->
     <div wire:loading.remove>
-        @if (empty($userRankings))
-            <p>Clique no botão para calcular o ranking.</p>
-        @else
-            <table class="table table-striped">
-                <thead>
+        <div class="d-flex align-items-center justify-content-center">
+            @if (empty($userRankings))
+                <p>Clique no botão para calcular a sua classificação.</p>
+            @else
+
+        </div>
+        <table class="table table-striped shadow">
+            <thead>
+                <tr>
+                    <th scope="col">Posição</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Respostas Corretas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($userRankings as $index => $ranking)
                     <tr>
-                        <th scope="col">Posição</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Respostas Corretas</th>
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>{{ $ranking['user']->slug }}</td>
+                        <td>{{ $ranking['correct_answers'] }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($userRankings as $index => $ranking)
-                        <tr>
-                            <th scope="row">{{ $index + 1 }}</th>
-                            <td>{{ $ranking['user']->slug }}</td>
-                            <td>{{ $ranking['correct_answers'] }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
         @endif
     </div>
 </div>
