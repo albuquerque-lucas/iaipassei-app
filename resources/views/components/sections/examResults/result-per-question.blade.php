@@ -4,7 +4,7 @@
     @if ($markedAlternatives->isEmpty())
         <p>Você não marcou nenhuma questão.</p>
     @else
-        <ul class="list-group rounded-0">
+        <ul class="list-group rounded-0 shadow">
             @foreach ($markedAlternatives as $alternative)
                 <li class="list-group-item d-flex justify-content-between"
                     x-bind:class="highlight && {{ $statistics[$alternative->id]['is_max'] ? 'true' : 'false' }} ? 'result_correct__alternative' : (highlight ? 'result_incorrect__alternative' : '')">

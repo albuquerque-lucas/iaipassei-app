@@ -73,26 +73,29 @@ class PublicExamController extends Controller
     public function results($slug)
     {
         try {
+            // Obtém o exame pelo slug
             $exam = $this->getExamBySlug($slug);
             $user = auth()->user();
 
-            $totalQuestions = $exam->examQuestions->count();
-
+            // Obtém as alternativas marcadas pelo usuário e as ordena pelo número da questão
             $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
 
-            $userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
-
+            // Calcula as estatísticas das alternativas
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
-            $userRankings = $this->calculateUserRankings($exam->id);
 
+            // Define o título da página
             $title = "Resultados | $exam->title";
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings', 'userAnsweredAllQuestions'));
+
+            // Retorna a view com os dados necessários
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
         } catch (Exception $e) {
+            // Registra o erro e redireciona o usuário de volta à página do exame com uma mensagem de erro
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
     }
+
 
     private function getExamBySlug($slug)
     {

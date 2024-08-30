@@ -18,7 +18,7 @@
     @if ($userRankings->isEmpty())
         <p>Nenhum usuário participou desta prova.</p>
     @else
-        <table class="table table-striped">
+        <table class="table table-striped shadow">
             <thead>
                 <tr>
                     <th scope="col">Posição</th>
