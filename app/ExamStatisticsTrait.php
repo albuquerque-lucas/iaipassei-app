@@ -32,7 +32,7 @@ trait ExamStatisticsTrait
     {
         $examQuestionId = $alternatives->first()->exam_question_id;
 
-        Log::info('Calculating statistics for exam_question_id', ['examQuestionId' => $examQuestionId]);
+        // Log::info('Calculating statistics for exam_question_id', ['examQuestionId' => $examQuestionId]);
 
         $alternativeCounts = DB::table('user_question_alternatives')
             ->select('question_alternative_id', DB::raw('count(*) as count'))
@@ -48,12 +48,11 @@ trait ExamStatisticsTrait
         $maxProportion = $proportions->max();
         $maxAlternativeId = $proportions->search($maxProportion);
 
-        Log::info('Max alternative identified', ['maxAlternativeId' => $maxAlternativeId]);
+        // Log::info('Max alternative identified', ['maxAlternativeId' => $maxAlternativeId]);
 
         foreach ($alternatives as $alternative) {
-            Log::info('Processing alternative', ['alternativeId' => $alternative->id]);
+            // Log::info('Processing alternative', ['alternativeId' => $alternative->id]);
 
-            // Garantir que estamos acessando a propriedade id corretamente
             if (isset($alternative->id)) {
                 $isMax = $alternative->id == $maxAlternativeId;
 
@@ -64,7 +63,7 @@ trait ExamStatisticsTrait
                     'is_max' => $isMax
                 ]);
             } else {
-                Log::error('Alternative ID is missing', ['alternative' => $alternative]);
+                // Log::error('Alternative ID is missing', ['alternative' => $alternative]);
                 throw new Exception('Invalid alternative object: Missing ID.');
             }
         }
@@ -118,18 +117,17 @@ trait ExamStatisticsTrait
         $totalQuestions = Exam::findOrFail($examId)->examQuestions->count();
 
         return $users->map(function ($user) use ($examId, $totalQuestions) {
-            Log::info('Processando usuário', ['userId' => $user->id]);
+            // Log::info('Processando usuário', ['userId' => $user->id]);
 
             $markedAlternatives = $this->getMarkedAlternatives($user, $examId);
             $answeredQuestionsCount = $markedAlternatives->groupBy('exam_question_id')->count();
 
-            // Verifica se o usuário respondeu todas as questões
             if ($answeredQuestionsCount < $totalQuestions) {
-                Log::info('Usuário não respondeu a todas as questões', ['userId' => $user->id]);
+                // Log::info('Usuário não respondeu a todas as questões', ['userId' => $user->id]);
                 return null; // Se não respondeu todas, exclui do ranking
             }
 
-            Log::info('Alternativas marcadas', ['markedAlternatives' => $markedAlternatives->pluck('id')]);
+            // Log::info('Alternativas marcadas', ['markedAlternatives' => $markedAlternatives->pluck('id')]);
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
 
