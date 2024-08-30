@@ -45,7 +45,7 @@
             <thead>
                 <tr>
                     <th scope="col">Posição</th>
-                    <th scope="col">Nome</th>
+                    <th scope="col">Usuário</th>
                     <th scope="col">Respostas Corretas</th>
                 </tr>
             </thead>
@@ -53,7 +53,7 @@
                 @foreach ($userRankings as $index => $ranking)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $ranking['user']->slug }}</td>
+                        <td>{{ $ranking['user']->username }}</td>
                         <td>{{ $ranking['correct_answers'] }}</td>
                     </tr>
                 @endforeach
