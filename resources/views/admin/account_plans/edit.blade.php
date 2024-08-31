@@ -3,7 +3,7 @@
 @section('main-content')
 <section x-data="{ activeTab: '{{ session('activeTab') ?: 'show' }}' }" class='admin-account-plans-page container mt-5'>
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{{ route('admin.account_plans.index') }}" class="btn btn-secondary">Voltar</a>
+        <a href="{{ route('admin.account_plans.index') }}" class="btn btn-secondary">voltar</a>
         <ul class="nav nav-tabs" id="accountPlansTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button @click="activeTab = 'show'" :class="{ 'active': activeTab === 'show' }" class="nav-link" id="show-tab" type="button" role="tab" aria-controls="show" aria-selected="true">

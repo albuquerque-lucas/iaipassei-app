@@ -9,7 +9,7 @@
                     <i class="fa-solid fa-exclamation-triangle me-1"></i>
                     Atenção:
                 </strong>
-                Você não respondeu todas as questões deste simulado.
+                Você não respondeu todas as questões deste gabarito.
                 Complete todas as questões para participar do ranking.
                 <a href="{{ route('public.exams.show', $exam->slug) }}" class="alert-link">Clique aqui para continuar respondendo.</a>
             </p>

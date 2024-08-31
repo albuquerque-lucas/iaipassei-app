@@ -63,7 +63,7 @@
                     <div class="d-flex flex-column align-items-end w-25">
                         @can('canAccessExam', $exam)
                             <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-8-rem rounded-0">
-                                Simulado
+                                Gabarito
                                 <i class="fa-solid fa-file-signature ms-1"></i>
                             </a>
 

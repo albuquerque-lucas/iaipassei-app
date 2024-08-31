@@ -13,7 +13,7 @@
         <h4 class="mb-4 text-start">{{ $exam->title }}</h4>
         <a href="{{ route('public.examinations.show', ['slug' => $exam->examination->slug]) }}" class="btn btn-indigo-500 rounded-0">
             <i class="fa-solid fa-arrow-left me-1"></i>
-            Voltar
+            voltar
         </a>
     </div>
     <div style="height:5rem" class="mb-4 w-100">
