@@ -18,8 +18,8 @@
     <div class="card mb-4 position-relative rounded-0 shadow">
         <div class="card-body examination-card-body">
             <h5 class="card-title">{{ $examination->title }}</h5>
-            <p class="card-text bg-primary"><strong>Instituição:</strong> {{ $examination->institution }}</p>
-            <p class="card-text bg-primary"><strong>Escolaridade:</strong> {{ $examination->educationLevel->name }}</p>
+            <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
+            <p class="card-text"><strong>Escolaridade:</strong> {{ $examination->educationLevel->name }}</p>
             @auth
                 @if(auth()->user()->examinations->contains($examination->id))
                     <span class="badge rounded-pill mb-2 badge-custom">
@@ -63,7 +63,7 @@
                     <div class="d-flex flex-column align-items-end w-25">
                         @can('canAccessExam', $exam)
                             <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 btn-sm my-1 w-8-rem rounded-0">
-                                Simulado
+                                Gabarito
                                 <i class="fa-solid fa-file-signature ms-1"></i>
                             </a>
 

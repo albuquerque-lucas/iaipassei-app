@@ -21,19 +21,22 @@ class PublicExamController extends Controller
         try {
             $exam = Exam::where('slug', $slug)->firstOrFail();
             $user = Auth::user();
+            $title = $exam->title;
+
             if ($user->cannot('canAccessExam', $exam)) {
-                $title = $exam->title;
                 return view('public.exams.not-enrolled', compact('exam', 'title'));
             }
 
-            $page = $request->input('page', 1);
-            $questions = ExamQuestion::where('exam_id', $exam->id)->paginate(5);
+            // Buscar todas as questões sem paginação
+            $questions = ExamQuestion::where('exam_id', $exam->id)->get();
 
-            $markedAlternatives = auth()->user()->markedAlternatives()
+            // Buscar as alternativas já marcadas pelo usuário, incluindo a letra
+            $markedAlternatives = $user->markedAlternatives()
                 ->whereIn('user_question_alternatives.exam_question_id', $questions->pluck('id'))
-                ->pluck('question_alternative_id', 'user_question_alternatives.exam_question_id');
+                ->withPivot('exam_question_id')
+                ->get()
+                ->keyBy('exam_question_id');
 
-            $title = $exam->title;
             return view('public.exams.show', compact('exam', 'questions', 'title', 'markedAlternatives'));
         } catch (Exception $e) {
             Log::error('Erro ao carregar o exame: ' . $e->getMessage());
@@ -41,34 +44,37 @@ class PublicExamController extends Controller
         }
     }
 
+
+
     public function submit(Request $request, $slug)
     {
         try {
             $exam = Exam::where('slug', $slug)->firstOrFail();
-            $questions = ExamQuestion::where('exam_id', $exam->id)->paginate(5);
+            $questions = ExamQuestion::where('exam_id', $exam->id)->get();
 
             foreach ($questions as $question) {
-                $selectedAlternativeId = $request->input('question_' . $question->id);
+                $selectedAlternativeLetter = $request->input('question_' . $question->id);
 
-                if ($selectedAlternativeId) {
-                    auth()->user()->markedAlternatives()
-                        ->wherePivot('exam_question_id', $question->id)
-                        ->detach();
+                if ($selectedAlternativeLetter) {
+                    $selectedAlternative = $question->alternatives()->where('letter', $selectedAlternativeLetter)->first();
 
-                    auth()->user()->markedAlternatives()->attach($selectedAlternativeId, ['exam_question_id' => $question->id]);
+                    if ($selectedAlternative) {
+                        auth()->user()->markedAlternatives()
+                            ->wherePivot('exam_question_id', $question->id)
+                            ->detach();
+
+                        auth()->user()->markedAlternatives()->attach($selectedAlternative->id, ['exam_question_id' => $question->id]);
+                    }
                 }
             }
 
-            if ($request->input('page') == $questions->lastPage()) {
-                return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'As respostas foram enviadas com sucesso');
-            } else {
-                return redirect()->route('public.exams.show', ['exam' => $slug, 'page' => $request->input('page') + 1])->with('success', 'As respostas foram enviadas com sucesso');
-            }
+            return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'As respostas foram enviadas com sucesso');
         } catch (Exception $e) {
             Log::error('Erro ao enviar as respostas: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocorreu um erro ao enviar as respostas. Por favor, tente novamente mais tarde.');
         }
     }
+
 
     public function results($slug)
     {

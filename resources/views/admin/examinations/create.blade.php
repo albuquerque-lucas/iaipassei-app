@@ -3,7 +3,7 @@
 @section('main-content')
 <section class='create-examinations-page container mt-5'>
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{{ route('admin.examinations.index') }}" class="btn btn-secondary">Voltar</a>
+        <a href="{{ route('admin.examinations.index') }}" class="btn btn-secondary">voltar</a>
         <ul class="nav nav-tabs" id="createExaminationsTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual" type="button" role="tab" aria-controls="manual" aria-selected="true">
