@@ -76,6 +76,11 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->withTimestamps();
     }
 
+    public function rankings(): HasMany
+    {
+        return $this->hasMany(Ranking::class);
+    }
+
     public static function getAll(string $order, string $orderBy = 'id'): LengthAwarePaginator
     {
         return self::orderBy($orderBy, $order)->paginate();

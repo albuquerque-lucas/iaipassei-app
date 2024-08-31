@@ -55,6 +55,11 @@ class Exam extends Model
         return $this->belongsToMany(Subject::class);
     }
 
+    public function rankings(): HasMany
+    {
+        return $this->hasMany(Ranking::class);
+    }
+
     public static function getAll(string $order, string $orderBy = 'id'): LengthAwarePaginator
     {
         return self::orderBy($orderBy, $order)->paginate();
