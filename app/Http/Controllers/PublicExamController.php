@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Jobs\CalculateRankingJob;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
 use Illuminate\Support\Facades\Log;
@@ -68,6 +69,7 @@ class PublicExamController extends Controller
                 }
             }
 
+            CalculateRankingJob::dispatch($exam);
             return redirect()->route('public.exams.results', ['exam' => $slug])->with('success', 'As respostas foram enviadas com sucesso');
         } catch (Exception $e) {
             Log::error('Erro ao enviar as respostas: ' . $e->getMessage());
@@ -82,25 +84,33 @@ class PublicExamController extends Controller
             // Obtém o exame pelo slug
             $exam = $this->getExamBySlug($slug);
             $user = auth()->user();
-
             // Obtém as alternativas marcadas pelo usuário e as ordena pelo número da questão
             $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
 
+            // Verifica se o usuário respondeu todas as perguntas
+            $totalQuestions = $exam->examQuestions->count();
+            $userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
+
             // Calcula as estatísticas das alternativas
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
+
+            // Carrega o ranking já calculado do banco de dados
+            $userRankings = $exam->rankings()->get();
 
             // Define o título da página
             $title = "Resultados | $exam->title";
 
-            // Retorna a view com os dados necessários
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics'));
+            // Retorna a view com os dados necessários, incluindo o ranking já calculado
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings', 'userAnsweredAllQuestions'));
         } catch (Exception $e) {
             // Registra o erro e redireciona o usuário de volta à página do exame com uma mensagem de erro
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());
             return redirect()->route('public.exams.show', $slug)->with('error', 'Ocorreu um erro ao carregar os resultados. Por favor, tente novamente mais tarde.');
         }
     }
+
+
 
 
     private function getExamBySlug($slug)

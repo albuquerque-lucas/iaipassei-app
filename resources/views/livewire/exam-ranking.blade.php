@@ -1,17 +1,15 @@
-@props(['userRankings', 'userAnsweredAllQuestions', 'exam'])
+{{-- @props(['userRankings', 'userAnsweredAllQuestions', 'exam']) --}}
 
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center">
+    <h1>{{ $count }}</h1>
 
-        <!-- Botão para calcular o ranking -->
-        <button wire:click="loadUserRankings" class="btn btn-indigo-500 rounded-0">
-            Calcular Ranking
-            <i class="fa-solid fa-crown ms-1"></i>
-        </button>
+    <button wire:click="increment" class="btn btn-success mt-2">+</button>
+    <button wire:click="decrement" class="btn btn-danger mt-2">-</button>
 
-    </div>
+</div>
 
-    @if (!$userAnsweredAllQuestions)
+{{-- <div class="container mt-5"> --}}
+    {{-- @if (!$userAnsweredAllQuestions)
         <p class="alert alert-warning">
             <strong>
                 <i class="fa-solid fa-exclamation-triangle me-1"></i>
@@ -25,7 +23,7 @@
 
     <!-- Spinner de carregamento -->
     <div class="text-center w-100 p-3">
-    <div wire:loading>
+        <div wire:loading>
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Carregando...</span>
             </div>
@@ -35,30 +33,27 @@
 
     <!-- Conteúdo do ranking -->
     <div wire:loading.remove>
-        <div class="d-flex align-items-center justify-content-center">
-            @if (empty($userRankings))
-                <p>Clique no botão para calcular a sua classificação.</p>
-            @else
-
-        </div>
-        <table class="table table-striped shadow">
-            <thead>
-                <tr>
-                    <th scope="col">Posição</th>
-                    <th scope="col">Usuário</th>
-                    <th scope="col">Respostas Corretas</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($userRankings as $index => $ranking)
+        @if (empty($userRankings))
+            <p>Nenhum ranking disponível.</p>
+        @else
+            <table class="table table-striped shadow">
+                <thead>
                     <tr>
-                        <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $ranking['user']->username }}</td>
-                        <td>{{ $ranking['correct_answers'] }}</td>
+                        <th scope="col">Posição</th>
+                        <th scope="col">Usuário</th>
+                        <th scope="col">Respostas Corretas</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($userRankings as $ranking)
+                        <tr>
+                            <th scope="row">{{ $ranking->position }}</th>
+                            <td>{{ $ranking->user->username }}</td>
+                            <td>{{ $ranking->score }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         @endif
-    </div>
-</div>
+    </div> --}}
+{{-- </div> --}}

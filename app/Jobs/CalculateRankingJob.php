@@ -41,7 +41,11 @@ class CalculateRankingJob implements ShouldQueue
             foreach ($rankings as $position => $ranking) {
                 $this->exam->rankings()->updateOrCreate(
                     ['user_id' => $ranking['user']->id],
-                    ['position' => $position + 1, 'score' => $ranking['correct_answers']]
+                    [
+                        'position' => $position + 1,
+                        'correct_answers' => $ranking['correct_answers'],  // Certifique-se de passar 'correct_answers'
+                        'exam_id' => $this->exam->id,
+                    ]
                 );
             }
 
@@ -49,4 +53,5 @@ class CalculateRankingJob implements ShouldQueue
             Log::error('Erro ao calcular o ranking: ' . $e->getMessage());
         }
     }
+
 }

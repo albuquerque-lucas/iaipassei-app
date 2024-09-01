@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\Exam;
-use App\ExamStatisticsTrait;
+use Livewire\Component;
+use App\Models\Ranking;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
-use Livewire\Component;
+use App\ExamStatisticsTrait;
+
 
 class ExamRanking extends Component
 {
@@ -16,31 +18,43 @@ class ExamRanking extends Component
     public $userRankings = [];
     public bool $userAnsweredAllQuestions;
 
-    public function mount(Exam $exam): void
+    public $count = 0;
+
+    public function increment()
     {
-        $this->exam = $exam;
-
-        $user = Auth::user();
-        $totalQuestions = $this->exam->examQuestions->count();
-
-        $markedAlternatives = $this->getMarkedAlternatives($user, $this->exam);
-        $this->userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
-
-        // Inicialmente, os rankings são vazios e são carregados quando a página termina de carregar.
+        $this->count++;
     }
 
-    public function loadUserRankings()
+    public function decrement()
     {
-        // Este método carrega os rankings dos usuários
-        $this->userRankings = $this->calculateUserRankings($this->exam->id);
+        $this->count--;
     }
+
+    // public function mount(Exam $exam): void
+    // {
+    //     $this->exam = $exam;
+
+    //     $user = Auth::user();
+    //     $totalQuestions = $this->exam->examQuestions->count();
+
+    //     $markedAlternatives = $this->getMarkedAlternatives($user, $this->exam);
+    //     $this->userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
+    // }
+
+    // public function loadUserRankings()
+    // {
+    //     // Carrega o ranking já calculado do banco de dados
+    //     $this->userRankings = $this->exam->rankings()->orderBy('position')->get()->collect();
+    // }
+
+    // #[On('rankingUpdated')] // Escuta o evento de atualização do ranking
+    // public function handleRankingUpdated()
+    // {
+    //     $this->loadUserRankings(); // Recarrega o ranking quando o evento é recebido
+    // }
 
     public function render()
     {
-        return view('livewire.exam-ranking', [
-            'userRankings' => $this->userRankings,
-            'userAnsweredAllQuestions' => $this->userAnsweredAllQuestions,
-            'exam' => $this->exam,
-        ]);
+        return view('livewire.exam-ranking');
     }
 }

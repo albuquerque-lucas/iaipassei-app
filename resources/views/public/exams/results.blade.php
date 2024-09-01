@@ -28,11 +28,11 @@
             <button class="btn mx-1 w-25 rounded-0"
                     :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
                     @click="highlight = !highlight">
-                <span x-text="highlight ? 'retirar destaque' : 'destacar'"></span>
+                <span x-text="highlight ? 'sem destaque' : 'destacar'"></span>
             </button>
 
             <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1 rounded-0">
-                ver gabarito
+                gabarito
                 <i class="fa-solid fa-file-signature ms-1"></i>
             </a>
             <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1 rounded-0">
@@ -58,7 +58,11 @@
             {{-- <x-sections.examResults.exam-ranking
 
             /> --}}
-            <livewire:exam-ranking :exam="$exam" wire:init="loadRanking"/>
+            <x-sections.examResults.exam-ranking
+                :userRankings="$userRankings"
+                :userAnsweredAllQuestions="$userAnsweredAllQuestions"
+                :exam="$exam"
+            />
 
         </div>
     </div>

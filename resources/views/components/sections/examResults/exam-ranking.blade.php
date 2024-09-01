@@ -2,7 +2,7 @@
 
 <div class="container mt-5">
     <h3 class="mb-4">Ranking de Usuários</h3>
-    <div class="m-height-5-rem ">
+    <div class="m-height-5-rem">
         @if (!$userAnsweredAllQuestions)
             <p class="alert alert-warning">
                 <strong>
@@ -30,8 +30,8 @@
                 @foreach ($userRankings as $index => $ranking)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $ranking['user']->slug }}</td>
-                        <td>{{ $ranking['correct_answers'] }}</td>
+                        <td>{{ $ranking->user->username }}</td>
+                        <td>{{ $ranking->correct_answers }}</td>
                     </tr>
                 @endforeach
             </tbody>
