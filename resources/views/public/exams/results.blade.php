@@ -1,14 +1,7 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5 m-height-100" x-data="{
-    highlight: JSON.parse(localStorage.getItem('highlight')) || false
-}" x-init="
-    $watch('highlight', value => {
-        console.log('highlight changed to:', value ? 'destacado' : 'sem destaque');
-        localStorage.setItem('highlight', JSON.stringify(value));
-    })
-">
+<div class="container mt-5 m-height-100">
     <h3 class="mb-4">Resultados</h3>
 
     <div class="d-flex align-items-center justify-content-between p-1">
@@ -25,19 +18,13 @@
             </li>
         </ul>
         <div class="w-50 d-flex align-items-center justify-content-end">
-            <button class="btn mx-1 w-25 rounded-0"
-                    :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
-                    @click="highlight = !highlight">
-                <span x-text="highlight ? 'sem destaque' : 'destacar'"></span>
-            </button>
-
-            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1 rounded-0">
+            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1 rounded-0 w-25">
                 gabarito
                 <i class="fa-solid fa-file-signature ms-1"></i>
             </a>
-            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1 rounded-0">
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1 rounded-0 w-25">
                 <i class="fa-solid fa-arrow-left me-1"></i>
-                voltar
+                concurso
             </a>
         </div>
     </div>
@@ -49,21 +36,16 @@
             <x-sections.examResults.result-per-question
                 :statistics="$statistics"
                 :markedAlternatives="$markedAlternatives"
-                x-bind:highlight="highlight"
             />
         </div>
 
         <!-- Tab 2: Resultados Completos -->
         <div class="tab-pane fade" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
-            {{-- <x-sections.examResults.exam-ranking
-
-            /> --}}
-            <x-sections.examResults.exam-ranking
+            <livewire:exam-ranking
                 :userRankings="$userRankings"
                 :userAnsweredAllQuestions="$userAnsweredAllQuestions"
                 :exam="$exam"
             />
-
         </div>
     </div>
 </div>

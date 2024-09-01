@@ -18,18 +18,6 @@ class ExamRanking extends Component
     public $userRankings = [];
     public bool $userAnsweredAllQuestions;
 
-    public $count = 0;
-
-    public function increment()
-    {
-        $this->count++;
-    }
-
-    public function decrement()
-    {
-        $this->count--;
-    }
-
     // public function mount(Exam $exam): void
     // {
     //     $this->exam = $exam;

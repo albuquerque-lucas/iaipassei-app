@@ -1,6 +1,21 @@
 @props(['markedAlternatives', 'statistics'])
 
-<div>
+<div x-data="{
+    highlight: JSON.parse(localStorage.getItem('highlight')) || false
+}" x-init="
+    $watch('highlight', value => {
+        console.log('highlight changed to:', value ? 'destacado' : 'sem destaque');
+        localStorage.setItem('highlight', JSON.stringify(value));
+    })">
+    <div class="d-flex justify-content-end mb-3 p-1">
+        <button class="btn mx-1 w-15 rounded-0"
+                :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
+                @click="highlight = !highlight">
+            <span x-text="highlight ? 'sem destaque' : 'destacar'"></span>
+            <i class="fa-solid fa-highlighter ms-1"></i>
+        </button>
+    </div>
+
     @if ($markedAlternatives->isEmpty())
         <p>Você não marcou nenhuma questão.</p>
     @else
@@ -13,12 +28,10 @@
                         <span class="h-100 d-inline-block fw-bold" style="width: 50px;">{{ $alternative->letter }}</span>
                     </div>
                     <div class="w-25 d-flex align-items-center justify-content-end">
-                        {{-- @can('viewAdminInfo', auth()->user()) --}}
-                            <span>
-                                {{ $statistics[$alternative->id]['users_with_alternative'] }} de {{ $statistics[$alternative->id]['total_users_for_question'] }} usuários
-                                ({{ fmod($statistics[$alternative->id]['percentage'], 1) == 0 ? number_format($statistics[$alternative->id]['percentage'], 0) : number_format($statistics[$alternative->id]['percentage'], 2) }}%)
-                            </span>
-                        {{-- @endcan --}}
+                        <span>
+                            {{ $statistics[$alternative->id]['users_with_alternative'] }} de {{ $statistics[$alternative->id]['total_users_for_question'] }} usuários
+                            ({{ fmod($statistics[$alternative->id]['percentage'], 1) == 0 ? number_format($statistics[$alternative->id]['percentage'], 0) : number_format($statistics[$alternative->id]['percentage'], 2) }}%)
+                        </span>
                         <span class="ms-5 p-1">
                             @if($statistics[$alternative->id]['is_max'])
                                 <i class="fa-solid fa-check bg-success text-light p-1 rounded-pill"></i>
