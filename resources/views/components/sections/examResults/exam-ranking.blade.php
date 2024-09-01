@@ -18,23 +18,24 @@
     @if ($userRankings->isEmpty())
         <p>Nenhum usuário participou desta prova.</p>
     @else
-        <table class="table table-striped shadow">
-            <thead>
+    <table class="table table-striped shadow">
+        <thead>
+            <tr>
+                <th scope="col" class="w-25">Posição</th>
+                <th scope="col" class="w-50">Nome</th>
+                <th scope="col" class="w-25">Respostas Corretas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($userRankings as $index => $ranking)
                 <tr>
-                    <th scope="col">Posição</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Respostas Corretas</th>
+                    <th scope="row" class="w-25">{{ $index + 1 }}</th>
+                    <td class="w-50">{{ $ranking->user->username }}</td>
+                    <td class="w-25">{{ $ranking->correct_answers }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($userRankings as $index => $ranking)
-                    <tr>
-                        <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $ranking->user->username }}</td>
-                        <td>{{ $ranking->correct_answers }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </tbody>
+    </table>
+
     @endif
 </div>
