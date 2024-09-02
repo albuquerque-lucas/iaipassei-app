@@ -1,14 +1,17 @@
-@props(['userRankings', 'userAnsweredAllQuestions', 'exam', 'isUpdating'])
+@props(['userAnsweredAllQuestions', 'exam', 'isUpdating'])
 
 <div class="container mt-5">
-    @if ($isUpdating)
-        <div class="alert alert-info">
-            <strong>
-                <i class="fa-solid fa-spinner fa-spin me-1"></i>
-                Atualizando rankings...
-            </strong>
-        </div>
-    @endif
+
+    <div class="h-5-rem">
+        @if ($isUpdating)
+            <div class="alert alert-info">
+                <strong>
+                    <i class="fa-solid fa-spinner fa-spin me-1"></i>
+                    Atualizando rankings...
+                </strong>
+            </div>
+        @endif
+    </div>
 
     @if (!$userAnsweredAllQuestions)
         <p class="alert alert-warning">

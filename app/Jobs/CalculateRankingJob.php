@@ -36,19 +36,24 @@ class CalculateRankingJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info("Iniciando o Job CalculateRankingJob");
         try {
+            Log::info("Entrou no bloco try");
             $rankings = $this->calculateUserRankings($this->exam->id);
+            Log::info("Calculou os rankings");
 
             foreach ($rankings as $position => $ranking) {
                 $this->exam->rankings()->updateOrCreate(
                     ['user_id' => $ranking['user']->id],
                     [
                         'position' => $position + 1,
-                        'correct_answers' => $ranking['correct_answers'],  // Certifique-se de passar 'correct_answers'
+                        'correct_answers' => $ranking['correct_answers'],
                         'exam_id' => $this->exam->id,
                     ]
                 );
             }
+            Log::info("Salvou os rankings");
+            Log::info("Disparando o evento RankingUpdated");
             broadcast(new RankingUpdated($this->exam->id));
         } catch (Exception $e) {
             Log::error('Erro ao calcular o ranking: ' . $e->getMessage());

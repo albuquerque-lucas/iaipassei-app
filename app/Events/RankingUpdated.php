@@ -7,6 +7,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class RankingUpdated implements ShouldBroadcast
 {
@@ -29,7 +30,7 @@ class RankingUpdated implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        // Aqui estamos usando um canal público chamado 'exam-ranking-updated'
+        Log::info("Chegou aqui no broadcastOn");
         return new Channel('exam-ranking-updated');
     }
 
@@ -40,7 +41,7 @@ class RankingUpdated implements ShouldBroadcast
      */
     public function broadcastAs(): string
     {
-        // Nome do evento que será transmitido
+        Log::info("Chegou aqui no broadcastAs");
         return 'ranking.updated';
     }
 }

@@ -102,7 +102,7 @@ class PublicExamController extends Controller
             $title = "Resultados | $exam->title";
 
             // Retorna a view com os dados necessários, incluindo o ranking já calculado
-            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userRankings', 'userAnsweredAllQuestions'));
+            return view('public.exams.results', compact('exam', 'title', 'markedAlternatives', 'statistics', 'userAnsweredAllQuestions'));
         } catch (Exception $e) {
             // Registra o erro e redireciona o usuário de volta à página do exame com uma mensagem de erro
             Log::error('Erro ao carregar os resultados do exame: ' . $e->getMessage());

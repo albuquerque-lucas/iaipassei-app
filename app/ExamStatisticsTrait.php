@@ -107,7 +107,7 @@ trait ExamStatisticsTrait
         $users = User::whereHas('exams', function ($query) use ($examId) {
             $query->where('exams.id', $examId);
         })->get();
-        Log::info('Usuários obtidos para o exame', ['examId' => $examId, 'users' => $users->pluck('id')]);
+        // Log::info('Usuários obtidos para o exame', ['examId' => $examId, 'users' => $users->pluck('id')]);
 
         return $users;
     }
