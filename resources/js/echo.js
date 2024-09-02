@@ -12,6 +12,6 @@ window.Echo = new Echo({
 
 window.Echo.channel('exam-ranking-updated')
     .listen('.ranking.updated', (e) => {
-        console.log('Ranking updated:', e);
+        Livewire.dispatch('ranking.updated');
     });
 

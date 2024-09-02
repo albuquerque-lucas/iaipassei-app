@@ -1,7 +1,7 @@
 @props(['userAnsweredAllQuestions', 'exam', 'isUpdating'])
 
 <div class="container mt-5">
-
+    <button class="btn rounded-0 btn-primary" wire:click="$refresh">Refresh</button>
     <div class="h-5-rem">
         @if ($isUpdating)
             <div class="alert alert-info">

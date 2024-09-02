@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Exam;
-use Livewire\Component;
 use App\Models\Ranking;
+use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Log;
 
@@ -24,11 +24,17 @@ class ExamRanking extends Component
     }
 
     #[On('ranking.updated')]
+    public function refreshComponent()
+    {
+        Log::info('Forçando atualização do componente');
+        $this->dispatch('$refresh');
+    }
+
     public function loadUserRankings()
     {
         Log::info('Identificando evento e carregando rankings');
         $this->isUpdating = true; // Exibe o indicador antes de carregar os dados
-        usleep(50000);
+        usleep(50000); // Pausa para garantir que o estado seja atualizado no frontend
         $this->userRankings = $this->exam->rankings()->orderBy('position')->get();
         $this->isUpdating = false; // Oculta o indicador após carregar os dados
     }
