@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use App\Events\RankingUpdated;
 
 class CalculateRankingJob implements ShouldQueue
 {
@@ -48,7 +49,7 @@ class CalculateRankingJob implements ShouldQueue
                     ]
                 );
             }
-
+            broadcast(new RankingUpdated($this->exam->id));
         } catch (Exception $e) {
             Log::error('Erro ao calcular o ranking: ' . $e->getMessage());
         }

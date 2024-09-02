@@ -5,44 +5,36 @@ namespace App\Livewire;
 use App\Models\Exam;
 use Livewire\Component;
 use App\Models\Ranking;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\On;
-use App\ExamStatisticsTrait;
-
 
 class ExamRanking extends Component
 {
-    use ExamStatisticsTrait;
-
     public Exam $exam;
     public $userRankings = [];
     public bool $userAnsweredAllQuestions;
+    public bool $isUpdating = false; // Variável de estado para o indicador visual
 
-    // public function mount(Exam $exam): void
-    // {
-    //     $this->exam = $exam;
+    public function mount(Exam $exam)
+    {
+        $this->exam = $exam;
+        $this->loadUserRankings();
+    }
 
-    //     $user = Auth::user();
-    //     $totalQuestions = $this->exam->examQuestions->count();
+    public function loadUserRankings()
+    {
+        $this->isUpdating = true; // Exibe o indicador antes de carregar os dados
+        $this->userRankings = $this->exam->rankings()->orderBy('position')->get();
+        $this->isUpdating = false; // Oculta o indicador após carregar os dados
+    }
 
-    //     $markedAlternatives = $this->getMarkedAlternatives($user, $this->exam);
-    //     $this->userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
-    // }
-
-    // public function loadUserRankings()
-    // {
-    //     // Carrega o ranking já calculado do banco de dados
-    //     $this->userRankings = $this->exam->rankings()->orderBy('position')->get()->collect();
-    // }
-
-    // #[On('rankingUpdated')] // Escuta o evento de atualização do ranking
-    // public function handleRankingUpdated()
-    // {
-    //     $this->loadUserRankings(); // Recarrega o ranking quando o evento é recebido
-    // }
+    protected $listeners = [
+        'echo:exam-ranking-updated,ranking.updated' => 'loadUserRankings',
+    ];
 
     public function render()
     {
-        return view('livewire.exam-ranking');
+        return view('livewire.exam-ranking', [
+            'userRankings' => $this->userRankings,
+            'isUpdating' => $this->isUpdating, // Passa a variável para a view
+        ]);
     }
 }
