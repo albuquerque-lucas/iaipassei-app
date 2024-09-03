@@ -34,7 +34,6 @@ class ExamRanking extends Component
     {
         Log::info('Identificando evento e carregando rankings');
         $this->isUpdating = true; // Exibe o indicador antes de carregar os dados
-        usleep(50000); // Pausa para garantir que o estado seja atualizado no frontend
         $this->userRankings = $this->exam->rankings()->orderBy('position')->get();
         $this->isUpdating = false; // Oculta o indicador após carregar os dados
     }
