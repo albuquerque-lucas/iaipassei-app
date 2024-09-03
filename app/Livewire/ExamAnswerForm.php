@@ -59,7 +59,7 @@ class ExamAnswerForm extends Component
             }
         }
         CalculateRankingJob::dispatch($this->exam);
-        session()->flash('success', 'As respostas foram enviadas com sucesso');
+        session()->flash('success', 'As respostas foram enviadas com sucesso. O ranking será atualizado automaticamente em instantes.');
         return redirect()->route('public.exams.results', ['exam' => $this->exam->slug]);
 
     }

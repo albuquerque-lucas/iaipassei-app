@@ -30,13 +30,16 @@
             @endforeach
         </div>
 
-        <div class="d-flex align-items-center mt-4 mb-5">
+        <div class="d-flex align-items-center mt-4 mb-5 justify-content-between">
             <button type="submit" class="btn btn-dark rounded-0">
                 Enviar gabarito
-                @if ($isSubmitting)
-                    <i class="fa-solid fa-spinner fa-spin ms-2"></i>
-                @endif
             </button>
+            <div wire:loading class="w-25 text-dark">
+                <div class="d-flex h-100 w-100 align-items-center justify-content-end">
+                    <p class="p-0 m-0">Enviando e calculando ranking...</p>
+                    <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+                </div>
+            </div>
         </div>
     </form>
 </section>

@@ -15,8 +15,9 @@ class ExamRanking extends Component
     public $userRankings = [];
     public bool $userAnsweredAllQuestions;
     public bool $isUpdating = false;
-
-    // Removido isSubmitting, pois não parece ser necessário neste componente.
+    public $userPosition;
+    public $userCorrectAnswers;
+    public $userPercentage;
 
     public function mount($examId)
     {
@@ -34,18 +35,37 @@ class ExamRanking extends Component
 
     public function loadUserRankings()
     {
-        Log::info('Identificando evento e carregando rankings');
-        $this->isUpdating = true; // Exibe o indicador antes de carregar os dados
+        $this->isUpdating = true;
         $this->userRankings = $this->exam->rankings()->orderBy('position')->get();
-        $this->isUpdating = false; // Oculta o indicador após carregar os dados
+
+        $this->calculateUserStats();
+
+        $this->isUpdating = false;
+    }
+
+    protected function calculateUserStats()
+    {
+        $userId = auth()->id();
+        $totalQuestions = $this->exam->examQuestions()->count();
+
+        foreach ($this->userRankings as $index => $ranking) {
+            if ($ranking->user_id == $userId) {
+                $this->userPosition = $index + 1;
+                $this->userCorrectAnswers = $ranking->correct_answers;
+                $this->userPercentage = ($ranking->correct_answers / $totalQuestions) * 100;
+                break;
+            }
+        }
     }
 
     public function render()
     {
-        Log::info('Renderizando o componente ExamRanking');
         return view('livewire.exam-ranking', [
             'userRankings' => $this->userRankings,
             'isUpdating' => $this->isUpdating,
+            'userPosition' => $this->userPosition,
+            'userCorrectAnswers' => $this->userCorrectAnswers,
+            'userPercentage' => $this->userPercentage,
         ]);
     }
 }
