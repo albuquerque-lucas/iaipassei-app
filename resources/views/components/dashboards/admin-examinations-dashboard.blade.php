@@ -1,5 +1,5 @@
 <div class="table-responsive dashboard-table-container">
-    <table class="table table-hover entity-dashboard">
+    <table class="table table-hover shadow">
         <thead class="table-dark">
             <tr>
                 <th style="width: 5%;"><input type="checkbox" id="selectAll"></th>
@@ -22,7 +22,7 @@
                         <div class="btn-group" role="group">
                             <a
                             href="{{ route($editRoute, $item->slug) }}"
-                            class="btn btn-sm btn-dark edit-btn"
+                            class="btn btn-sm btn-dark edit-btn rounded-0"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Editar Concurso"
@@ -31,7 +31,7 @@
                             </a>
                             <button
                             type="button"
-                            class="btn btn-sm btn-dark delete-btn"
+                            class="btn btn-sm btn-dark delete-btn rounded-0"
                             data-bs-toggle="modal"
                             data-bs-target="#confirmDeleteModal{{ $item->slug }}"
                             data-bs-toggle="tooltip"

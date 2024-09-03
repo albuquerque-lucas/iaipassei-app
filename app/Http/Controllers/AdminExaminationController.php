@@ -18,6 +18,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class AdminExaminationController extends Controller
 {
@@ -56,9 +57,6 @@ class AdminExaminationController extends Controller
             $educationLevels = EducationLevel::all();
 
             $importedData = session('imported_data');
-            // if (isset($importedData)) {
-            //     dd($importedData);
-            // }
             return view('admin.examinations.create', compact('educationLevels', 'importedData'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
@@ -118,9 +116,11 @@ class AdminExaminationController extends Controller
             return redirect()->route('admin.examinations.index')->with('success', 'Concurso criado com sucesso!');
         } catch (Exception $e) {
             DB::rollBack();
+            Log::error("Não foi possível adicionar o concurso: {$e->getMessage()}");
             return redirect()->back()->with('error', 'Erro ao criar o concurso: ' . $e->getMessage());
         }
     }
+
 
     public function edit($slug)
     {
