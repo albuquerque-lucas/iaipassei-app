@@ -12,7 +12,14 @@
     @endif
 </div>
 
-<div class="container mt-4 m-height-100">
+<div class="container mt-4 d-flex justify-content-end">
+    <a href="{{ route('public.examinations.index') }}" class="btn btn-dark edit-btn rounded-0">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Concursos
+    </a>
+</div>
+
+<div class="container mt-4 mb-5 m-height-100">
 
     <div class="card mb-4 position-relative rounded-0 shadow">
         <div class="card-body examination-card-body">
@@ -54,12 +61,12 @@
 
     <div class="card mb-4 rounded-0 shadow p-5">
         <div class="card-body">
-            <h5 class="card-title">Provas</h5>
-            <p class="card-text"><strong>Quantidade de Provas:</strong> {{ $examination->exams->count() }}</p>
+            <h5 class="card-title fw-bold">Lista de provas</h5>
+            <p class="card-text">Quantidade: {{ $examination->exams->count() }}</p>
 
             <ul class="list-group">
                 @foreach($examination->exams as $exam)
-                <li class="list-group-item d-flex justify-content-between rounded-0 my-2 shadow-sm border border-secondary-subtle">
+                <li class="list-group-item d-flex justify-content-between rounded-0 my-2 p-3 shadow-sm border border-secondary-subtle">
                     <div>
                         <h6 class="mb-1">{{ $exam->title }}</h6>
                         <p class="mb-1"><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : "Data não informada" }}</p>
@@ -119,8 +126,8 @@
         </div>
     </div>
 
-    <div class="mt-4">
-        <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-500 rounded-0">
+    <div class="container mt-4 d-flex justify-content-end">
+        <a href="{{ route('public.examinations.index') }}" class="btn btn-dark edit-btn rounded-0">
             <i class="fa-solid fa-arrow-left me-1"></i>
             Concursos
         </a>
