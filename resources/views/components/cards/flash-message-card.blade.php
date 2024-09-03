@@ -4,7 +4,7 @@
     $alertClass = $type === 'success' ? 'flash-success' : 'flash-danger';
 @endphp
 
-<div class="alert {{ $alertClass }} alert-dismissible fade show mt-4 text-start" role="alert">
+<div class="alert {{ $alertClass }} alert-dismissible fade show text-start" role="alert">
     @if ($type === 'success')
         <i class="fa-regular fa-circle-check me-3"></i>
     @else

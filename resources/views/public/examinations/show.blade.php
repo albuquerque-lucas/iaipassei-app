@@ -2,7 +2,7 @@
 
 @section('main-content')
 
-<div class="flash-message-container container mt-4 mb-2">
+<div class="flash-message-container container mt-5">
     @if(session('success'))
         <x-cards.flash-message-card type="success" :message="session('success')" />
     @elseif(session('error'))
@@ -30,7 +30,7 @@
                             <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm cancel-btn rounded-o" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar da minha lista de concursos">
+                                <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm cancel-btn rounded-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar da minha lista de concursos">
                                     <i class="fa-solid fa-ban"></i>
                                 </button>
                             </form>
@@ -52,30 +52,30 @@
         </div>
     </div>
 
-    <div class="card mb-4 rounded-0 shadow">
+    <div class="card mb-4 rounded-0 shadow p-5">
         <div class="card-body">
             <h5 class="card-title">Provas</h5>
             <p class="card-text"><strong>Quantidade de Provas:</strong> {{ $examination->exams->count() }}</p>
 
             <ul class="list-group">
                 @foreach($examination->exams as $exam)
-                <li class="list-group-item d-flex justify-content-between">
+                <li class="list-group-item d-flex justify-content-between rounded-0 my-2 shadow-sm border border-secondary-subtle">
                     <div>
                         <h6 class="mb-1">{{ $exam->title }}</h6>
-                        <p class="mb-1"><strong>Data:</strong> {{ $exam->date->format('d/m/Y') }}</p>
+                        <p class="mb-1"><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : "Data não informada" }}</p>
                         <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                     </div>
                     <div class="d-flex flex-column align-items-end w-25">
                         @can('canAccessExam', $exam)
                             <a
                             href="{{ route('public.exams.results', $exam->slug) }}"
-                            class="btn btn-dark btn-sm my-1 w-8-rem rounded-0"
+                            class="btn btn-dark edit-btn btn-sm my-1 w-8-rem rounded-0"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Painel da prova"
                             >
                                 <i class="fa-solid fa-book me-2"></i>
-                                Painel
+                                Ranking
                             </a>
                             <form
                             id="unsubscribeExamForm-{{ $exam->id }}"
@@ -86,14 +86,14 @@
                                 @method('DELETE')
                                 <button
                                 type="button"
-                                class="btn btn-dark btn-sm delete-exam-btn my-1 w-8-rem rounded-0"
+                                class="btn btn-dark delete-btn btn-sm delete-exam-btn my-1 w-8-rem rounded-0"
                                 data-exam-id="{{ $exam->id }}"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
                                 title="Retirar participação do ranking"
                                 >
                                     <i class="fa-solid fa-circle-minus me-2"></i>
-                                    Ranking
+                                    participar
                                 </button>
                             </form>
 
@@ -102,13 +102,13 @@
                                 @csrf
                                 <button
                                 type="submit"
-                                class="btn btn-teal-500 btn-sm my-1 w-8-rem rounded-0"
+                                class="btn btn-dark edit-btn btn-sm my-1 w-8-rem rounded-0"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
                                 title="Participar do ranking desta prova"
                                 >
                                     <i class="fa-solid fa-plus-circle me-2"></i>
-                                    Participar
+                                    participar
                                 </button>
                             </form>
                         @endcan
