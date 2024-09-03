@@ -222,3 +222,15 @@
         font-weight: 700!important;
     }
 }
+
+.scrollable-list {
+    max-height: 300px;
+    overflow-y: auto;
+
+    .scrollable-list-item:hover {
+        color: white;
+        background-color: rgba($blue-400, 0.5);
+
+    }
+}
+

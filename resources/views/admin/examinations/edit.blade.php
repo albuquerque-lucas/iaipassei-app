@@ -1,7 +1,7 @@
 @extends('adminLayout')
 
 @section('main-content')
-<section class='edit-examinations-page container mt-5'>
+<section class='page-height container mt-5 pb-5'>
     <x-tabs.tabs :backRoute="route('admin.examinations.index')" />
 
     @if (session('success'))
