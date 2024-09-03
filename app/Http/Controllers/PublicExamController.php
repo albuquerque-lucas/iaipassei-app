@@ -151,6 +151,10 @@ class PublicExamController extends Controller
                 ->whereIn('exam_question_id', $examQuestionIds)
                 ->delete();
 
+            Ranking::where('exam_id', $exam->id)
+                ->where('user_id', $user->id)
+                ->delete();
+
             $user->exams()->detach($exam->id);
 
             $remainingExams = $user->exams()

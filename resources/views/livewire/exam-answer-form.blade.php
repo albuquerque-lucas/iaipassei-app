@@ -23,6 +23,8 @@
                                 type="text"
                                 class="form-control question-input"
                                 wire:model.defer="markedAlternatives.{{ $question->id }}"
+                                maxlength="1"
+                                oninput="validateInput(this)"
                                 required>
                         </div>
                     </div>
@@ -43,3 +45,12 @@
         </div>
     </form>
 </section>
+
+<script>
+    function validateInput(input) {
+        const value = input.value;
+        if (value.length > 1 || /[0-9]/.test(value)) {
+            input.value = '';
+        }
+    }
+</script>
