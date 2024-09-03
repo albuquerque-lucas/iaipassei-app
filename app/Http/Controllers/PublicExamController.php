@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Jobs\CalculateRankingJob;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
+use App\Models\Ranking;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

@@ -25,14 +25,13 @@
     @endif
 
     @if (!$userAnsweredAllQuestions)
-        <p class="alert alert-warning">
+        <p class="alert alert-warning text-start">
             <strong>
                 <i class="fa-solid fa-exclamation-triangle me-1"></i>
                 Atenção:
             </strong>
             Você não respondeu todas as questões deste gabarito.
             Complete todas as questões para participar do ranking.
-            <a href="{{ route('public.exams.show', $exam->slug) }}" class="alert-link">Clique aqui para continuar respondendo.</a>
         </p>
     @endif
 
@@ -44,7 +43,7 @@
                 <tr>
                     <th scope="col" class="w-25">Posição</th>
                     <th scope="col" class="w-50">Nome</th>
-                    <th scope="col" class="w-25 text-center">Total</th>
+                    <th scope="col" class="w-25 text-center">Total %</th>
                 </tr>
             </thead>
             <tbody>

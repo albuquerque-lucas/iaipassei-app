@@ -38,7 +38,7 @@
             </button>
             <div wire:loading class="w-25 text-dark">
                 <div class="d-flex h-100 w-100 align-items-center justify-content-end">
-                    <p class="p-0 m-0">Enviando e calculando ranking...</p>
+                    <p class="p-0 m-0">Calculando ranking. Aguarde alguns instantes...</p>
                     <i class="fa-solid fa-spinner fa-spin ms-2"></i>
                 </div>
             </div>

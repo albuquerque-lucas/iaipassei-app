@@ -40,6 +40,10 @@ class ExamRanking extends Component
 
         $this->calculateUserStats();
 
+        if (!$this->userRankings->isEmpty()) {
+            $this->dispatch('$refresh');
+        }
+
         $this->isUpdating = false;
     }
 

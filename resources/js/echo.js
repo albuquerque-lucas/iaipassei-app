@@ -15,3 +15,7 @@ window.Echo.channel('exam-ranking-updated')
         Livewire.dispatch('ranking.updated');
     });
 
+// document.addEventListener('ranking-updated', () => {
+//     Livewire.dispatch('refreshComponent');
+// });
+
