@@ -211,3 +211,15 @@
 .w-10-rem {
     width: 10rem;
 }
+
+.pagination {
+    margin: 0;
+
+    li {
+        margin: 0 0.1rem;
+        a {
+            color: #333!important;
+        }
+        font-weight: 700!important;
+    }
+}

@@ -1,65 +1,49 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container mt-5 m-height-100" x-data="{
-    highlight: JSON.parse(localStorage.getItem('highlight')) || false
-}" x-init="
-    $watch('highlight', value => {
-        console.log('highlight changed to:', value ? 'destacado' : 'sem destaque');
-        localStorage.setItem('highlight', JSON.stringify(value));
-    })
-">
+<div class="container mt-5 m-height-100">
     <h3 class="mb-4">Resultados</h3>
 
     <div class="d-flex align-items-center justify-content-between p-1">
         <ul class="nav nav-tabs" id="resultTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active rounded-0" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="true">
-                    Resultados por Questão
+            <li class="nav-item me-1" role="presentation">
+                <button class="nav-link active rounded-0" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="true">
+                    ranking
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-0" id="complete-results-tab" data-bs-toggle="tab" data-bs-target="#complete-results" type="button" role="tab" aria-controls="complete-results" aria-selected="false">
-                    Ranking
+            <li class="nav-item me-1" role="presentation">
+                <button class="nav-link rounded-0" id="question-results-tab" data-bs-toggle="tab" data-bs-target="#question-results" type="button" role="tab" aria-controls="question-results" aria-selected="false">
+                    questões
+                </button>
+            </li>
+            <li class="nav-item me-1" role="presentation">
+                <button class="nav-link rounded-0" id="exam-answer-form-tab" data-bs-toggle="tab" data-bs-target="#exam-answer-form" type="button" role="tab" aria-controls="exam-answer-form" aria-selected="false">
+                    gabarito
                 </button>
             </li>
         </ul>
         <div class="w-50 d-flex align-items-center justify-content-end">
-            <button class="btn mx-1 w-25 rounded-0"
-                    :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
-                    @click="highlight = !highlight">
-                <span x-text="highlight ? 'retirar destaque' : 'destacar'"></span>
-            </button>
-
-            <a href="{{ route('public.exams.show', $exam->slug) }}" class="btn btn-indigo-500 mx-1 rounded-0">
-                ver gabarito
-                <i class="fa-solid fa-file-signature ms-1"></i>
-            </a>
-            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1 rounded-0">
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-dark mx-1 rounded-0 w-25">
                 <i class="fa-solid fa-arrow-left me-1"></i>
-                voltar
+                concurso
             </a>
         </div>
     </div>
 
-    <!-- Conteúdo das Tabs -->
     <div class="tab-content mt-3 mb-5" id="resultTabsContent">
-        <!-- Tab 1: Resultados por Questão -->
-        <div class="tab-pane fade show active" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
-            <x-sections.examResults.result-per-question
-                :statistics="$statistics"
-                :markedAlternatives="$markedAlternatives"
-                x-bind:highlight="highlight"
-            />
+        <!-- Tab 1: Resultados Completos -->
+        <div class="tab-pane fade show active" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
+            <livewire:exam-ranking :examId="$exam->id" :userAnsweredAllQuestions="$userAnsweredAllQuestions" />
         </div>
 
-        <!-- Tab 2: Resultados Completos -->
-        <div class="tab-pane fade" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
-            {{-- <x-sections.examResults.exam-ranking
+        <!-- Tab 2: Resultados por Questão -->
+        <div class="tab-pane fade" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
+            <x-sections.examResults.result-per-question :statistics="$statistics" :markedAlternatives="$markedAlternatives" />
+        </div>
 
-            /> --}}
-            <livewire:exam-ranking :exam="$exam" wire:init="loadRanking"/>
-
+        <!-- Tab 3: Preencher Gabarito -->
+        <div class="tab-pane fade" id="exam-answer-form" role="tabpanel" aria-labelledby="exam-answer-form-tab">
+            <livewire:exam-answer-form :examId="$exam->id" />
         </div>
     </div>
 </div>

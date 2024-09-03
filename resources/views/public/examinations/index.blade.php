@@ -1,36 +1,31 @@
 @extends('publicLayout')
 
 @section('main-content')
-<div class="container my-5 d-flex flex-column align-items-center">
+<div class="container my-5 page-height">
     <h3 class="mb-4">{{ $title }}</h3>
 
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center my-4">
         {!! $paginationLinks !!}
     </div>
 
-    <div class="list-group w-75">
+    <div class="row">
         @foreach($examinations as $examination)
-        <div class="list-group-item d-flex align-items-center py-3">
-            <div class="me-3">
-                <!-- Placeholder for an icon or image if needed -->
-                <i class="bi bi-journal" style="font-size: 2rem;"></i>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100 rounded-0">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="text-dark link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-25-hover">
+                                {{ $examination->title }}
+                            </a>
+                        </h5>
+                        <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
+                    </div>
+                </div>
             </div>
-            <div class="flex-grow-1">
-                <h5 class="mb-1">{{ $examination->title }}</h5>
-                <p class="mb-1"><strong>Instituição:</strong> {{ $examination->institution }}</p>
-                <p class="mb-1"><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
-            </div>
-            <div class="align-self-start">
-                <a href="{{ route('public.examinations.show', ['slug' => $examination->slug]) }}" class="btn btn-teal-500 btn-sm rounded-0">
-                    Visualizar
-                    <i class="fa-solid fa-eye ms-2"></i>
-                </a>
-            </div>
-        </div>
         @endforeach
     </div>
 
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center mt-5">
         {!! $paginationLinks !!}
     </div>
 </div>

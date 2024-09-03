@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Examination;
 use App\Models\ExamQuestion;
+use App\Models\Ranking;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -108,6 +109,12 @@ class PublicPagesController extends Controller
                 $examQuestionIds = ExamQuestion::whereHas('exam', function ($query) use ($examination) {
                     $query->where('examination_id', $examination->id);
                 })->pluck('id');
+
+                Ranking::whereIn('exam_id', function ($query) use ($examination) {
+                    $query->select('id')
+                        ->from('exams')
+                        ->where('examination_id', $examination->id);
+                })->where('user_id', $user->id)->delete();
 
                 $user->examinations()->detach($examination->id);
 

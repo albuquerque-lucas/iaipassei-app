@@ -5,8 +5,18 @@
 
 .examination-card-body {
     min-height: 13rem;
+    position: relative;
 }
 
 .badge-custom {
     background-color: $soft-success-color;
+    // position: absolute;
+    // top: 0;
+    // right: 5rem;
 }
+
+// .cancel-btn {
+//     position: absolute;
+//     top: 0.15rem;
+//     right: 0;
+// }

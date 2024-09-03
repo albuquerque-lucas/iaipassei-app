@@ -24,7 +24,7 @@ class CheckExamAccess
             }
 
             return redirect()->route('public.examinations.show', $exam->examination->slug)
-                ->with('error', 'Você não tem permissão para acessar esta prova. Se ainda não estiver inscrito, clique no botão Inscrever.');
+                ->with('error', 'Você ainda não está participando do ranking desta prova. Se ainda não estiver inscrito, clique no botão Participar.');
         } catch (ModelNotFoundException $e) {
             return redirect()->route('public.examinations.show', $exam->examination->slug)
                 ->with('error', 'Prova não encontrada.');
