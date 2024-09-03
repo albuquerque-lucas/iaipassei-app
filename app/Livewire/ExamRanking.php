@@ -16,6 +16,8 @@ class ExamRanking extends Component
     public bool $userAnsweredAllQuestions;
     public bool $isUpdating = false;
 
+    // Removido isSubmitting, pois não parece ser necessário neste componente.
+
     public function mount($examId)
     {
         $this->examId = $examId;

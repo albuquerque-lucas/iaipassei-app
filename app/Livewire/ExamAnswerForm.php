@@ -14,6 +14,7 @@ class ExamAnswerForm extends Component
     public $exam;
     public $questions = [];
     public $markedAlternatives = [];
+    public bool $isSubmitting = false;
 
     public function mount($examId)
     {
