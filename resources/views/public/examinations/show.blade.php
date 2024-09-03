@@ -23,21 +23,21 @@
 
     <div class="card mb-4 position-relative rounded-0 shadow">
         <div class="card-body examination-card-body">
-            <div class="card-title d-flex align-items-center justify-content-between">
+            <div class="card-title d-flex align-items-center justify-content-between mb-4">
                 <h5>
                     {{ $examination->title }}
                 </h5>
                 <div class="w-25 d-flex align-items-center justify-content-end">
                     @auth
                         @if(auth()->user()->examinations->contains($examination->id))
-                            <span class="badge rounded-pill mb-2 me-2 badge-custom">
+                            <span class="badge rounded-pill me-3 badge-custom">
                                 Listado
                                 <i class="fa-solid fa-check ms-1"></i>
                             </span>
                             <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm cancel-btn rounded-0 shadow-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar da minha lista de concursos">
+                                <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm cancel-btn shadow-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar da minha lista de concursos">
                                     <i class="fa-solid fa-ban"></i>
                                 </button>
                             </form>
@@ -54,8 +54,24 @@
 
                 </div>
             </div>
-            <p class="card-text"><strong>Instituição:</strong> {{ $examination->institution }}</p>
-            <p class="card-text"><strong>Escolaridade:</strong> {{ $examination->educationLevel->name }}</p>
+            <p class="card-text w-100 d-flex justify-content-between align-items-center p-1 m-0">
+                <strong>Instituição:</strong>
+                {{ $examination->institution }}
+            </p>
+            <p class="card-text w-100 d-flex justify-content-between align-items-center p-1 m-0">
+                <strong>Escolaridade:</strong>
+                {{ $examination->educationLevel->name }}
+            </p>
+            <p class="card-text w-100 d-flex justify-content-between align-items-center p-1 m-0">
+                <strong>Edital:</strong>
+                @if($examination->latestNotice())
+                    <a href="{{ asset('storage/' . $examination->latestNotice()->file_path) }}" target="_blank">
+                        {{ $examination->latestNotice()->file_name }}
+                    </a>
+                @else
+                    Indisponível
+                @endif
+            </p>
         </div>
     </div>
 

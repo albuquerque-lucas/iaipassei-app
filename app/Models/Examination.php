@@ -52,6 +52,11 @@ class Examination extends Model
         return $this->hasMany(Notice::class);
     }
 
+    public function latestNotice()
+    {
+        return $this->notice()->latest()->first();
+    }
+
     public function exams(): HasMany
     {
         return $this->hasMany(Exam::class);
