@@ -37,7 +37,7 @@
                             <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm cancel-btn rounded-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar da minha lista de concursos">
+                                <button id="unsubscribeBtn" class="btn btn-dark delete-btn btn-sm cancel-btn rounded-0 shadow-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Retirar da minha lista de concursos">
                                     <i class="fa-solid fa-ban"></i>
                                 </button>
                             </form>
@@ -76,7 +76,7 @@
                         @can('canAccessExam', $exam)
                             <a
                             href="{{ route('public.exams.results', $exam->slug) }}"
-                            class="btn btn-dark edit-btn btn-sm my-1 w-8-rem rounded-0"
+                            class="btn btn-indigo-500 edit-btn btn-sm my-1 w-8-rem rounded-0"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Painel da prova"
@@ -93,7 +93,7 @@
                                 @method('DELETE')
                                 <button
                                 type="button"
-                                class="btn btn-dark delete-btn btn-sm delete-exam-btn my-1 w-8-rem rounded-0"
+                                class="btn btn-danger btn-sm delete-exam-btn my-1 w-8-rem rounded-0"
                                 data-exam-id="{{ $exam->id }}"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
