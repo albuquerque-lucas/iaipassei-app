@@ -12,8 +12,6 @@
     <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
     <p><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
     <p><strong>Quantidade de Provas:</strong> {{ $numExams }}</p>
-    <p><strong>Quantidade de Questões por Prova:</strong> {{ $numQuestionsPerExam }}</p>
-    <p><strong>Quantidade de Alternativas por Questão:</strong> {{ $numAlternativesPerQuestion }}</p>
 
     <div class="">
         <strong>Áreas associadas:</strong>
@@ -25,9 +23,9 @@
     </div>
 
     <div class="mt-5">
-        <h5 class="d-flex justify-content-between align-items-center">
+        <h5 class="d-flex justify-content-between align-items-center px-2">
             Lista de Editais
-            <button type="button" class="btn btn-dark edit-btn btn-sm" data-bs-toggle="modal" data-bs-target="#addNoticeModal" data-bs-toggle="tooltip" data-bs-placement="left" title="Adicionar Edital">
+            <button type="button" class="btn btn-dark edit-btn btn-sm rounded-0" data-bs-toggle="modal" data-bs-target="#addNoticeModal" data-bs-toggle="tooltip" data-bs-placement="left" title="Adicionar Edital">
                 <i class="fa-solid fa-plus"></i>
             </button>
         </h5>
@@ -41,12 +39,3 @@
 </div>
 
 <x-popUps.add-exam-notice-popUp :examinationSlug="$examination->slug" />
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    });
-</script>
