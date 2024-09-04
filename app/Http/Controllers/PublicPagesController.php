@@ -31,7 +31,7 @@ class PublicPagesController extends Controller
             $orderBy = $request->get('order_by', 'id');
             $search = $request->get('search', '');
 
-            $query = Examination::with('educationLevel')
+            $query = Examination::query()
                 ->when($search, function ($query, $search) {
                     return $query->where('title', 'like', "%{$search}%");
                 })
@@ -52,7 +52,7 @@ class PublicPagesController extends Controller
     public function examination($slug)
     {
         try {
-            $examination = Examination::with(['educationLevel', 'exams.examQuestions'])
+            $examination = Examination::with(['exams.examQuestions'])
                                     ->where('slug', $slug)
                                     ->firstOrFail();
             $user = auth()->user();

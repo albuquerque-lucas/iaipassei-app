@@ -7,33 +7,51 @@
 ])
 
 <div class="mt-4">
-    <h4>Visualizar Concurso</h4>
-    <p><strong>Título:</strong> {{ $examination->title }}</p>
-    <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
-    <p><strong>Quantidade de Provas:</strong> {{ $numExams }}</p>
+    <h4 class="mb-4 text-start">concurso</h4>
 
-    <div class="">
-        <strong>Áreas associadas:</strong>
-        <p>
-            @foreach($studyAreas as $studyArea)
-                {{ $studyArea->name }}{{ !$loop->last ? ', ' : '' }}
-            @endforeach
-        </p>
+    <div class="card shadow-sm border-0 rounded-0 mb-4">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Título:</strong> {{ $examination->title }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Instituição:</strong> {{ $examination->institution }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Quantidade de Provas:</strong> {{ $numExams }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Áreas associadas:</strong>
+                    <span>
+                        @foreach($studyAreas as $studyArea)
+                            {{ $studyArea->name }}{{ !$loop->last ? ', ' : '' }}
+                        @endforeach
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="mt-5">
-        <h5 class="d-flex justify-content-between align-items-center px-2">
-            Lista de Editais
-            <button type="button" class="btn btn-dark edit-btn btn-sm rounded-0" data-bs-toggle="modal" data-bs-target="#addNoticeModal" data-bs-toggle="tooltip" data-bs-placement="left" title="Adicionar Edital">
+    <div class="card shadow-sm border-0 rounded-0 mt-5">
+        <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white rounded-0">
+            <h5 class="mb-0">Lista de Editais</h5>
+            <button type="button" class="btn btn-light btn-sm rounded-0" data-bs-toggle="modal" data-bs-target="#addNoticeModal" data-bs-toggle="tooltip" data-bs-placement="left" title="Adicionar Edital">
                 <i class="fa-solid fa-plus"></i>
             </button>
-        </h5>
-        <x-listItems.notice-edit-list :notices="$examination->notice" />
+        </div>
+        <div class="card-body">
+            <x-listItems.notice-edit-list :notices="$examination->notice" />
+        </div>
     </div>
 
-    <div class="mt-5">
-        <h5>Lista de Provas</h5>
-        <x-listItems.examination-exams-list :exams="$examination->exams" />
+    <div class="card shadow-sm border-0 rounded-0 mt-5">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Lista de Provas</h5>
+        </div>
+        <div class="card-body">
+            <x-listItems.examination-exams-list :exams="$examination->exams" />
+        </div>
     </div>
 </div>
 

@@ -19,11 +19,14 @@
         return filtered;
     }
 }">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control w-25 rounded-0" placeholder="Pesquisar por título" x-model="search">
+    <!-- Barra de Pesquisa e Ordenação -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+        <!-- Campo de Pesquisa -->
+        <input type="text" class="form-control w-100 w-md-25 mb-3 mb-md-0 rounded-0" placeholder="Pesquisar por título" x-model="search">
 
-        <div class="d-flex">
-            <select class="form-select me-2 rounded-0" x-model="orderBy">
+        <!-- Campos de Ordenação -->
+        <div class="d-flex flex-column flex-md-row w-100 w-md-auto">
+            <select class="form-select mb-3 mb-md-0 me-md-2 rounded-0" x-model="orderBy">
                 <option value="id">Ordenar por ID</option>
                 <option value="title">Ordenar por Título</option>
             </select>
@@ -35,7 +38,8 @@
         </div>
     </div>
 
-    <div class="table-responsive scrollable-list p-4 border-top border-2 border-dark-subtle rounded-0">
+    <!-- Tabela Responsiva -->
+    <div class="table-responsive p-4 border-top border-2 border-dark-subtle rounded-0">
         <table class="table table-striped table-hover shadow">
             <thead>
                 <tr>
@@ -46,6 +50,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Iteração sobre os exames filtrados -->
                 <template x-for="exam in filteredExams" :key="exam.id">
                     <tr>
                         <td x-text="exam.id"></td>

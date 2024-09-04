@@ -1,7 +1,7 @@
 @extends('adminLayout')
 
 @section('main-content')
-<section class='page-height container my-5' style="height:120vh;">
+<section class='page-height container my-5' style="min-height:120vh;">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Dashboard Concursos Públicos</h4>
         <div>
