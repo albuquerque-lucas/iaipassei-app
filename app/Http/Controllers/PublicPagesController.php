@@ -52,7 +52,7 @@ class PublicPagesController extends Controller
     public function examination($slug)
     {
         try {
-            $examination = Examination::with(['educationLevel', 'exams.examQuestions'])
+            $examination = Examination::with(['exams.examQuestions'])
                                     ->where('slug', $slug)
                                     ->firstOrFail();
             $user = auth()->user();

@@ -15,7 +15,6 @@
 <div class="container mt-4 d-flex justify-content-end">
     <a href="{{ route('public.examinations.index') }}" class="btn btn-dark edit-btn rounded-0">
         <i class="fa-solid fa-arrow-left me-1"></i>
-
     </a>
 </div>
 
@@ -23,11 +22,11 @@
 
     <div class="card mb-4 position-relative rounded-0 shadow">
         <div class="card-body examination-card-body">
-            <div class="card-title d-flex align-items-center justify-content-between mb-4">
-                <h5>
+            <div class="card-title d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4">
+                <h5 class="mb-2 mb-md-0 w-75 p-1">
                     {{ $examination->title }}
                 </h5>
-                <div class="w-25 d-flex align-items-center justify-content-end">
+                <div class="w-100 w-md-25 d-flex justify-content-start justify-content-md-end align-items-center">
                     @auth
                         @if(auth()->user()->examinations->contains($examination->id))
                             <span class="badge rounded-pill me-3 badge-custom">
@@ -51,16 +50,11 @@
                             </form>
                         @endif
                     @endauth
-
                 </div>
             </div>
             <p class="card-text w-100 d-flex justify-content-between align-items-center p-1 m-0">
                 <strong>Instituição:</strong>
                 {{ $examination->institution }}
-            </p>
-            <p class="card-text w-100 d-flex justify-content-between align-items-center p-1 m-0">
-                <strong>Escolaridade:</strong>
-                {{ $examination->educationLevel->name }}
             </p>
             <p class="card-text w-100 d-flex justify-content-between align-items-center p-1 m-0">
                 <strong>Edital:</strong>
@@ -82,56 +76,47 @@
 
             <ul class="list-group">
                 @foreach($examination->exams as $exam)
-                    <li class="list-group-item d-flex justify-content-between my-2 p-3 shadow border border-secondary-subtle">
-                        <div>
+                    <li class="list-group-item d-flex flex-column flex-md-row justify-content-between my-2 p-3 shadow border border-secondary-subtle">
+                        <div class="w-100 w-md-75 mb-2 mb-md-0">
                             <h6 class="mb-1">{{ $exam->title }}</h6>
                             <p class="mb-1"><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : "Data não informada" }}</p>
                             <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
                         </div>
-                        <div class="d-flex flex-column align-items-end w-25">
+                        <div class="d-flex flex-column align-items-start align-items-md-end w-100 w-md-25">
                             @can('canAccessExam', $exam)
-                                <a
-                                href="{{ route('public.exams.results', $exam->slug) }}"
-                                class="btn btn-indigo-500 edit-btn btn-sm my-1 w-8-rem rounded-0"
+                                <a href="{{ route('public.exams.results', $exam->slug) }}"
+                                class="btn btn-indigo-500 edit-btn btn-sm my-1 w-8-rem w-md-auto rounded-0"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
-                                title="Painel da prova"
-                                >
+                                title="Painel da prova">
                                     <i class="fa-solid fa-book me-2"></i>
                                     Ranking
                                 </a>
-                                <form
-                                id="unsubscribeExamForm-{{ $exam->id }}"
-                                action="{{ route('public.exams.unsubscribe', $exam->id) }}"
-                                method="POST"
-                                >
+                                <form id="unsubscribeExamForm-{{ $exam->id }}"
+                                    action="{{ route('public.exams.unsubscribe', $exam->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm delete-exam-btn my-1 w-8-rem rounded-0"
-                                    data-exam-id="{{ $exam->id }}"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Retirar participação do ranking"
-                                    >
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm delete-exam-btn my-1 w-8-rem w-md-auto rounded-0"
+                                            data-exam-id="{{ $exam->id }}"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Retirar participação do ranking">
                                         <i class="fa-solid fa-circle-minus me-2"></i>
-                                        participar
+                                        Participar
                                     </button>
                                 </form>
-
                             @else
                                 <form action="{{ route('public.exams.subscribe', $exam->id) }}" method="POST">
                                     @csrf
-                                    <button
-                                    type="submit"
-                                    class="btn btn-dark edit-btn btn-sm my-1 w-8-rem rounded-0"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Participar do ranking desta prova"
-                                    >
+                                    <button type="submit"
+                                            class="btn btn-dark edit-btn btn-sm my-1 w-8-rem w-md-auto rounded-0"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Participar do ranking desta prova">
                                         <i class="fa-solid fa-plus-circle me-2"></i>
-                                        participar
+                                        Participar
                                     </button>
                                 </form>
                             @endcan
@@ -145,8 +130,8 @@
     <div class="container mt-4 d-flex justify-content-end">
         <a href="{{ route('public.examinations.index') }}" class="btn btn-dark edit-btn rounded-0">
             <i class="fa-solid fa-arrow-left me-1"></i>
-
         </a>
     </div>
 </div>
+
 @endsection

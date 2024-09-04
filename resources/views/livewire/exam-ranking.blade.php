@@ -11,14 +11,14 @@
 
     {{-- Informações do usuário autenticado --}}
     @if ($userPosition)
-        <div class="d-flex align-items-center p-2 mb-3">
-            <span class="me-5">
+        <div class="d-flex align-items-center p-1 mb-3 w-100 ">
+            <span class="me-5 text-center">
                 <strong>Sua colocação:</strong> {{ $userPosition }}
             </span>
-            <span class="me-5">
+            <span class="me-5 d-none d-md-inline text-center">
                 <strong>Acertos:</strong> {{ $userCorrectAnswers }} questões
             </span>
-            <span class="me-5">
+            <span class="me-5 text-center">
                 <strong>Porcentagem de acertos:</strong> {{ number_format($userPercentage, 2) }}%
             </span>
         </div>
