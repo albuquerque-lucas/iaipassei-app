@@ -4,7 +4,7 @@
     <section class='admin-notices-page container mt-5'>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4>Dashboard Editais</h4>
-            <a href="{{ route('admin.notices.create') }}" class="btn btn-primary">Adicionar Edital</a>
+            <a href="{{ route('admin.notices.create') }}" class="btn btn-dark edit-btn rounded-0">Adicionar</a>
         </div>
 
         @if (session('success'))
