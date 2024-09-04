@@ -6,7 +6,6 @@
                 <div>
                     <h5>{{ $examination->title }}</h5>
                     <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
-                    <p><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
                 </div>
                 <div class="d-flex flex-column align-items-end">
                     <a href="{{ route('public.examinations.show', $examination->slug) }}" class="btn btn-primary btn-sm mb-2 rounded-0 w-8-rem">
