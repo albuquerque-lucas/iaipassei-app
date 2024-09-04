@@ -36,7 +36,6 @@
                             <i class="fas fa-trash"></i>
                         </button>
 
-                        <!-- Confirm Delete PopUp Component -->
                         <x-popUps.confirm-delete-popUp :id="$item->id" :deleteRoute="$deleteRoute" />
                     </td>
                 </tr>

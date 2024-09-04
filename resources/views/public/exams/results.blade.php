@@ -31,17 +31,14 @@
     </div>
 
     <div class="tab-content mt-3 mb-5" id="resultTabsContent">
-        <!-- Tab 1: Resultados Completos -->
         <div class="tab-pane fade show active" id="complete-results" role="tabpanel" aria-labelledby="complete-results-tab">
             <livewire:exam-ranking :examId="$exam->id" :userAnsweredAllQuestions="$userAnsweredAllQuestions" />
         </div>
 
-        <!-- Tab 2: Resultados por Questão -->
         <div class="tab-pane fade" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
             <x-sections.examResults.result-per-question :statistics="$statistics" :markedAlternatives="$markedAlternatives" />
         </div>
 
-        <!-- Tab 3: Preencher Gabarito -->
         <div class="tab-pane fade" id="exam-answer-form" role="tabpanel" aria-labelledby="exam-answer-form-tab">
             <livewire:exam-answer-form :examId="$exam->id" />
         </div>

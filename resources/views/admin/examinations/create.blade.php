@@ -2,7 +2,6 @@
 
 @section('main-content')
 <section class='page-height create-examinations-page container my-5'>
-    <!-- Flash Messages -->
     <div class="m-height-5-rem mb-4">
         @if(session('success'))
             <x-cards.flash-message-card type="success" :message="session('success')" />

@@ -6,7 +6,6 @@
     </div>
     <div class="card-body">
         <ul class="list-group list-group-flush">
-            <!-- Título -->
             <li class="list-group-item" @dblclick="editing = 'title'; value = '{{ $exam->title }}'">
                 <template x-if="editing !== 'title'">
                     <span><strong>Título:</strong> {{ $exam->title }}</span>
@@ -31,7 +30,6 @@
                 </template>
             </li>
 
-            <!-- Data -->
             <li class="list-group-item" @dblclick="editing = 'date'; value = '{{ $exam->date ? $exam->date->format('Y-m-d') : '' }}'">
                 <template x-if="editing !== 'date'">
                     <span><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : 'Não informada' }}</span>
@@ -55,7 +53,6 @@
                 </template>
             </li>
 
-            <!-- Escolaridade -->
             <li class="list-group-item" @dblclick="editing = 'educationLevel'; value = '{{ $exam->educationLevel->id ?? '' }}'">
                 <template x-if="editing !== 'educationLevel'">
                     <span><strong>Escolaridade:</strong> {{ $exam->educationLevel->name ?? 'Não informado' }}</span>
@@ -83,7 +80,6 @@
                 </template>
             </li>
 
-            <!-- Descrição -->
             <li class="list-group-item" @dblclick="editing = 'description'; value = '{{ $exam->description ?? '' }}'">
                 <template x-if="editing !== 'description'">
                     <span><strong>Descrição:</strong> {{ $exam->description ?? 'Não informada' }}</span>
@@ -107,12 +103,9 @@
                 </template>
             </li>
 
-            <!-- Concurso -->
             <li class="list-group-item">
                 <strong>Concurso:</strong> {{ $exam->examination->title }}
             </li>
-
-            <!-- Nº de Questões -->
             <li class="list-group-item">
                 <strong>Nº de Questões:</strong> {{ $numQuestions }}
             </li>
