@@ -11,5 +11,5 @@
             </button>
         </li>
     </ul>
-    <a href="{{ $backRoute }}" class="btn btn-dark rounded-0">voltar</a>
+    <a href="{{ $backRoute }}" class="btn btn-dark rounded-0 shadow-sm">voltar</a>
 </div>
