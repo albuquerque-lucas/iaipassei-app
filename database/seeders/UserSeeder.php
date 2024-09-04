@@ -47,6 +47,22 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        User::create([
+            'account_plan_id' => 2,
+            'first_name' => 'Matheus',
+            'last_name' => 'Varão',
+            'username' => 'varao.matheus',
+            'email' => 'mateus.varao@example.com', // Gerando um email fictício
+            'phone_number' => '32911111111',
+            'password' => Hash::make('12345678'),
+            'sex' => 'Masculino',
+            'sexual_orientation' => 'Homossexual',
+            'gender' => 'Mulher Trans',
+            'race' => 'Branco',
+            'disability' => 'Mental',
+            'email_verified_at' => now(),
+        ]);
+
         $faker = Faker::create();
 
         for ($i = 0; $i < 100; $i++) {
