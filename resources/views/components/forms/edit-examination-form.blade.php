@@ -2,16 +2,6 @@
     @csrf
     @method('PUT')
     <div class="mb-3">
-        <label for="education_level_id" class="form-label">Nível Educacional</label>
-        <select class="form-select rounded-0" id="education_level_id" name="education_level_id" required>
-            @foreach($educationLevels as $level)
-                <option value="{{ $level->id }}" {{ $examination->education_level_id == $level->id ? 'selected' : '' }}>
-                    {{ $level->name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-    <div class="mb-3">
         <label for="title" class="form-label">Título</label>
         <input type="text" class="form-control rounded-0" id="title" name="title" value="{{ $examination->title }}" required>
     </div>

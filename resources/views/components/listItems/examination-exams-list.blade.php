@@ -45,6 +45,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Título</th>
+                    <th scope="col">Escolaridade</th>
                     <th scope="col" class="text-end">Ações</th>
                 </tr>
             </thead>
@@ -54,6 +55,7 @@
                     <tr>
                         <td x-text="exam.id"></td>
                         <td x-text="exam.title"></td>
+                        <td x-text="exam.education_level ? exam.education_level.name : 'N/A'"></td>
                         <td class="text-end">
                             <!-- Rota para Edição com o Slug como segundo argumento -->
                             <a :href="'{{ route('admin.exams.edit', ':slug') }}'.replace(':slug', exam.slug)" class="btn btn-dark edit-btn btn-sm me-1 rounded-0">

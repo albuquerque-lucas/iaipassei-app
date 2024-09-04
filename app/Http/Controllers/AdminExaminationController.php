@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Examination;
-use App\Models\EducationLevel;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
 use App\Models\Notice;
 use App\Models\StudyArea;
+use App\Models\EducationLevel;
 use App\Models\QuestionAlternative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +32,7 @@ class AdminExaminationController extends Controller
             $orderBy = $request->get('order_by', 'id');
             $search = $request->get('search', '');
 
-            $query = Examination::with('educationLevel')
-                ->when($search, function ($query, $search) {
+            $query = Examination::query()->when($search, function ($query, $search) {
                     return $query->where('title', 'like', "%{$search}%");
                 })
                 ->orderBy($orderBy, $order);
@@ -55,10 +54,9 @@ class AdminExaminationController extends Controller
     public function create()
     {
         try {
-            $educationLevels = EducationLevel::all();
 
             $importedData = session('imported_data');
-            return view('admin.examinations.create', compact('educationLevels', 'importedData'));
+            return view('admin.examinations.create', compact('importedData'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
         }
@@ -72,7 +70,6 @@ class AdminExaminationController extends Controller
             $validated = $request->validated();
 
             $examination = Examination::create([
-                'education_level_id' => $validated['education_level_id'],
                 'title' => $validated['title'],
                 'institution' => $validated['institution'],
                 'active' => $request->has('active') ? $validated['active'] : false,
@@ -127,20 +124,24 @@ class AdminExaminationController extends Controller
         }
     }
 
-
-
     public function edit($slug)
     {
         try {
-            $examination = Examination::with(['educationLevel', 'exams.examQuestions.alternatives', 'studyAreas', 'notice'])->where('slug', $slug)->firstOrFail();
-            $educationLevels = EducationLevel::all();
+            $examination = Examination::with([
+                'exams.educationLevel',
+                'exams.examQuestions.alternatives',
+                'studyAreas',
+                'notice'
+            ])->where('slug', $slug)->firstOrFail();
+
             $allStudyAreas = StudyArea::all();
+            $allEducationLevels = EducationLevel::all();
 
             $numExams = $examination->exams->count();
             $numQuestionsPerExam = $numExams > 0 ? $examination->exams->first()->examQuestions->count() : 0;
             $numAlternativesPerQuestion = $numQuestionsPerExam > 0 ? $examination->exams->first()->examQuestions->first()->alternatives->count() : 0;
 
-            return view('admin.examinations.edit', compact('examination', 'educationLevels', 'numExams', 'numQuestionsPerExam', 'numAlternativesPerQuestion', 'allStudyAreas'));
+            return view('admin.examinations.edit', compact('examination', 'numExams', 'numQuestionsPerExam', 'numAlternativesPerQuestion', 'allStudyAreas', 'allEducationLevels'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao carregar o concurso para edição: ' . $e->getMessage());
         }
@@ -152,7 +153,6 @@ class AdminExaminationController extends Controller
 
         try {
             $validated = $request->validate([
-                'education_level_id' => 'required|exists:education_levels,id',
                 'title' => 'required|string|max:255',
                 'institution' => 'required|string|max:255',
                 'study_areas' => 'array|exists:study_areas,id',

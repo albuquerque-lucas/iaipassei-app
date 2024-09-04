@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('examinations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(EducationLevel::class);
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->string('institution')->nullable()->default(null);

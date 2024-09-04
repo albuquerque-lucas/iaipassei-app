@@ -6,7 +6,6 @@
                 <th style="width: 5%;">ID</th>
                 <th style="width: 35%;">Título</th>
                 <th style="width: 25%;">Instituição</th>
-                <th style="width: 15%;">Nível Educacional</th>
                 <th style="width: 15%;">Ações</th>
             </tr>
         </thead>
@@ -17,7 +16,6 @@
                     <td><strong>{{ $item->id }}</strong></td>
                     <td class="text-wrap">{{ $item->title }}</td>
                     <td>{{ $item->institution }}</td>
-                    <td>{{ optional($item->educationLevel)->name ?? 'Não informado' }}</td>
                     <td>
                         <div class="btn-group" role="group">
                             <a

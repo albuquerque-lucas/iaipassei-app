@@ -16,9 +16,9 @@ class EducationLevel extends Model
         'name',
     ];
 
-    public function examinations(): HasMany
+    public function exams(): HasMany
     {
-        return $this->hasMany(Examination::class);
+        return $this->hasMany(Exam::class);
     }
 
     public function subjects(): HasMany

@@ -67,11 +67,6 @@ class Examination extends Model
         return $this->belongsToMany(StudyArea::class);
     }
 
-    public function educationLevel(): BelongsTo
-    {
-        return $this->belongsTo(EducationLevel::class);
-    }
-
     public static function getAll(string $order, string $orderBy = 'id', array $params = []): LengthAwarePaginator
     {
         $query = self::orderBy($orderBy, $order);

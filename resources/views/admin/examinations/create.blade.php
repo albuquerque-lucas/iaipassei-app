@@ -32,7 +32,7 @@
     <div class="tab-content" id="createExaminationsTabContent">
         <div class="tab-pane fade show active" id="manual" role="tabpanel" aria-labelledby="manual-tab">
             <div class="mt-4">
-                <x-forms.create-examination-manual-form :educationLevels="$educationLevels" x-data="$data" :importedData="$importedData"/>
+                <x-forms.create-examination-manual-form x-data="$data" :importedData="$importedData"/>
             </div>
         </div>
         <div class="tab-pane fade" id="import" role="tabpanel" aria-labelledby="import-tab">
