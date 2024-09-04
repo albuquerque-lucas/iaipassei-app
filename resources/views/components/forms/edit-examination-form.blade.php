@@ -31,7 +31,9 @@
         {{-- <input type="text" id="searchStudyAreas" placeholder="Pesquisar Áreas de Estudo" class="mt-2 form-control">
         <button type="button" id="clearSearchStudyAreas" class="btn btn-secondary mt-2">Limpar Pesquisa</button> --}}
     </div>
-    <button type="submit" class="btn btn-dark w-25">Salvar Alterações</button>
+    <button type="submit" class="btn btn-dark w-25 rounded-0 shadow-sm">
+        Salvar Alterações
+    </button>
 </form>
 
 <script>

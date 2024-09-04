@@ -13,5 +13,7 @@
         <label for="num_alternatives" class="form-label">Quantidade de Alternativas por Questão</label>
         <input type="number" class="form-control rounded-0" id="num_alternatives" name="num_alternatives" required>
     </div>
-    <button type="submit" class="btn btn-dark w-25 rounded-0">Criar Prova</button>
+    <button type="submit" class="btn btn-dark w-25 rounded-0 shadow-sm">
+        Criar Prova
+    </button>
 </form>
