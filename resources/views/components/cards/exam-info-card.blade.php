@@ -19,8 +19,12 @@
                             <input type="hidden" name="title" :value="value">
                             <input type="text" class="form-control" x-model="value">
                             <div class="btn-group ms-2">
-                                <button type="submit" class="btn btn-sm btn-success">Confirmar</button>
-                                <button type="button" class="btn btn-sm btn-danger" @click="editing = null">Cancelar</button>
+                                <button type="submit" class="btn btn-sm btn-success rounded-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger rounded-0" @click="editing = null">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -38,9 +42,13 @@
                         @method('PUT')
                         <div class="d-flex justify-content-between align-items-center">
                             <input type="date" class="form-control" name="date" x-model="value">
-                            <div class="btn-group ms-2">
-                                <button type="submit" class="btn btn-sm btn-success">Confirmar</button>
-                                <button type="button" class="btn btn-sm btn-danger" @click="editing = null">Cancelar</button>
+                            <div class="btn-group ms-2 rounded-0">
+                                <button type="submit" class="btn btn-sm btn-success rounded-0">
+                                    <i class="fa-regular fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger rounded-0" @click="editing = null">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -62,9 +70,13 @@
                                     <option value="{{ $level->id }}">{{ $level->name }}</option>
                                 @endforeach
                             </select>
-                            <div class="btn-group ms-2">
-                                <button type="submit" class="btn btn-sm btn-success">Confirmar</button>
-                                <button type="button" class="btn btn-sm btn-danger" @click="editing = null">Cancelar</button>
+                            <div class="btn-group ms-2 rounded-0">
+                                <button type="submit" class="btn btn-sm btn-success rounded-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger rounded-0" @click="editing = null">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -82,9 +94,13 @@
                         @method('PUT')
                         <div class="d-flex justify-content-between align-items-center">
                             <input type="text" class="form-control" name="description" x-model="value">
-                            <div class="btn-group ms-2">
-                                <button type="submit" class="btn btn-sm btn-success">Confirmar</button>
-                                <button type="button" class="btn btn-sm btn-danger" @click="editing = null">Cancelar</button>
+                            <div class="btn-group ms-2 rounded-0">
+                                <button type="submit" class="btn btn-sm btn-success rounded-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger rounded-0" @click="editing = null">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
