@@ -1,5 +1,5 @@
 <div>
-    <button class="btn btn-dark mb-3 rounded-0 shadow" type="button" id="toggleFilterButton">
+    <button class="btn btn-dark mb-3 w-15 rounded-0 shadow" type="button" id="toggleFilterButton">
         Filtros
     </button>
 
