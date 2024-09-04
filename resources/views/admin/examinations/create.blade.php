@@ -1,9 +1,19 @@
 @extends('adminLayout')
 
 @section('main-content')
-<section class='create-examinations-page container mt-5'>
+<section class='page-height create-examinations-page container my-5'>
+    <!-- Flash Messages -->
+    <div class="m-height-5-rem mb-4">
+        @if(session('success'))
+            <x-cards.flash-message-card type="success" :message="session('success')" />
+        @elseif(session('error'))
+            <x-cards.flash-message-card type="error" :message="session('error')" />
+        @elseif(session('info'))
+            <x-cards.flash-message-card type="info" :message="session('info')" />
+        @endif
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{{ route('admin.examinations.index') }}" class="btn btn-secondary">voltar</a>
         <ul class="nav nav-tabs" id="createExaminationsTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual" type="button" role="tab" aria-controls="manual" aria-selected="true">
@@ -16,12 +26,9 @@
                 </button>
             </li>
         </ul>
+        <a href="{{ route('admin.examinations.index') }}" class="btn btn-dark rounded-0">voltar</a>
     </div>
-    @if (session('success'))
-        <x-cards.flash-message-card type="success" :message="session('success')" />
-    @elseif (session('error'))
-        <x-cards.flash-message-card type="error" :message="session('error')" />
-    @endif
+
     <div class="tab-content" id="createExaminationsTabContent">
         <div class="tab-pane fade show active" id="manual" role="tabpanel" aria-labelledby="manual-tab">
             <div class="mt-4">

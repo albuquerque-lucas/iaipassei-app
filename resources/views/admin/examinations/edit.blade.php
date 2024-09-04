@@ -1,7 +1,7 @@
 @extends('adminLayout')
 
 @section('main-content')
-<section class='edit-examinations-page container mt-5'>
+<section class='page-height container mt-5 pb-5'>
     <x-tabs.tabs :backRoute="route('admin.examinations.index')" />
 
     @if (session('success'))
@@ -29,7 +29,7 @@
                     :allStudyAreas="$allStudyAreas"
                 />
 
-                <h4 class="mt-5">Criar Nova Prova</h4>
+                <h4 class="mt-5">Adicionar Prova</h4>
                 <x-forms.create-exam-form :examination="$examination" />
             </div>
         </div>

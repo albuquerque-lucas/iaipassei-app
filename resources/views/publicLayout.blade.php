@@ -18,6 +18,7 @@
     </header>
     <main>
         @yield('main-content')
+        <x-cards.scroll-to-top />
     </main>
     <footer class="bg-dark text-light p-3 d-flex align-items-center justify-content-center">
         <div class="footer-inner container d-flex align-items-center justify-content-center">

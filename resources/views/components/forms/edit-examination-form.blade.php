@@ -3,7 +3,7 @@
     @method('PUT')
     <div class="mb-3">
         <label for="education_level_id" class="form-label">Nível Educacional</label>
-        <select class="form-select" id="education_level_id" name="education_level_id" required>
+        <select class="form-select rounded-0" id="education_level_id" name="education_level_id" required>
             @foreach($educationLevels as $level)
                 <option value="{{ $level->id }}" {{ $examination->education_level_id == $level->id ? 'selected' : '' }}>
                     {{ $level->name }}
@@ -13,15 +13,15 @@
     </div>
     <div class="mb-3">
         <label for="title" class="form-label">Título</label>
-        <input type="text" class="form-control" id="title" name="title" value="{{ $examination->title }}" required>
+        <input type="text" class="form-control rounded-0" id="title" name="title" value="{{ $examination->title }}" required>
     </div>
     <div class="mb-3">
         <label for="institution" class="form-label">Instituição</label>
-        <input type="text" class="form-control" id="institution" name="institution" value="{{ $examination->institution }}" required>
+        <input type="text" class="form-control rounded-0" id="institution" name="institution" value="{{ $examination->institution }}" required>
     </div>
     <div class="mb-3">
         <label for="study_areas" class="form-label">Áreas de Estudo</label>
-        <select class="form-select" id="study_areas" name="study_areas[]" multiple>
+        <select class="form-select rounded-0" id="study_areas" name="study_areas[]" multiple>
             @foreach($allStudyAreas as $area)
                 <option value="{{ $area->id }}" {{ $examination->studyAreas->contains($area->id) ? 'selected' : '' }}>
                     {{ $area->name }}
@@ -31,7 +31,9 @@
         {{-- <input type="text" id="searchStudyAreas" placeholder="Pesquisar Áreas de Estudo" class="mt-2 form-control">
         <button type="button" id="clearSearchStudyAreas" class="btn btn-secondary mt-2">Limpar Pesquisa</button> --}}
     </div>
-    <button type="submit" class="btn btn-dark">Salvar Alterações</button>
+    <button type="submit" class="btn btn-dark w-25 rounded-0 shadow-sm">
+        Salvar Alterações
+    </button>
 </form>
 
 <script>

@@ -4,8 +4,8 @@
             <tr>
                 <th>ID</th>
                 <th>Concurso</th>
-                <th>Nome do Arquivo</th>
-                <th>Ações</th>
+                <th class="text-center">Nome do Arquivo</th>
+                <th class="text-end pe-4">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -13,11 +13,11 @@
                 <tr>
                     <td><strong>{{ $item->id }}</strong></td>
                     <td>{{ $item->examination->title }}</td>
-                    <td>{{ $item->file_name }}</td>
-                    <td>
+                    <td class="text-center">{{ $item->file_name }}</td>
+                    <td class="text-end pe-4">
                         <a
                         href="{{ route('notices.download', $item->id) }}"
-                        class="btn btn-sm btn-dark"
+                        class="btn btn-sm btn-dark rounded-0"
                         target="_blank"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
@@ -27,7 +27,7 @@
                         </a>
                         <a
                         href="{{ asset('storage/' . $item->file_path) }}"
-                        class="btn btn-sm btn-dark edit-btn"
+                        class="btn btn-sm btn-dark edit-btn rounded-0"
                         target="_blank"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
@@ -37,7 +37,7 @@
                         </a>
                         <button
                         type="button"
-                        class="btn btn-sm btn-dark edit-btn"
+                        class="btn btn-sm btn-dark edit-btn rounded-0"
                         data-bs-toggle="modal"
                         data-bs-target="#editNoticeModal{{ $item->id }}"
                         data-bs-toggle="tooltip"
@@ -48,7 +48,7 @@
                         </button>
                         <button
                         type="button"
-                        class="btn btn-sm btn-dark delete-button delete-btn"
+                        class="btn btn-sm btn-dark delete-btn rounded-0"
                         data-bs-toggle="modal"
                         data-bs-target="#confirmDeleteModal{{ $item->id }}"
                         data-bs-toggle="tooltip"

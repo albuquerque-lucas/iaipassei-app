@@ -79,16 +79,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/provas/{exam}/unsubscribe', [PublicExamController::class, 'unsubscribe'])
     ->name('public.exams.unsubscribe');
 
-    Route::resource('provas', PublicExamController::class)
-        ->only(['show'])
-        ->parameters([
-            'provas' => 'exam:slug'
-        ])
-        ->names([
-            // 'index' => 'public.exams.index',
-            'show' => 'public.exams.show',
-        ])
-        ->middleware(CheckExamAccess::class);
+    // Route::resource('provas', PublicExamController::class)
+    //     ->only(['show'])
+    //     ->parameters([
+    //         'provas' => 'exam:slug'
+    //     ])
+    //     ->names([
+    //         // 'index' => 'public.exams.index',
+    //         'show' => 'public.exams.show',
+    //     ])
+    //     ->middleware(CheckExamAccess::class);
 
     Route::resource('public/users', PublicUserController::class)
         ->only(['update'])

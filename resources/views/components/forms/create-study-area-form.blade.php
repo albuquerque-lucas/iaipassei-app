@@ -1,11 +1,9 @@
 <div class="mt-4">
-    <h4>Adicionar Área de Estudo</h4>
     <form action="{{ route('admin.study_areas.store') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="name" class="form-label">Nome da Área de Estudo</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <input type="text" class="form-control rounded-0 shadow-sm" id="name" name="name" placeholder="Nome" required>
         </div>
-        <button type="submit" class="btn btn-primary">Adicionar</button>
+        <button type="submit" class="btn btn-dark w-25 rounded-0 shadow-sm">Adicionar</button>
     </form>
 </div>

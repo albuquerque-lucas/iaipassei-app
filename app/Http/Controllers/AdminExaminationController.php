@@ -18,6 +18,8 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AdminExaminationController extends Controller
 {
@@ -56,9 +58,6 @@ class AdminExaminationController extends Controller
             $educationLevels = EducationLevel::all();
 
             $importedData = session('imported_data');
-            // if (isset($importedData)) {
-            //     dd($importedData);
-            // }
             return view('admin.examinations.create', compact('educationLevels', 'importedData'));
         } catch (Exception $e) {
             return redirect()->route('admin.examinations.index')->with('error', 'Erro ao abrir o formulário de criação: ' . $e->getMessage());
@@ -80,9 +79,12 @@ class AdminExaminationController extends Controller
             ]);
 
             if ($request->hasFile('notice')) {
+                // Criar o diretório com o slug do exame para armazenar o edital
                 $file = $request->file('notice');
-                $filePath = $file->store('notices', 'public');
+                $folderPath = 'notices/' . $examination->slug;
+                $filePath = $file->store($folderPath, 'public');
 
+                // Criar o novo Notice associado ao exame
                 Notice::create([
                     'examination_id' => $examination->id,
                     'file_path' => $filePath,
@@ -92,12 +94,14 @@ class AdminExaminationController extends Controller
                 ]);
             }
 
+            // Criar as provas associadas ao concurso (Exams)
             for ($i = 1; $i <= $validated['num_exams']; $i++) {
                 $exam = Exam::create([
                     'examination_id' => $examination->id,
                     'title' => "P-$i",
                 ]);
 
+                // Criar questões e alternativas associadas a cada prova
                 for ($j = 1; $j <= $validated['num_questions_per_exam']; $j++) {
                     $examQuestion = ExamQuestion::create([
                         'exam_id' => $exam->id,
@@ -107,7 +111,7 @@ class AdminExaminationController extends Controller
                     for ($k = 0; $k < $validated['num_alternatives_per_question']; $k++) {
                         QuestionAlternative::create([
                             'exam_question_id' => $examQuestion->id,
-                            'letter' => chr(97 + $k),
+                            'letter' => chr(97 + $k), // a, b, c, d, etc.
                         ]);
                     }
                 }
@@ -118,9 +122,12 @@ class AdminExaminationController extends Controller
             return redirect()->route('admin.examinations.index')->with('success', 'Concurso criado com sucesso!');
         } catch (Exception $e) {
             DB::rollBack();
+            Log::error("Erro ao criar o concurso: {$e->getMessage()}");
             return redirect()->back()->with('error', 'Erro ao criar o concurso: ' . $e->getMessage());
         }
     }
+
+
 
     public function edit($slug)
     {
@@ -141,6 +148,8 @@ class AdminExaminationController extends Controller
 
     public function update(Request $request, $slug)
     {
+        DB::beginTransaction();
+
         try {
             $validated = $request->validate([
                 'education_level_id' => 'required|exists:education_levels,id',
@@ -150,29 +159,23 @@ class AdminExaminationController extends Controller
             ]);
 
             $examination = Examination::where('slug', $slug)->firstOrFail();
+
             $examination->update($validated);
 
             if ($request->has('study_areas')) {
                 $examination->studyAreas()->sync($request->study_areas);
             }
 
+            DB::commit();
+
             return redirect()->back()->with('success', 'Concurso atualizado com sucesso!');
         } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Erro ao atualizar o concurso: {$e->getMessage()}");
             return redirect()->back()->with('error', 'Erro ao atualizar o concurso: ' . $e->getMessage());
         }
     }
 
-    public function destroy($slug)
-    {
-        try {
-            $examination = Examination::where('slug', $slug)->firstOrFail();
-            $examination->delete();
-
-            return redirect()->route('admin.examinations.index')->with('success', 'Concurso excluído com sucesso!');
-        } catch (Exception $e) {
-            return redirect()->route('admin.examinations.index')->with('error', 'Erro ao excluir o concurso: ' . $e->getMessage());
-        }
-    }
 
     public function bulkDelete(Request $request)
     {

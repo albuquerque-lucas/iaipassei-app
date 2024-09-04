@@ -29,18 +29,27 @@ class AdminNoticeController extends Controller
     public function store(Request $request)
     {
         try {
+            // Validação dos dados recebidos
             $validated = $request->validate([
                 'examination_slug' => 'required|exists:examinations,slug',
-                'file' => 'required|mimes:pdf|max:500000',
+                'file' => 'required|mimes:pdf|max:500000', // Validação para PDF
             ]);
 
+            // Buscar o exame pelo slug
             $examination = Examination::where('slug', $validated['examination_slug'])->firstOrFail();
 
+            // Obter o arquivo do request
             $file = $request->file('file');
-            $filePath = $file->store('notices', 'public');
+
+            // Definir o diretório de armazenamento baseado no slug do exame
+            $folderPath = 'notices/' . $examination->slug; // Criar diretório com o slug
+            $filePath = $file->store($folderPath, 'public'); // Salvar arquivo no diretório público
+
+            // Obter o nome do arquivo e extensão
             $fileName = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
 
+            // Criar o novo Notice associado ao Examination
             Notice::create([
                 'examination_id' => $examination->id,
                 'file_path' => $filePath,
@@ -54,6 +63,7 @@ class AdminNoticeController extends Controller
         }
     }
 
+
     public function edit($id)
     {
         $notice = Notice::findOrFail($id);
@@ -62,9 +72,10 @@ class AdminNoticeController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validação dos campos
         $validated = $request->validate([
             'examination_id' => 'nullable|exists:examinations,id',
-            'file' => 'nullable|mimes:pdf|max:10240',
+            'file' => 'nullable|mimes:pdf|max:50000',
         ]);
 
         try {
@@ -72,14 +83,25 @@ class AdminNoticeController extends Controller
 
             if ($request->hasFile('file')) {
                 if ($notice->file_path) {
-                    Storage::disk('public')->delete($notice->file_path);
+                    \Storage::disk('public')->delete($notice->file_path);
                 }
 
+                // Obter o novo arquivo do request
                 $file = $request->file('file');
-                $filePath = $file->store('notices', 'public');
+
+                // Verificar o slug do Examination atual ou atualizado
+                $examination = $notice->examination; // Exame relacionado atual
+                if (isset($validated['examination_id'])) {
+                    $examination = Examination::findOrFail($validated['examination_id']); // Novo exame, se foi alterado
+                }
+
+                // Criar o diretório com base no slug do exame
+                $folderPath = 'notices/' . $examination->slug;
+                $filePath = $file->store($folderPath, 'public'); // Salvar o arquivo no diretório correto
                 $fileName = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
 
+                // Atualizar os dados do Notice com o novo arquivo
                 $notice->update([
                     'file_path' => $filePath,
                     'file_name' => $fileName,
@@ -87,6 +109,7 @@ class AdminNoticeController extends Controller
                 ]);
             }
 
+            // Atualizar o examination_id, caso seja enviado
             if (isset($validated['examination_id'])) {
                 $notice->update([
                     'examination_id' => $validated['examination_id'],
@@ -99,34 +122,38 @@ class AdminNoticeController extends Controller
         }
     }
 
-
-
     public function destroy($id)
     {
-        $notice = Notice::findOrFail($id);
+        try {
+            $notice = Notice::findOrFail($id);
 
-        if ($notice->file_path) {
-            Storage::disk('public')->delete($notice->file_path);
+            if ($notice->file_path) {
+                Storage::disk('public')->delete($notice->file_path);
+            }
+
+            $notice->delete();
+
+            return redirect()->back()->with('success', 'Edital excluído com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao excluir o edital: ' . $e->getMessage());
         }
-
-        $notice->delete();
-
-        return redirect()->back()->with('success', 'Edital excluído com sucesso!');
     }
 
     public function download($id)
-{
-    try {
-        $notice = Notice::findOrFail($id);
-        $filePath = storage_path('app/public/' . $notice->file_path);
+    {
+        try {
+            $notice = Notice::findOrFail($id);
 
-        if (file_exists($filePath)) {
-            return response()->download($filePath, $notice->file_name);
-        } else {
-            return redirect()->back()->with('error', 'Arquivo não encontrado.');
+            $filePath = storage_path('app/public/' . $notice->file_path);
+
+            if (Storage::disk('public')->exists($notice->file_path)) {
+                return response()->download($filePath, $notice->file_name);
+            } else {
+                return redirect()->back()->with('error', 'Arquivo não encontrado.');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao fazer download do arquivo: ' . $e->getMessage());
         }
-    } catch (Exception $e) {
-        return redirect()->back()->with('error', 'Erro ao fazer download do arquivo: ' . $e->getMessage());
     }
-}
+
 }

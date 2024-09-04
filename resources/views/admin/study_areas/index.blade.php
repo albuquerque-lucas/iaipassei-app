@@ -25,7 +25,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
                     <h4>Dashboard Áreas de Estudo</h4>
-                    <button id="bulkDeleteButton" class="btn btn-danger" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
+                    <button id="bulkDeleteButton" class="btn btn-danger rounded-0 shadow-sm" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
                         Excluir Selecionados
                     </button>
                 </div>

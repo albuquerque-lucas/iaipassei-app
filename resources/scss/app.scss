@@ -47,22 +47,14 @@
         position: relative
     };
 
-    a.btn,
-    button.btn,
-    .dashboard-table-container {
-        box-shadow: $default-box-shadow;
-    }
-
     .delete-btn:hover {
         background-color: $danger-color;
         border: 1px solid $danger-color;
-        box-shadow: $hover-box-shadow;
     }
 
     .edit-btn:hover {
         background-color: $primary-bootstrap-color;
         border: 1px solid $primary-bootstrap-color;
-        box-shadow: $hover-box-shadow;
     }
 
     .ia-file-input-xmark-btn {
@@ -126,14 +118,6 @@
     background-color: $blue-700!important;
 }
 
-.btn-indigo-700 {
-    background-color: $blue-700!important;
-    color: #fff!important;
-
-    &:hover {
-        background-color: $blue-600!important;
-    }
-}
 
 .bg-indigo-500-hover {
     &:hover {
@@ -143,6 +127,15 @@
 }
 
 // Buttons
+
+.btn-indigo-700 {
+    background-color: $blue-700!important;
+    color: #fff!important;
+
+    &:hover {
+        background-color: $blue-600!important;
+    }
+}
 
 .btn-indigo-500 {
     background-color: $blue-600!important;
@@ -159,6 +152,12 @@
 
     &:hover {
         background-color: $teal-500!important;
+    }
+}
+.btn-danger {
+    &:hover {
+        border: 1px solid transparent;
+        background-color: $soft-danger-color!important;
     }
 }
 
@@ -223,3 +222,15 @@
         font-weight: 700!important;
     }
 }
+
+.scrollable-list {
+    max-height: 300px;
+    overflow-y: auto;
+
+    .scrollable-list-item:hover {
+        color: white;
+        background-color: rgba($blue-400, 0.5);
+
+    }
+}
+
