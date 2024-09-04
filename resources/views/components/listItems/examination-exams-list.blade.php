@@ -39,8 +39,8 @@
     </div>
 
     <!-- Tabela -->
-    <div class="table-responsive scrollable-list p-4 shadow border border-dark-subtle border-5 rounded-0">
-        <table class="table table-striped table-hover">
+    <div class="table-responsive scrollable-list p-4 border-top border-2 border-dark-subtle rounded-0">
+        <table class="table table-striped table-hover shadow">
             <thead>
                 <tr>
                     <th scope="col">#</th>
