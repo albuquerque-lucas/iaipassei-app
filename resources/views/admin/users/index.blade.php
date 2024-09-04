@@ -5,9 +5,9 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4>Dashboard Usuários</h4>
             <div>
-                <a href="{{ route('admin.users.create') }}" class="btn btn-dark edit-btn me-2 rounded-0 shadow-sm">
+                {{-- <a href="{{ route('admin.users.create') }}" class="btn btn-dark edit-btn me-2 rounded-0 shadow-sm">
                     Adicionar Usuário
-                </a>
+                </a> --}}
                 <button id="bulkDeleteButton" class="btn btn-danger rounded-0 shadow-sm" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
                     Excluir Selecionados
                 </button>
