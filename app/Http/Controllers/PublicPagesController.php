@@ -26,12 +26,13 @@ class PublicPagesController extends Controller
 
     public function examinations(Request $request)
     {
+        // dd('oi');
         try {
             $order = $request->get('order', 'desc');
             $orderBy = $request->get('order_by', 'id');
             $search = $request->get('search', '');
 
-            $query = Examination::with('educationLevel')
+            $query = Examination::query()
                 ->when($search, function ($query, $search) {
                     return $query->where('title', 'like', "%{$search}%");
                 })
