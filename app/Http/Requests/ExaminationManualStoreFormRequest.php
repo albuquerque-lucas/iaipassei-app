@@ -14,7 +14,6 @@ class ExaminationManualStoreFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'education_level_id' => 'required|exists:education_levels,id',
             'title' => 'required|string|max:255',
             'institution' => 'required|string|max:255',
             'num_exams' => 'required|integer|min:1',
@@ -41,7 +40,6 @@ class ExaminationManualStoreFormRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'education_level_id' => 'Nível de Escolaridade',
             'title' => 'Título',
             'institution' => 'Instituição',
             'num_exams' => 'Número de Provas',

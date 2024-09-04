@@ -19,6 +19,7 @@ class ExamSeeder extends Seeder
 
         foreach ($examinations as $examination) {
             $exam = Exam::create([
+                'education_level_id' => 4,
                 'examination_id' => $examination->id,
                 'title' => 'Prova do ' . $examination->title,
                 'description' => 'Descrição da prova do ' . $examination->title,

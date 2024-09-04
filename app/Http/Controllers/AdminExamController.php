@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exam;
 use App\Models\Examination;
 use App\Models\ExamQuestion;
+use App\Models\EducationLevel;
 use App\Models\QuestionAlternative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,18 +58,23 @@ class AdminExamController extends Controller
         DB::beginTransaction();
 
         try {
+            // Validar os dados enviados pelo formulário
             $validated = $request->validate([
                 'examination_id' => 'required|exists:examinations,id',
+                'education_level_id' => 'required|exists:education_levels,id',
                 'title' => 'required|string|max:255',
                 'num_questions' => 'required|integer|min:1',
                 'num_alternatives' => 'required|integer|min:1',
             ]);
 
+            // Criar o exame associado ao nível educacional
             $exam = Exam::create([
                 'examination_id' => $validated['examination_id'],
+                'education_level_id' => $validated['education_level_id'],
                 'title' => $validated['title'],
             ]);
 
+            // Criar as questões e alternativas
             for ($i = 1; $i <= $validated['num_questions']; $i++) {
                 $examQuestion = ExamQuestion::create([
                     'exam_id' => $exam->id,
@@ -78,7 +84,7 @@ class AdminExamController extends Controller
                 for ($j = 0; $j < $validated['num_alternatives']; $j++) {
                     QuestionAlternative::create([
                         'exam_question_id' => $examQuestion->id,
-                        'letter' => chr(97 + $j),
+                        'letter' => chr(97 + $j),  // Letras a, b, c, d, etc.
                     ]);
                 }
             }
@@ -92,17 +98,19 @@ class AdminExamController extends Controller
         }
     }
 
+
+
     public function edit($slug)
     {
         try {
             $exam = Exam::with(['examination', 'examQuestions.alternatives'])->where('slug', $slug)->firstOrFail();
             $examinations = Examination::all();
-
+            $allEducationLevels = EducationLevel::all();
             $numQuestions = $exam->examQuestions->count();
             $numAlternativesPerQuestion = $numQuestions > 0 ? $exam->examQuestions->first()->alternatives->count() : 0;
 
             $examQuestions = $exam->examQuestions()->orderBy('question_number', 'asc')->paginate(5);
-            return view('admin.exams.edit', compact('exam', 'examinations', 'numQuestions', 'numAlternativesPerQuestion', 'examQuestions'));
+            return view('admin.exams.edit', compact('exam', 'examinations', 'numQuestions', 'numAlternativesPerQuestion', 'examQuestions', 'allEducationLevels'));
         } catch (Exception $e) {
             return redirect()->route('admin.exams.index')->with('error', 'Erro ao carregar a prova para edição: ' . $e->getMessage());
         }
@@ -113,13 +121,20 @@ class AdminExamController extends Controller
         try {
             $validated = $request->validate([
                 'examination_id' => 'nullable|integer|exists:examinations,id',
+                'education_level_id' => 'nullable|integer|exists:education_levels,id',
                 'title' => 'nullable|string|max:255',
                 'date' => 'nullable|date',
                 'description' => 'nullable|string|max:1000',
             ]);
 
             $exam = Exam::where('slug', $slug)->firstOrFail();
+
             $exam->update($validated);
+
+            if ($request->has('education_level_id')) {
+                $exam->education_level_id = $validated['education_level_id'];
+                $exam->save();
+            }
 
             return redirect()->route('admin.exams.edit', $slug)->with('success', 'Prova atualizada com sucesso!');
         } catch (Exception $e) {

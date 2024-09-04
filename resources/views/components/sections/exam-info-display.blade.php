@@ -10,7 +10,6 @@
     <h4>Visualizar Concurso</h4>
     <p><strong>Título:</strong> {{ $examination->title }}</p>
     <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
-    <p><strong>Nível Educacional:</strong> {{ $examination->educationLevel->name }}</p>
     <p><strong>Quantidade de Provas:</strong> {{ $numExams }}</p>
 
     <div class="">

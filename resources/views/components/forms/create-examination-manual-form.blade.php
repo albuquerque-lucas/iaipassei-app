@@ -1,4 +1,4 @@
-@props(['educationLevels', 'importedData' => null])
+@props(['importedData' => null])
 
 <form method="POST" action="{{ route('admin.examinations.store') }}" id="examinationForm" enctype="multipart/form-data">
     @csrf
@@ -6,7 +6,7 @@
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;"></div>
     </div>
 
-    <div class="mb-3">
+    {{-- <div class="mb-3">
         <label for="education_level_id" class="form-label">Nível Educacional</label>
         <select class="form-select rounded-0 shadow-sm" id="education_level_id" name="education_level_id" required>
             @foreach($educationLevels as $level)
@@ -18,7 +18,7 @@
         @error('education_level_id')
             <div class="text-danger">{{ $message }}</div>
         @enderror
-    </div>
+    </div> --}}
 
     <div class="mb-3">
         <label for="title" class="form-label">Título</label>

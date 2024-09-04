@@ -16,7 +16,7 @@
             </button>
         </div>
     </div>
-    <!-- Mensagens de sucesso e erro -->
+
     @if(session('success'))
         <x-cards.flash-message-card type="success" :message="session('success')" />
     @elseif(session('error'))

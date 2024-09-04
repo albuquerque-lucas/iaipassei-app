@@ -16,7 +16,7 @@
         </ul>
         <div class="tab-content" id="studyAreasTabContent">
             <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                <!-- Mensagens de sucesso e erro -->
+
                 @if (session('success'))
                     <x-cards.flash-message-card type="success" :message="session('success')" />
                 @elseif (session('error'))
@@ -32,7 +32,6 @@
 
                 <x-filters.study-areas-dashboard-filter :action="route('admin.study_areas.index')" />
 
-                <!-- Botões de navegação no topo -->
                 <div class="d-flex justify-content-center mb-4">
                     {!! $paginationLinks !!}
                 </div>

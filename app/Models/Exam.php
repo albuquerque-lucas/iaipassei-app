@@ -15,6 +15,7 @@ class Exam extends Model
     use HasFactory, Sluggable;
 
     protected $fillable = [
+        'education_level_id',
         'examination_id',
         'title',
         'date',
@@ -40,17 +41,22 @@ class Exam extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function examination()
+    public function educationLevel(): BelongsTo
+    {
+        return $this->belongsTo(EducationLevel::class);
+    }
+
+    public function examination(): BelongsTo
     {
         return $this->belongsTo(Examination::class);
     }
 
-    public function examQuestions()
+    public function examQuestions(): HasMany
     {
         return $this->hasMany(ExamQuestion::class);
     }
 
-    public function subjects()
+    public function subjects(): BelongsToMany
     {
         return $this->belongsToMany(Subject::class);
     }

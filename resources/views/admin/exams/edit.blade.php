@@ -1,14 +1,24 @@
 @extends('adminLayout')
 
 @section('main-content')
-<section class='edit-exam-page container mt-5' x-data="{
+<section class='page-height edit-exam-page container my-5 pb-5' x-data="{
     editMode: localStorage.getItem('questionEditMode') === 'true',
     toggleEditMode() {
         this.editMode = !this.editMode;
         localStorage.setItem('questionEditMode', this.editMode);
     }
 }">
-    <x-tabs.tabs :backRoute="route('admin.examinations.edit', $exam->examination->slug)" />
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <ul class="nav nav-tabs" id="studyAreasTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="show-tab" data-bs-toggle="tab" data-bs-target="#show" type="button" role="tab" aria-controls="show" aria-selected="true">
+                    Visualizar
+                </button>
+            </li>
+        </ul>
+        <a href="{{ route('admin.examinations.edit', $exam->examination->slug) }}" class="btn btn-dark rounded-0 shadow-sm">voltar</a>
+    </div>
 
     @if (session('success'))
         <x-cards.flash-message-card type="success" :message="session('success')" />
@@ -19,9 +29,13 @@
     <div class="tab-content" id="editExamTabContent">
 
         <div class="tab-pane fade show active" id="show" role="tabpanel" aria-labelledby="show-tab">
-            <x-cards.exam-info-card :exam="$exam" :numQuestions="$numQuestions" />
+            <x-cards.exam-info-card
+            :exam="$exam"
+            :numQuestions="$numQuestions"
+            :educationLevels="$allEducationLevels"
+            />
 
-            <button class="btn btn-dark mb-3" @click="toggleEditMode">
+            <button class="btn btn-dark mb-3 rounded-0 edit-btn" @click="toggleEditMode">
                 <span x-show="!editMode">Editar Questões</span>
                 <span x-show="editMode">Fechar Edição</span>
             </button>
@@ -34,13 +48,6 @@
 
             <div class="d-flex justify-content-center">
                 {{ $examQuestions->links('pagination::bootstrap-4') }}
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-            <div class="mt-4">
-                <h4>Editar Prova</h4>
-                <x-forms.edit-exam-form :exam="$exam" />
             </div>
         </div>
     </div>

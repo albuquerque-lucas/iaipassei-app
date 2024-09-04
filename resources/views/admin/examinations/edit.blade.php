@@ -25,12 +25,14 @@
                 <h4>Editar Concurso</h4>
                 <x-forms.edit-examination-form
                     :examination="$examination"
-                    :educationLevels="$educationLevels"
                     :allStudyAreas="$allStudyAreas"
                 />
 
                 <h4 class="mt-5">Adicionar Prova</h4>
-                <x-forms.create-exam-form :examination="$examination" />
+                <x-forms.create-exam-form
+                :examination="$examination"
+                :allEducationLevels="$allEducationLevels"
+                />
             </div>
         </div>
     </div>
