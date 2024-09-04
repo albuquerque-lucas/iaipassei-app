@@ -29,7 +29,7 @@
                     :allStudyAreas="$allStudyAreas"
                 />
 
-                <h4 class="mt-5">Criar Nova Prova</h4>
+                <h4 class="mt-5">Adicionar Prova</h4>
                 <x-forms.create-exam-form :examination="$examination" />
             </div>
         </div>
