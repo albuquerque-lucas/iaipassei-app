@@ -26,7 +26,6 @@ class PublicPagesController extends Controller
 
     public function examinations(Request $request)
     {
-        // dd('oi');
         try {
             $order = $request->get('order', 'desc');
             $orderBy = $request->get('order_by', 'id');
