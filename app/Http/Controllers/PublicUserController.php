@@ -22,6 +22,16 @@ class PublicUserController extends Controller
         $this->emailService = $emailService;
     }
 
+    public function profile($slug)
+    {
+        $user = User::where('slug', $slug)->firstOrFail();
+        $title = "{$user->first_name} {$user->last_name} | Perfil | IaiPassei";
+
+        $examinations = Auth::check() ? Auth::user()->examinations()->paginate(15) : null;
+
+        return view('public.profile.index', compact('title', 'user', 'slug', 'examinations'));
+    }
+
     public function update(UserUpdateRequest $request)
     {
         $validated = $this->validateAndPrepareData($request);
