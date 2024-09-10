@@ -7,8 +7,6 @@
 ])
 
 <div class="mt-4">
-    <h4 class="mb-4 text-start">concurso</h4>
-
     <div class="card shadow-sm border-0 rounded-0 mb-4">
         <div class="card-body">
             <ul class="list-group list-group-flush">
@@ -22,7 +20,7 @@
                     <strong>Quantidade de Provas:</strong> {{ $numExams }}
                 </li>
                 <li class="list-group-item">
-                    <strong>Áreas associadas:</strong>
+                    <strong>Áreas:</strong>
                     <span>
                         @foreach($studyAreas as $studyArea)
                             {{ $studyArea->name }}{{ !$loop->last ? ', ' : '' }}

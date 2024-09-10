@@ -34,7 +34,6 @@ class PublicUserController extends Controller
 
     public function update(UserUpdateRequest $request)
     {
-        dd("Teste");
         $validated = $this->validateAndPrepareData($request);
 
         $user = Auth::user();

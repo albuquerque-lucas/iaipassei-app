@@ -3,7 +3,7 @@
 @section('main-content')
 <section class='page-height container my-5' style="min-height:120vh;">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Dashboard Concursos Públicos</h4>
+        <h4>Dashboard | Concursos</h4>
         <div>
             <a href="{{ route('admin.examinations.create') }}" class="btn btn-dark edit-btn me-2 rounded-0 shadow">
                 Adicionar
@@ -17,11 +17,13 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <x-cards.flash-message-card type="success" :message="session('success')" />
-    @elseif(session('error'))
-        <x-cards.flash-message-card type="error" :message="session('error')" />
-    @endif
+    <div class="m-height-5-rem">
+        @if(session('success'))
+            <x-cards.flash-message-card type="success" :message="session('success')" />
+        @elseif(session('error'))
+            <x-cards.flash-message-card type="error" :message="session('error')" />
+        @endif
+    </div>
 
     <x-filters.examinations-dashboard-filter :action="route('admin.examinations.index')" />
 

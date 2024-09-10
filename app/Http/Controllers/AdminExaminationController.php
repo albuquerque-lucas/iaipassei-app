@@ -177,6 +177,23 @@ class AdminExaminationController extends Controller
         }
     }
 
+    public function destroy($slug)
+    {
+        DB::beginTransaction();
+
+        try {
+            $examination = Examination::where('slug', $slug)->firstOrFail();
+            $examination->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Concurso excluído com sucesso!');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Erro ao excluir o concurso: {$e->getMessage()}");
+            return redirect()->back()->with('error', 'Erro ao excluir o concurso: ' . $e->getMessage());
+        }
+    }
 
     public function bulkDelete(Request $request)
     {
