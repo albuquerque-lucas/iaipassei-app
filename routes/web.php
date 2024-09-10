@@ -78,25 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/provas/{exam}/unsubscribe', [PublicExamController::class, 'unsubscribe'])
     ->name('public.exams.unsubscribe');
 
-    // Route::resource('provas', PublicExamController::class)
-    //     ->only(['show'])
-    //     ->parameters([
-    //         'provas' => 'exam:slug'
-    //     ])
-    //     ->names([
-    //         // 'index' => 'public.exams.index',
-    //         'show' => 'public.exams.show',
-    //     ])
-    //     ->middleware(CheckExamAccess::class);
+    Route::patch('public/users/{user:slug}', [PublicUserController::class, 'update'])->name('public.users.update');
 
-    Route::resource('public/users', PublicUserController::class)
-        ->only(['update'])
-        ->parameters([
-            'users' => 'user:slug'
-        ])
-        ->names([
-            'update' => 'public.users.update',
-        ]);
 
     Route::get('confirm-email-change/{id}/{email}', [AdminUserController::class, 'confirmEmailChange'])->name('verification.verify.new.email');
 });
