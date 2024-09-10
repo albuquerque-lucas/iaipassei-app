@@ -11,6 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -49,9 +50,8 @@ class AuthController extends Controller
                 'phone_number' => $data['phone_number'],
                 'account_plan_id' => 1,
                 'password' => Hash::make($data['password']),
-                'google_id' => $data['google_id'],
+                'google_id' => $data['google_id'] ?? null,
             ]);
-
             // Disparar evento de confirmação de e-mail
             event(new Registered($user));
 
@@ -59,6 +59,7 @@ class AuthController extends Controller
             Auth::login($user);
             return redirect()->route('verification.notice')->with('success', 'Conta criada com sucesso!');
         } catch (Exception $e) {
+            Log::error("Erro ao criar o usuário: " . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
             return redirect()->back()->withErrors([
                 'error' => 'Ocorreu um erro ao tentar criar a conta: ' . $e->getMessage(),
             ])->withInput();

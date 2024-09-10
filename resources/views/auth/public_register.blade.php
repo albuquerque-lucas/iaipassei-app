@@ -1,7 +1,8 @@
 @extends('publicLayout')
 
 @section('main-content')
-    <section class="public-register-page container d-flex justify-content-center align-items-center vh-100">
+    <section class="page-height public-register-page container d-flex flex-column justify-content-center align-items-center mb-5">
+        <x-cards.flash-message-container />
         <div class="w-100" style="max-width: 600px;">
             <div class="card">
                 <div class="card-header text-center">
