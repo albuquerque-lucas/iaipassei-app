@@ -15,18 +15,15 @@ class UserQuestionAlternativesSeeder extends Seeder
      */
     public function run(): void
     {
-        $excludedUsernames = ['albuquerque.lucas', 'duarte.yuti', 'varao.matheus'];
-        // Buscar os primeiros 100 usuários que não têm o username "albuquerque.lucas"
+        $excludedUsernames = ['albuquerque.lucas', 'duarte.yuri', 'varao.matheus'];
         $users = User::whereNotIn('username', $excludedUsernames)->take(100)->get();
 
-        // Dividir os usuários em grupos conforme a distribuição especificada
         $groupA = $users->slice(0, 30);
         $groupB = $users->slice(30, 20);
         $groupC = $users->slice(50, 21);
         $groupD = $users->slice(71, 19);
         $groupE = $users->slice(90, 10);
 
-        // Associar as alternativas específicas para cada grupo
         $this->assignAlternativesToGroup($groupA, 'a');
         $this->assignAlternativesToGroup($groupB, 'b');
         $this->assignAlternativesToGroup($groupC, 'c');

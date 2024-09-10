@@ -11,7 +11,8 @@ class UserExamSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::where('username', '!=', 'albuquerque.lucas')->get();
+        $excludedUsernames = ['albuquerque.lucas', 'duarte.yuri', 'varao.matheus'];
+        $users = User::whereNotIn('username', $excludedUsernames)->get();
 
         foreach ($users as $user) {
             $lastExamination = $user->examinations()->latest('id')->first();
