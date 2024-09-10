@@ -17,13 +17,7 @@
         </div>
     </div>
 
-    <div class="m-height-5-rem">
-        @if(session('success'))
-            <x-cards.flash-message-card type="success" :message="session('success')" />
-        @elseif(session('error'))
-            <x-cards.flash-message-card type="error" :message="session('error')" />
-        @endif
-    </div>
+    <x-cards.flash-message-container />
 
     <x-filters.examinations-dashboard-filter :action="route('admin.examinations.index')" />
 

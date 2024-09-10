@@ -3,15 +3,11 @@
 @section('main-content')
     <section class='admin-notices-page container mt-5'>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4>Dashboard Editais</h4>
+            <h4>Dashboard | Editais</h4>
             <a href="{{ route('admin.notices.create') }}" class="btn btn-dark edit-btn rounded-0">Adicionar</a>
         </div>
 
-        @if (session('success'))
-            <x-cards.flash-message-card type="success" :message="session('success')" />
-        @elseif (session('error'))
-            <x-cards.flash-message-card type="error" :message="session('error')" />
-        @endif
+        <x-cards.flash-message-container />
 
         <div class="d-flex justify-content-center mb-4">
             {!! $paginationLinks !!}

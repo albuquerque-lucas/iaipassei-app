@@ -2,10 +2,19 @@
 
 @section('main-content')
     <section class='admin-study-areas-page container mt-5'>
-        <ul class="nav nav-tabs" id="studyAreasTab" role="tablist">
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+            <h4>Dashboard | Áreas de Estudo</h4>
+            <button id="bulkDeleteButton" class="btn btn-danger rounded-0 shadow-sm" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
+                Excluir Selecionados
+            </button>
+        </div>
+
+        <x-cards.flash-message-container />
+
+        <ul class="nav nav-tabs mb-5" id="studyAreasTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
-                    Dashboard
+                    Dashboard | Áreas de Estudo
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -14,21 +23,9 @@
                 </button>
             </li>
         </ul>
-        <div class="tab-content" id="studyAreasTabContent">
+        <div class="tab-content pt-5" id="studyAreasTabContent">
             <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 
-                @if (session('success'))
-                    <x-cards.flash-message-card type="success" :message="session('success')" />
-                @elseif (session('error'))
-                    <x-cards.flash-message-card type="error" :message="session('error')" />
-                @endif
-
-                <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
-                    <h4>Dashboard Áreas de Estudo</h4>
-                    <button id="bulkDeleteButton" class="btn btn-danger rounded-0 shadow-sm" disabled data-bs-toggle="modal" data-bs-target="#bulkDeleteConfirmationModal">
-                        Excluir Selecionados
-                    </button>
-                </div>
 
                 <x-filters.study-areas-dashboard-filter :action="route('admin.study_areas.index')" />
 
