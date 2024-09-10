@@ -15,8 +15,9 @@ class UserQuestionAlternativesSeeder extends Seeder
      */
     public function run(): void
     {
+        $excludedUsernames = ['albuquerque.lucas', 'duarte.yuti', 'varao.matheus'];
         // Buscar os primeiros 100 usuários que não têm o username "albuquerque.lucas"
-        $users = User::where('username', '!=', 'albuquerque.lucas')->take(100)->get();
+        $users = User::whereNotIn('username', $excludedUsernames)->take(100)->get();
 
         // Dividir os usuários em grupos conforme a distribuição especificada
         $groupA = $users->slice(0, 30);

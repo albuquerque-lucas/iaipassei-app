@@ -62,8 +62,8 @@
                     <li class="list-group-item d-flex flex-column flex-md-row justify-content-between my-2 p-3 shadow border border-secondary-subtle">
                         <div class="w-100 w-md-75 mb-2 mb-md-0">
                             <h6 class="mb-1">{{ $exam->title }}</h6>
-                            <p class="mb-1"><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : "Data não informada" }}</p>
-                            <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p>
+                            {{-- <p class="mb-1"><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : "Data não informada" }}</p> --}}
+                            {{-- <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p> --}}
                         </div>
                         <div class="d-flex flex-column align-items-start align-items-md-end w-100 w-md-25">
                             @can('canAccessExam', $exam)
