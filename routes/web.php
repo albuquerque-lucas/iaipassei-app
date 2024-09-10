@@ -13,7 +13,6 @@ use App\Http\Controllers\AdminExamQuestionController;
 use App\Http\Controllers\AdminQuestionAlternativeController;
 use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\OpenAIAPIController;
-use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckAccountLevel;
 use App\Http\Middleware\CheckAccessLevel;
 use App\Http\Middleware\CheckExamAccess;
@@ -59,7 +58,7 @@ Route::post('admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 
 // Rotas públicas para usuários
 Route::middleware(['auth'])->group(function () {
-    Route::get('perfil/{slug}', [UserProfileController::class, 'publicProfile'])->name('public.profile.index');
+    Route::get('perfil/{slug}', [PublicUserController::class, 'profile'])->name('public.profile.index');
     Route::get('concursos', [PublicPagesController::class, 'examinations'])->name('public.examinations.index');
     Route::get('concurso/{slug}', [PublicPagesController::class, 'examination'])->name('public.examinations.show');
     Route::post('concurso/{id}/subscribe', [PublicPagesController::class, 'subscribe'])->name('examinations.subscribe');

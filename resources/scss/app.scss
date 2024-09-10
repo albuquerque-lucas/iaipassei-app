@@ -48,7 +48,7 @@
     };
 
     .delete-btn:hover {
-        background-color: $danger-color;
+        background-color: $danger-color!important;
         border: 1px solid $danger-color;
     }
 
@@ -127,6 +127,20 @@
 }
 
 // Buttons
+
+.btn-indigo-900 {
+    background-color: $blue-900!important;
+    color: #fff!important;
+}
+
+.btn-indigo-900-hover {
+    background-color: $blue-900!important;
+    color: #fff!important;
+
+    &:hover {
+        background-color: $blue-800!important;
+    }
+}
 
 .btn-indigo-700 {
     background-color: $blue-700!important;

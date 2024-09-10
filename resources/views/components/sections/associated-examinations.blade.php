@@ -8,18 +8,17 @@
                     <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
                 </div>
                 <div class="d-flex flex-column align-items-end">
-                    <a href="{{ route('public.examinations.show', $examination->slug) }}" class="btn btn-primary btn-sm mb-2 rounded-0 w-8-rem">
-                        Visualizar
-                        <i class="fa-solid fa-book ms-2"></i>
-                    </a>
-                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST">
+                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="position-absolute top-0 end-0">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-dark delete-btn btn-sm rounded-0 w-8-rem">
-                            Cancelar
-                            <i class="fa-solid fa-ban ms-2"></i>
+                        <button type="submit" class="btn btn-dark delete-btn btn-sm rounded-0">
+                            <i class="fa-solid fa-xmark"></i>
                         </button>
                     </form>
+                    <a href="{{ route('public.examinations.show', $examination->slug) }}" class="btn btn-dark edit-btn btn-sm mb-2 rounded-0 w-8-rem mt-5">
+                        Ranking
+                        <i class="fa-solid fa-book ms-2"></i>
+                    </a>
                 </div>
             </div>
         @empty
