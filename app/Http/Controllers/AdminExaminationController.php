@@ -94,6 +94,7 @@ class AdminExaminationController extends Controller
             // Criar as provas associadas ao concurso (Exams)
             for ($i = 1; $i <= $validated['num_exams']; $i++) {
                 $exam = Exam::create([
+                    'education_level_id' => EducationLevel::where('slug', 'ensino-superior')->first()->id,
                     'examination_id' => $examination->id,
                     'title' => "P-$i",
                 ]);

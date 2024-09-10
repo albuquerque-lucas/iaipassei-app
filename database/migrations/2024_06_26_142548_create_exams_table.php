@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Examination::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(EducationLevel::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(EducationLevel::class)->constrained()->default(4);
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
