@@ -18,7 +18,9 @@
                         Se você não recebeu o e-mail,
                         <form class="d-inline" method="POST" action="{{ route('verification.send') }}">
                             @csrf
-                            <button type="submit" class="btn btn-success p-2 me-2 mt-1 align-baseline">clique aqui para solicitar outro.</button>
+                            <button type="submit" class="btn btn-success p-2 me-2 mt-3 align-baseline rounded-0 shadow-sm">
+                                Clique aqui para solicitar outro.
+                            </button>
                         </form>
                     </div>
                 </div>

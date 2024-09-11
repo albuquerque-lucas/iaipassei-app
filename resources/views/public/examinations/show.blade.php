@@ -59,21 +59,30 @@
         <div class="card-body">
             <ul class="list-group">
                 @foreach($examination->exams as $exam)
-                    <li class="list-group-item d-flex flex-column flex-md-row justify-content-between my-2 p-3 shadow border border-secondary-subtle">
+                    <li class="list-group-item d-flex flex-column flex-md-row justify-content-between my-2 p-3 shadow border border-secondary-subtle rounded-0">
                         <div class="w-100 w-md-75 mb-2 mb-md-0">
-                            <h6 class="mb-1">{{ $exam->title }}</h6>
-                            {{-- <p class="mb-1"><strong>Data:</strong> {{ $exam->date ? $exam->date->format('d/m/Y') : "Data não informada" }}</p> --}}
-                            {{-- <p class="mb-1"><strong>Descrição:</strong> {{ $exam->description }}</p> --}}
+                            <p class="fw-lighter fs-5 m-0 exam-title-p">{{ $exam->title }}</p>
                         </div>
-                        <div class="d-flex flex-column align-items-start align-items-md-end w-100 w-md-25">
+                        <div class="d-flex align-items-center justify-content-md-end w-100 w-md-25">
                             @can('canAccessExam', $exam)
+                                <a
+                                    href="{{ route('public.exams.results', $exam->slug) }}"
+                                    class="btn btn-indigo-500 edit-btn btn-sm w-8-rem rounded-0 me-1"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Painel da prova"
+                                    >
+                                <i class="fa-solid fa-book me-2"></i>
+                                    Ranking
+                                </a>
+
                                 <form id="unsubscribeExamForm-{{ $exam->id }}"
                                     action="{{ route('public.exams.unsubscribe', $exam->id) }}"
                                     method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button"
-                                            class="btn btn-indigo-900 delete-btn btn-sm delete-exam-btn w-md-auto position-absolute top-0 end-0"
+                                            class="btn btn-indigo-900 delete-btn btn-sm delete-exam-btn w-md-auto rounded-0"
                                             data-exam-id="{{ $exam->id }}"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
@@ -81,14 +90,6 @@
                                         <i class="fa-solid fa-xmark"></i>
                                     </button>
                                 </form>
-                                <a href="{{ route('public.exams.results', $exam->slug) }}"
-                                class="btn btn-indigo-500 edit-btn btn-sm mt-md-5 w-8-rem w-md-auto rounded-0"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Painel da prova">
-                                    <i class="fa-solid fa-book me-2"></i>
-                                    Ranking
-                                </a>
                             @else
                                 <form action="{{ route('public.exams.subscribe', $exam->id) }}" method="POST">
                                     @csrf
