@@ -9,7 +9,7 @@
     })">
     <!-- Botão de Destacar -->
     <div class="d-flex justify-content-end mb-3 p-1">
-        <button class="btn mx-1 w-8-rem rounded-0"
+        <button class="btn mx-1 w-15 rounded-0"
                 :class="highlight ? 'btn-indigo-500' : 'btn-dark'"
                 @click="highlight = !highlight">
             <span x-text="highlight ? 'sem destaque' : 'destacar'"></span>

@@ -36,14 +36,14 @@
                         $alternativeId = $alternative['alternative']->id ?? null;
                     @endphp
 
-                    <div class="p-1 mt-1 d-flex align-items-center justify-content-between
+                    <div class="p-1 mt-1 d-flex align-items-center justify-content-end
                         {{ isset($alternative) && $alternative['is_max'] ? 'result_correct__alternative' : (isset($alternative) ? 'result_incorrect__alternative' : '') }}">
                         @if(isset($alternative))
-                            <span>
+                            {{-- <span>
                                 {{ $alternative['users_with_alternative'] }} de {{ $alternative['total_users_for_question'] }} usuários
                                 ({{ fmod($alternative['percentage'], 1) == 0 ? number_format($alternative['percentage'], 0) : number_format($alternative['percentage'], 2) }}%)
-                            </span>
-                            <span>
+                            </span> --}}
+                            <span class="m-h-2-r d-flex align-items-center justify-content-center me-1">
                                 @if($alternative['is_max'])
                                     <i class="fa-solid fa-check bg-success text-light p-1 rounded-pill"></i>
                                 @else
