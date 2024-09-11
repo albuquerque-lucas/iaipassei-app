@@ -30,9 +30,9 @@ trait ExamStatisticsTrait
 
     private function calculateStatisticsForAlternatives($alternatives, $statistics): Collection
     {
-        $examQuestionId = $alternatives->first()->exam_question_id;
+        // $startTime = microtime(true);
 
-        // Log::info('Calculating statistics for exam_question_id', ['examQuestionId' => $examQuestionId]);
+        $examQuestionId = $alternatives->first()->exam_question_id;
 
         $alternativeCounts = DB::table('user_question_alternatives')
             ->select('question_alternative_id', DB::raw('count(*) as count'))
@@ -48,11 +48,7 @@ trait ExamStatisticsTrait
         $maxProportion = $proportions->max();
         $maxAlternativeId = $proportions->search($maxProportion);
 
-        // Log::info('Max alternative identified', ['maxAlternativeId' => $maxAlternativeId]);
-
         foreach ($alternatives as $alternative) {
-            // Log::info('Processing alternative', ['alternativeId' => $alternative->id]);
-
             if (isset($alternative->id)) {
                 $isMax = $alternative->id == $maxAlternativeId;
 
@@ -60,16 +56,22 @@ trait ExamStatisticsTrait
                     'percentage' => $proportions[$alternative->id] * 100,
                     'users_with_alternative' => $proportions[$alternative->id] * $totalResponses,
                     'total_users_for_question' => $totalResponses,
-                    'is_max' => $isMax
+                    'is_max' => $isMax,
+                    'alternative' => $alternative
                 ]);
             } else {
-                // Log::error('Alternative ID is missing', ['alternative' => $alternative]);
                 throw new Exception('Invalid alternative object: Missing ID.');
             }
         }
 
+        // $endTime = microtime(true);
+        // $executionTime = $endTime - $startTime;
+
+        // Log::info('Tempo de execução do método calculateStatisticsForAlternatives: ' . $executionTime . ' segundos');
+
         return $statistics;
     }
+
 
     private function calculatePercentage($alternative): array
     {

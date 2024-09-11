@@ -10,17 +10,20 @@ use Livewire\Component;
 
 class ExamAnswerForm extends Component
 {
-    use ExamStatisticsTrait;  // Usando a trait ExamStatisticsTrait
+    use ExamStatisticsTrait;
 
     public $examId;
     public $exam;
     public $questions = [];
+    public $statistics = [];
     public $markedAlternatives = [];
     public bool $isSubmitting = false;
 
-    public function mount($examId)
+    public function mount($examId, $statistics = [], $markedAlternatives = [])
     {
         $this->examId = $examId;
+        $this->statistics = $statistics;
+        $this->markedAlternatives = $markedAlternatives;
         $this->loadExamData();
     }
 
@@ -36,8 +39,14 @@ class ExamAnswerForm extends Component
             ->get()
             ->keyBy('pivot.exam_question_id');
 
+        $this->markedAlternatives = $marked->toArray();
+
         foreach ($this->questions as $question) {
-            $this->markedAlternatives[$question->id] = $marked[$question->id]->letter ?? '';
+            $this->markedAlternatives[$question->id] = $this->markedAlternatives[$question->id]['letter'] ?? '';
+        }
+
+        if (empty($this->markedAlternatives)) {
+            session()->flash('info', 'Você ainda não marcou nenhuma questão.');
         }
     }
 
@@ -62,28 +71,11 @@ class ExamAnswerForm extends Component
             }
         }
 
-        // Calcular e salvar o ranking diretamente
         $this->calculateAndSaveRanking();
 
         $this->isSubmitting = false;
         session()->flash('success', 'As respostas foram enviadas com sucesso. O ranking será atualizado automaticamente em instantes.');
         return redirect()->route('public.exams.results', ['exam' => $this->exam->slug]);
-    }
-
-    private function calculateAndSaveRanking()
-    {
-        $rankings = $this->calculateUserRankings($this->exam->id);
-
-        foreach ($rankings as $position => $ranking) {
-            $this->exam->rankings()->updateOrCreate(
-                ['user_id' => $ranking['user']->id],
-                [
-                    'position' => $position + 1,
-                    'correct_answers' => $ranking['correct_answers'],
-                    'exam_id' => $this->exam->id,
-                ]
-            );
-        }
     }
 
     public function render()
