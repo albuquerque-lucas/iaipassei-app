@@ -18,7 +18,7 @@
         @can('viewSensitiveInfo', $user)
             <ul class="nav nav-tabs" id="profileTab" role="tablist">
                 <li class="nav-item me-1" role="presentation">
-                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
+                    <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="false">
                     <i class="fa-solid fa-user-circle me-1"></i>
                         Perfil
                     </button>
@@ -32,14 +32,14 @@
                 <li class="nav-item me-1" role="presentation">
                     <button class="nav-link" id="examination-tab" data-bs-toggle="tab" data-bs-target="#examination" type="button" role="tab" aria-controls="examination" aria-selected="false">
                         <i class="fa-solid fa-book me-1"></i>
-                        Concursos
+                        Rankings
                     </button>
                 </li>
             </ul>
         @endcan
 
         <div class="tab-content" id="profileTabContent">
-            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                 <x-sections.admin-profile-info-display :user="$user" />
             </div>
             @if(auth()->check() && auth()->user()->id == $user->id)
@@ -62,4 +62,6 @@
             </div>
         </div>
     </section>
+
+@vite('resources/js/tab-selection.js')
 @endsection

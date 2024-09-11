@@ -1,6 +1,6 @@
 <div class="mt-4">
-    <h4 class="ps-1 ms-3 mb-3">Concursos Associados</h4>
-    <div class="list-group">
+    <h4 class="ps-1 ms-3 mb-3">Meus rankings</h4>
+    <div class="list-group shadow" style="max-height: 80vh; overflow-y: auto;">
         @forelse($examinations as $examination)
             <div class="list-group-item d-flex justify-content-between align-items-center rounded-0 shadow">
                 <div>
@@ -8,10 +8,10 @@
                     <p><strong>Instituição:</strong> {{ $examination->institution }}</p>
                 </div>
                 <div class="d-flex flex-column align-items-end">
-                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="position-absolute top-0 end-0">
+                    <form action="{{ route('examinations.unsubscribe', $examination->id) }}" method="POST" class="position-absolute top-0 end-0 me-3">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-dark delete-btn btn-sm rounded-0">
+                        <button type="submit" class="btn btn-dark delete-btn btn-sm rounded-0 pt-1">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </form>
