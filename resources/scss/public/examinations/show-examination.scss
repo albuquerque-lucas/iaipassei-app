@@ -6,13 +6,11 @@
 
 .badge-custom {
     background-color: $soft-success-color;
-    // position: absolute;
-    // top: 0;
-    // right: 5rem;
 }
 
-// .cancel-btn {
-//     position: absolute;
-//     top: 0.15rem;
-//     right: 0;
-// }
+.exam-title-p {
+    text-underline-offset: 0.5rem;
+    &:hover {
+        text-decoration: underline;
+    }
+}
