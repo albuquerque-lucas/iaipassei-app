@@ -36,8 +36,8 @@
                         $alternativeId = $alternative['alternative']->id ?? null;
                     @endphp
 
-                    <div class="p-1 mt-1 d-flex align-items-center justify-content-end
-                        {{ isset($alternative) && $alternative['is_max'] ? 'result_correct__alternative' : (isset($alternative) ? 'result_incorrect__alternative' : '') }}">
+                    <div class="px-1 mt-1 d-flex align-items-center justify-content-end
+                        {{ isset($alternative) && $alternative['is_max'] ? 'result_correct__alternative correct-alternative-u-bar' : (isset($alternative) ? 'result_incorrect__alternative incorrect-alternative-u-bar' : '') }}">
                         @if(isset($alternative))
                             <span class="m-h-2-r d-flex align-items-center justify-content-center me-1">
                                 @if($alternative['is_max'])

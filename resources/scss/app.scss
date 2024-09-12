@@ -76,6 +76,14 @@
         background-color: $soft-danger-color;
     }
 
+    .correct-alternative-u-bar {
+        border-top: 0.5rem solid $success-color;
+    }
+
+    .incorrect-alternative-u-bar {
+        border-top: 0.5rem solid $danger-color;
+    }
+
     .flash-success {
         background-color: $soft-success-color;
         color: white;
