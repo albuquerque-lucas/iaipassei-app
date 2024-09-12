@@ -2,7 +2,7 @@
 
 @section('main-content')
 <div class="container mt-5 m-height-100">
-    <h3 class="mb-4">Resultados</h3>
+    <h3 class="mb-4">Gabarito | Ranking</h3>
 
     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-1">
         <ul class="nav nav-tabs w-100 w-md-auto mb-3 mb-md-0" id="resultTabs" role="tablist">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="tab-pane fade" id="question-results" role="tabpanel" aria-labelledby="question-results-tab">
-            {{-- <x-sections.examResults.result-per-question :statistics="$statistics" :markedAlternatives="$markedAlternatives" /> --}}
+            <x-sections.examResults.result-per-question :statistics="$statistics" :markedAlternatives="$markedAlternatives" />
         </div>
     </div>
 </div>

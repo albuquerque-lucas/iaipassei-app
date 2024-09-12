@@ -10,47 +10,45 @@
     <form wire:submit.prevent="submit">
         <div class="row">
             @foreach ($questions as $question)
-            <div class="col-md-2 mb-4">
-                <div class="card rounded-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center" style="min-height:3rem">
-                            <h6 class="card-title fw-bold">{{ $question->question_number }}.</h6>
+                @php
+                    $alternativeLetter = $markedAlternatives[$question->id] ?? null;
+                    $alternative = isset($alternativeLetter) ? collect($statistics)->firstWhere('alternative.letter', $alternativeLetter) : null;
+                    $alternativeId = $alternative['alternative']->id ?? null;
+                @endphp
+                <div class="col-md-2 mb-4">
+                    <div class="card rounded-0 shadow-sm {{ isset($alternative) && $alternative['is_max'] ? 'result_correct__alternative' : (isset($alternative) ? 'result_incorrect__alternative' : '') }}">
+                        <div class="ps-3 pe-1 d-flex align-items-center justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center" style="min-height:3rem">
+                                <h6 class="card-title fw-bold">{{ $question->question_number }}.</h6>
+                            </div>
+                            @if(isset($alternative))
+                                <span class="m-h-2-r d-flex align-items-center justify-content-center me-1">
+                                    @if($alternative['is_max'])
+                                        <i class="fa-solid fa-check bg-success text-light p-1 rounded-pill"></i>
+                                    @else
+                                        <i class="fa-solid fa-xmark bg-danger text-light p-1 rounded-pill"></i>
+                                    @endif
+                                </span>
+                            @endif
                         </div>
-                        <p class="card-text">
-                            {{ $question->statement }}
-                        </p>
+                        <div class="card-body">
+                            <p class="card-text">
+                                {{ $question->statement }}
+                            </p>
 
-                        <input
-                            type="text"
-                            class="form-control question-input"
-                            wire:model.defer="markedAlternatives.{{ $question->id }}"
-                            maxlength="1"
-                            oninput="validateInput(this)"
-                            required>
-                    </div>
+                            <input
+                                type="text"
+                                class="form-control question-input"
+                                wire:model.defer="markedAlternatives.{{ $question->id }}"
+                                maxlength="1"
+                                oninput="validateInput(this)"
+                                required>
+                        </div>
 
-                    @php
-                        $alternativeLetter = $markedAlternatives[$question->id] ?? null;
-                        // Aqui buscamos a alternativa correta no array de estatísticas pelo id da alternativa
-                        $alternative = isset($alternativeLetter) ? collect($statistics)->firstWhere('alternative.letter', $alternativeLetter) : null;
-                        $alternativeId = $alternative['alternative']->id ?? null;
-                    @endphp
 
-                    <div class="px-1 mt-1 d-flex align-items-center justify-content-end
-                        {{ isset($alternative) && $alternative['is_max'] ? 'result_correct__alternative correct-alternative-u-bar' : (isset($alternative) ? 'result_incorrect__alternative incorrect-alternative-u-bar' : '') }}">
-                        @if(isset($alternative))
-                            <span class="m-h-2-r d-flex align-items-center justify-content-center me-1">
-                                @if($alternative['is_max'])
-                                    <i class="fa-solid fa-check bg-success text-light p-1 rounded-pill"></i>
-                                @else
-                                    <i class="fa-solid fa-xmark bg-danger text-light p-1 rounded-pill"></i>
-                                @endif
-                            </span>
-                        @endif
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
 
         </div>
 
