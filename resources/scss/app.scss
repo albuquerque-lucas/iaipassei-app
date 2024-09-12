@@ -76,6 +76,14 @@
         background-color: $soft-danger-color;
     }
 
+    .correct-alternative-u-bar {
+        border-top: 0.5rem solid $success-color;
+    }
+
+    .incorrect-alternative-u-bar {
+        border-top: 0.5rem solid $danger-color;
+    }
+
     .flash-success {
         background-color: $soft-success-color;
         color: white;
@@ -188,6 +196,10 @@
 
 
 // Sizing
+
+.m-h-2-r {
+    min-height: 2rem;
+}
 
 .m-height-5-rem {
     min-height: 5rem;

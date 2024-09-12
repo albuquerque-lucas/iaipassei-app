@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/scss/app.scss',
                 'resources/js/app.js',
                 'resources/js/tab-selection.js',
+                'resources/js/rank-page-tab-selection.js',
             ],
             refresh: true,
         }),

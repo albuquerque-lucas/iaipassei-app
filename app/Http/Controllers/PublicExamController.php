@@ -26,12 +26,10 @@ class PublicExamController extends Controller
 
             $markedAlternatives = $this->getMarkedAlternatives($user, $exam);
             $markedAlternatives = $this->sortAlternativesByQuestionNumber($markedAlternatives);
-
             $totalQuestions = $exam->examQuestions->count();
             $userAnsweredAllQuestions = $markedAlternatives->count() === $totalQuestions;
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
-
             $userRankings = $exam->rankings()->get();
 
             $title = "Resultados | $exam->title";
