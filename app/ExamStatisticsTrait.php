@@ -126,7 +126,7 @@ trait ExamStatisticsTrait
 
             if ($answeredQuestionsCount < $totalQuestions) {
                 // Log::info('Usuário não respondeu a todas as questões', ['userId' => $user->id]);
-                return null; // Se não respondeu todas, exclui do ranking
+                return null;
             }
 
             // Log::info('Alternativas marcadas', ['markedAlternatives' => $markedAlternatives->pluck('id')]);
