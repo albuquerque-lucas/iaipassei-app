@@ -71,7 +71,7 @@ class ExamAnswerForm extends Component
             }
         }
 
-        $this->calculateAndSaveRanking();
+        $this->calculateUserRankings($this->exam->id);
 
         $this->isSubmitting = false;
         session()->flash('success', 'As respostas foram enviadas com sucesso. O ranking será atualizado automaticamente em instantes.');
