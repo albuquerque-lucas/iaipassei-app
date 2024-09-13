@@ -1,10 +1,8 @@
 <div>
-    <!-- Botões de Paginação no Topo -->
-    <div class="d-flex justify-content-center my-3">
+    <div class="d-flex justify-content-center my-5">
         {{ $exams->links('pagination::bootstrap-4') }}
     </div>
 
-    <!-- Campo de Busca e Filtro de Inscrição -->
     <div class="mb-4 d-flex align-items-center">
         <div class="d-flex align-items-centerbg-danger w-50 me-3">
             <input type="text" class="form-control rounded-0" placeholder="Buscar rankings..." wire:model.defer="tempSearch">
@@ -14,8 +12,8 @@
             </button>
         </div>
 
-        <div class="d-flex align-items-centerjustify-content-end w-50">
-            <select class="form-select rounded-0" wire:model.defer="tempFilterStatus">
+        <div class="d-flex align-items-center justify-content-end w-50">
+            <select class="form-select rounded-0 w-50" wire:model.defer="tempFilterStatus">
                 <option value="all">Todos</option>
                 <option value="enrolled">Inscrito</option>
                 <option value="not_enrolled">Não Inscrito</option>
@@ -27,7 +25,6 @@
         </div>
     </div>
 
-    <!-- Lista de Exames com Scroll Vertical -->
     <div style="max-height: 80vh; overflow-y: scroll;" class="bg-light p-3">
         <ul class="list-group">
             @foreach($exams as $exam)
@@ -63,7 +60,6 @@
         </ul>
     </div>
 
-    <!-- Botões de Paginação no Final -->
     <div class="d-flex justify-content-center mt-4">
         {{ $exams->links('pagination::bootstrap-4') }}
     </div>
