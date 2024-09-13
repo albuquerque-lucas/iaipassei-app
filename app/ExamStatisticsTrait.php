@@ -93,31 +93,27 @@ trait ExamStatisticsTrait
     public function calculateUserRankings($examId): Collection
     {
         try {
-            Log::info("Iniciando o cálculo de rankings para o exame {$examId}");
+            // Log::info("Iniciando o cálculo de rankings para o exame {$examId}");
             $users = $this->getUsersForExam($examId);
-            Log::info("Usuários obtidos para o exame {$examId}: " . $users->pluck('id'));
+            // Log::info("Usuários obtidos para o exame {$examId}: " . $users->pluck('id'));
 
             $rankings = $this->calculateRankings($users, $examId);
-            Log::info("Rankings calculados com sucesso para o exame {$examId}");
+            // Log::info("Rankings calculados com sucesso para o exame {$examId}");
 
-            // Persistindo o ranking no banco de dados
             foreach ($rankings as $index => $ranking) {
                 $user = $ranking['user'];
                 $correctAnswers = $ranking['correct_answers'];
-                $position = $index + 1; // Determinando a posição
+                $position = $index + 1;
 
-                // Verificando se o ranking já existe para esse usuário no exame
                 $existingRanking = Ranking::where('exam_id', $examId)->where('user_id', $user->id)->first();
 
                 if ($existingRanking) {
-                    // Atualizando o ranking existente
                     $existingRanking->update([
                         'position' => $position,
                         'correct_answers' => $correctAnswers,
                     ]);
                     Log::info("Ranking atualizado para o usuário {$user->id} no exame {$examId}");
                 } else {
-                    // Criando um novo ranking
                     Ranking::create([
                         'exam_id' => $examId,
                         'user_id' => $user->id,
@@ -141,7 +137,6 @@ trait ExamStatisticsTrait
         $users = User::whereHas('exams', function ($query) use ($examId) {
             $query->where('exams.id', $examId);
         })->get();
-        // Log::info('Usuários obtidos para o exame', ['examId' => $examId, 'users' => $users->pluck('id')]);
 
         return $users;
     }
@@ -151,17 +146,14 @@ trait ExamStatisticsTrait
         $totalQuestions = Exam::findOrFail($examId)->examQuestions->count();
 
         return $users->map(function ($user) use ($examId, $totalQuestions) {
-            // Log::info('Processando usuário', ['userId' => $user->id]);
 
             $markedAlternatives = $this->getMarkedAlternatives($user, $examId);
             $answeredQuestionsCount = $markedAlternatives->groupBy('exam_question_id')->count();
 
             if ($answeredQuestionsCount < $totalQuestions) {
-                // Log::info('Usuário não respondeu a todas as questões', ['userId' => $user->id]);
                 return null;
             }
 
-            // Log::info('Alternativas marcadas', ['markedAlternatives' => $markedAlternatives->pluck('id')]);
 
             $statistics = $this->calculateAlternativeStatistics($markedAlternatives);
 
