@@ -1,10 +1,10 @@
 <div>
-    <div class="d-flex flex-column align-items-center my-5">
-        <div class="pagination-links">
+    <div class="d-flex flex-column align-items-center mb-5">
+        <div class="pagination-links m-height-5-rem d-flex align-items-center mb-4">
             {{ $examinations->links('pagination::bootstrap-4') }}
         </div>
-        <div class="mt-4 text-muted">
-            Showing {{ $examinations->firstItem() }} to {{ $examinations->lastItem() }} of {{ $examinations->total() }} results
+        <div class="text-muted">
+            Exibindo {{ $examinations->firstItem() }} a {{ $examinations->lastItem() }} de {{ $examinations->total() }} resultados
         </div>
     </div>
 
