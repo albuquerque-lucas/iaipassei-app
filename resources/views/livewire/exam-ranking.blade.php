@@ -36,7 +36,7 @@
     @endif
 
     @if ($userRankings->isEmpty())
-        <p>Nenhum usuário participou desta prova.</p>
+    <p>Nenhum usuário participou desta prova.</p>
     @else
         <table class="table table-striped shadow">
             <thead>
@@ -47,14 +47,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($userRankings as $index => $ranking)
+                @foreach ($userRankings as $ranking)
                     @php
                         $isCurrentUser = $ranking->user->id === auth()->id();
                         $totalQuestions = $exam->examQuestions()->count();
                         $percentage = ($ranking->correct_answers / $totalQuestions) * 100;
                     @endphp
                     <tr class="{{ $isCurrentUser ? 'table-primary fw-bold' : '' }}">
-                        <th scope="row" class="w-25">{{ $index + 1 }}</th>
+                        <th scope="row" class="w-25">{{ $ranking->position }}</th>
                         <td class="w-50">{{ $ranking->user->username }}</td>
                         <td class="w-25 text-center">{{ number_format($percentage, 2) }}%</td>
                     </tr>
@@ -62,4 +62,5 @@
             </tbody>
         </table>
     @endif
+
 </div>

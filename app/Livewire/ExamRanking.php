@@ -7,9 +7,12 @@ use App\Models\Ranking;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Log;
+use App\ExamStatisticsTrait;
 
 class ExamRanking extends Component
 {
+    use ExamStatisticsTrait;
+
     public $examId;
     public Exam $exam;
     public $userRankings = [];
