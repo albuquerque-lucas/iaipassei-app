@@ -137,16 +137,16 @@
 // Buttons
 
 .btn-indigo-900 {
-    background-color: $blue-900!important;
+    background-color: $blue-800!important;
     color: #fff!important;
 }
 
-.btn-indigo-900-hover {
-    background-color: $blue-900!important;
+.btn-indigo-800-hover {
+    background-color: $blue-800!important;
     color: #fff!important;
 
     &:hover {
-        background-color: $blue-800!important;
+        background-color: $blue-700!important;
     }
 }
 

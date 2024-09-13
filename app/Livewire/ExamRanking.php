@@ -3,16 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Exam;
-use App\Models\Ranking;
 use Livewire\Component;
-use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Log;
-use App\ExamStatisticsTrait;
 
 class ExamRanking extends Component
 {
-    use ExamStatisticsTrait;
-
     public $examId;
     public Exam $exam;
     public $userRankings = [];
@@ -21,6 +16,7 @@ class ExamRanking extends Component
     public $userPosition;
     public $userCorrectAnswers;
     public $userPercentage;
+    public $search = ''; // Campo para o filtro de username
 
     public function mount($examId)
     {
@@ -29,23 +25,27 @@ class ExamRanking extends Component
         $this->loadUserRankings();
     }
 
-    #[On('ranking.updated')]
-    public function refreshComponent()
+    public function applyFilter()
     {
-        Log::info('Forçando atualização do componente');
-        $this->dispatch('$refresh');
+        $this->loadUserRankings();
     }
 
     public function loadUserRankings()
     {
         $this->isUpdating = true;
-        $this->userRankings = $this->exam->rankings()->orderBy('position')->get();
+
+        // Buscar rankings com base no filtro de username
+        $this->userRankings = $this->exam->rankings()
+            ->with('user')
+            ->when($this->search, function ($query) {
+                $query->whereHas('user', function ($q) {
+                    $q->where('username', 'like', "%{$this->search}%");
+                });
+            })
+            ->orderBy('position')
+            ->get();
 
         $this->calculateUserStats();
-
-        if (!$this->userRankings->isEmpty()) {
-            $this->dispatch('$refresh');
-        }
 
         $this->isUpdating = false;
     }
