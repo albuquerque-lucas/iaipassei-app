@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\User;
 use App\Models\Exam;
+use App\Models\Ranking;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -92,17 +93,48 @@ trait ExamStatisticsTrait
     public function calculateUserRankings($examId): Collection
     {
         try {
+            Log::info("Iniciando o cálculo de rankings para o exame {$examId}");
             $users = $this->getUsersForExam($examId);
+            Log::info("Usuários obtidos para o exame {$examId}: " . $users->pluck('id'));
+
             $rankings = $this->calculateRankings($users, $examId);
+            Log::info("Rankings calculados com sucesso para o exame {$examId}");
+
+            // Persistindo o ranking no banco de dados
+            foreach ($rankings as $index => $ranking) {
+                $user = $ranking['user'];
+                $correctAnswers = $ranking['correct_answers'];
+                $position = $index + 1; // Determinando a posição
+
+                // Verificando se o ranking já existe para esse usuário no exame
+                $existingRanking = Ranking::where('exam_id', $examId)->where('user_id', $user->id)->first();
+
+                if ($existingRanking) {
+                    // Atualizando o ranking existente
+                    $existingRanking->update([
+                        'position' => $position,
+                        'correct_answers' => $correctAnswers,
+                    ]);
+                    Log::info("Ranking atualizado para o usuário {$user->id} no exame {$examId}");
+                } else {
+                    // Criando um novo ranking
+                    Ranking::create([
+                        'exam_id' => $examId,
+                        'user_id' => $user->id,
+                        'position' => $position,
+                        'correct_answers' => $correctAnswers,
+                    ]);
+                    Log::info("Ranking criado para o usuário {$user->id} no exame {$examId}");
+                }
+            }
+
             return $this->assignPositions($rankings);
         } catch (Exception $e) {
-            Log::error('Erro ao calcular o ranking dos usuários', [
-                'examId' => $examId,
-                'error' => $e->getMessage()
-            ]);
+            Log::error("Erro ao calcular o ranking dos usuários: " . $e->getMessage());
             throw $e;
         }
     }
+
 
     private function getUsersForExam($examId): Collection
     {
