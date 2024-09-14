@@ -1,14 +1,17 @@
 <div class="container mt-5">
     @if ($userPosition)
-        <div class="d-flex align-items-center justify-content-between p-1 mb-3 w-75 ranking-statistics-row">
-            <span class="text-center">
-                <strong>Sua colocação:</strong> {{ $userPosition }}
+        <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between p-1 mb-5 w-75 ranking-statistics-row mx-md-auto mx-auto">
+            <span class="d-flex flex-column flex-lg-row align-items-center text-center mb-2 mb-lg-0">
+                <strong>{{ __('Sua colocação:') }}</strong>
+                <span class="ms-0 ms-lg-1">{{ $userPosition }}</span>
             </span>
-            <span class="d-none d-md-inline text-center">
-                <strong>Acertos:</strong> {{ $userCorrectAnswers }} questões
+            <span class="d-flex flex-column flex-lg-row align-items-center text-center mb-2 mb-lg-0">
+                <strong>{{ __('Acertos:') }}</strong>
+                <span class="ms-0 ms-lg-1">{{ $userCorrectAnswers }} questões</span>
             </span>
-            <span class="text-center">
-                <strong>Porcentagem de acertos:</strong> {{ number_format($userPercentage, 2) }}%
+            <span class="d-flex flex-column flex-lg-row align-items-center text-center">
+                <strong>{{ __('Porcentagem de acertos:') }}</strong>
+                <span class="ms-0 ms-lg-1">{{ number_format($userPercentage, 2) }}%</span>
             </span>
         </div>
     @endif
@@ -24,13 +27,20 @@
         </p>
     @endif
 
-    <div class="mb-4 d-flex align-items-center">
-        <input type="text" class="form-control w-50 rounded-0" placeholder="Buscar usuário..." wire:model.defer="search">
-        <button class="btn btn-indigo-800-hover ms-2 rounded-0 w-15" type="button" wire:click="applyFilter" wire:loading.attr="disabled">
-            <span wire:loading.remove>Buscar</span>
-            <span wire:loading>Buscando... <div class="spinner-border spinner-border-sm" role="status"></div></span>
-        </button>
+    <div class="mb-4 row align-items-center justify-content-start">
+        <div class="col-12 col-lg-5">
+            <input type="text" class="form-control rounded-0" placeholder="Buscar usuário..." wire:model.defer="search">
+        </div>
+        <div class="col-12 col-lg-2 mt-2 mt-lg-0">
+            <button class="btn btn-indigo-800-hover w-100 rounded-0" type="button" wire:click="applyFilter" wire:loading.attr="disabled">
+                <span wire:loading.remove>Buscar</span>
+                <span wire:loading>
+                    Buscando... <div class="spinner-border spinner-border-sm" role="status"></div>
+                </span>
+            </button>
+        </div>
     </div>
+
 
     <div class="d-flex justify-content-center my-3">
         {{ $userRankings->links('pagination::bootstrap-4') }}
@@ -41,7 +51,7 @@
     @else
         <div style="max-height: 80vh; overflow-y: scroll;" class="bg-light p-4 shadow">
             <table class="table table-striped shadow-sm">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th scope="col" class="w-25">Posição</th>
                         <th scope="col" class="w-50">Nome</th>
