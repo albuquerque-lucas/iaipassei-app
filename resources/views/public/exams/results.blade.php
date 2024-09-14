@@ -26,7 +26,7 @@
         </ul>
 
         <div class="w-100 w-md-50 d-flex align-items-center justify-content-start justify-content-md-end">
-            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-indigo-800-hover mx-1 rounded-0 w-8-tem w-md-25">
+            <a href="{{ route('public.examinations.show', $exam->examination->slug) }}" class="btn btn-indigo-800-hover mx-1 rounded-0 w-8-tem w-md-25 shadow-sm">
                 <i class="fa-solid fa-arrow-left me-1"></i>
                 Concurso
             </a>
