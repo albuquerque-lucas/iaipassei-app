@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="input-group">
                 <input type="text" class="form-control rounded-0" placeholder="Buscar..." wire:model.defer="tempSearch">
-                <button class="btn btn-indigo-900-hover rounded-0 ms-2 w-15" type="button" wire:click="applySearch" wire:loading.attr="disabled">
+                <button class="btn btn-indigo-800-hover rounded-0 ms-2 w-15" type="button" wire:click="applySearch" wire:loading.attr="disabled">
                     <span wire:loading.remove>Pesquisar</span>
                     <span wire:loading>Pescquisando... <div class="spinner-border spinner-border-sm" role="status"></div></span>
                 </button>

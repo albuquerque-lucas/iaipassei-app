@@ -6,7 +6,7 @@
     <div class="mb-4 d-flex align-items-center">
         <div class="d-flex align-items-centerbg-danger w-50 me-3">
             <input type="text" class="form-control rounded-0" placeholder="Buscar rankings..." wire:model.defer="tempSearch">
-            <button class="w-35 btn btn-indigo-900-hover ms-2 rounded-0" type="button" wire:click="applySearch" wire:loading.attr="disabled" wire:target="applySearch">
+            <button class="w-35 btn btn-indigo-800-hover ms-2 rounded-0" type="button" wire:click="applySearch" wire:loading.attr="disabled" wire:target="applySearch">
                 <span wire:loading.remove wire:target="applySearch">Pesquisar</span>
                 <span wire:loading wire:target="applySearch">Pesquisando... <div class="spinner-border spinner-border-sm" role="status"></div></span>
             </button>
@@ -18,7 +18,7 @@
                 <option value="enrolled">Inscrito</option>
                 <option value="not_enrolled">Não Inscrito</option>
             </select>
-            <button class="w-35 btn btn-indigo-900-hover ms-2 rounded-0" type="button" wire:click="applyFilter" wire:loading.attr="disabled" wire:target="applyFilter">
+            <button class="w-35 btn btn-indigo-800-hover ms-2 rounded-0" type="button" wire:click="applyFilter" wire:loading.attr="disabled" wire:target="applyFilter">
                 <span wire:loading.remove wire:target="applyFilter">Filtrar</span>
                 <span wire:loading wire:target="applyFilter">Filtrando... <div class="spinner-border spinner-border-sm" role="status"></div></span>
             </button>
@@ -41,14 +41,14 @@
                             <form id="unsubscribeExamForm-{{ $exam->id }}" action="{{ route('public.exams.unsubscribe', $exam->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn btn-indigo-900 delete-btn btn-sm delete-exam-btn w-md-auto rounded-0" data-exam-id="{{ $exam->id }}">
+                                <button type="button" class="btn btn-indigo-800-hover delete-btn btn-sm delete-exam-btn w-md-auto rounded-0" data-exam-id="{{ $exam->id }}">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </form>
                         @else
                             <form action="{{ route('public.exams.subscribe', $exam->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-indigo-900-hover edit-btn btn-sm my-1 w-8-rem w-md-auto rounded-0">
+                                <button type="submit" class="btn btn-indigo-800-hover edit-btn btn-sm my-1 w-8-rem w-md-auto rounded-0">
                                     <i class="fa-solid fa-plus-circle me-2"></i>
                                     Participar
                                 </button>

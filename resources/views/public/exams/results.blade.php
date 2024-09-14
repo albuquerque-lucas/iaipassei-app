@@ -7,7 +7,7 @@
     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-1">
         <ul class="nav nav-tabs w-100 w-md-auto mb-3 mb-md-0" id="resultTabs" role="tablist">
             <li class="nav-item me-1" role="presentation">
-                <button class="nav-link rounded-0 active" id="exam-answer-form-tab" data-bs-toggle="tab" data-bs-target="#exam-answer-form" type="button" role="tab" aria-controls="exam-answer-form" aria-selected="true">
+                <button class="nav-link rounded-0" id="exam-answer-form-tab" data-bs-toggle="tab" data-bs-target="#exam-answer-form" type="button" role="tab" aria-controls="exam-answer-form" aria-selected="false">
                     Gabarito
                 </button>
             </li>
@@ -32,7 +32,7 @@
     </div>
 
     <div class="tab-content mt-3 mb-5" id="resultTabsContent">
-        <div class="tab-pane fade show active" id="exam-answer-form" role="tabpanel" aria-labelledby="exam-answer-form-tab">
+        <div class="tab-pane fade" id="exam-answer-form" role="tabpanel" aria-labelledby="exam-answer-form-tab">
             <livewire:exam-answer-form :examId="$exam->id" :statistics="$statistics" :markedAlternatives="$markedAlternatives" />
         </div>
 

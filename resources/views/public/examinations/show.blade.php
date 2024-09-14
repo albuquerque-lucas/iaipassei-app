@@ -13,7 +13,7 @@
 </div>
 
 <div class="container mt-4 d-flex justify-content-end">
-    <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-900-hover edit-btn rounded-0">
+    <a href="{{ route('public.examinations.index') }}" class="btn btn-indigo-800-hover edit-btn rounded-0">
         <i class="fa-solid fa-arrow-left me-1"></i>
         Concursos
     </a>
