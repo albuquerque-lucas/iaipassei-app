@@ -50,8 +50,8 @@
         <p>Nenhum usuário participou desta prova.</p>
     @else
         {{-- Tabela de rankings com paginação --}}
-        <div style="max-height: 80vh; overflow-y: scroll;" class="bg-light p-3">
-            <table class="table table-striped shadow">
+        <div style="max-height: 80vh; overflow-y: scroll;" class="bg-light p-4 shadow">
+            <table class="table table-striped shadow-sm">
                 <thead>
                     <tr>
                         <th scope="col" class="w-25">Posição</th>
