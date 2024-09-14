@@ -1,5 +1,4 @@
 <div class="container mt-5">
-    {{-- Informações do usuário autenticado --}}
     @if ($userPosition)
         <div class="d-flex align-items-center justify-content-between p-1 mb-3 w-75 ranking-statistics-row">
             <span class="text-center">
@@ -25,7 +24,6 @@
         </p>
     @endif
 
-    {{-- Campo de filtro e botão de filtrar --}}
     <div class="mb-4 d-flex align-items-center">
         <input type="text" class="form-control w-50 rounded-0" placeholder="Buscar usuário..." wire:model.defer="search">
         <button class="btn btn-indigo-800-hover ms-2 rounded-0 w-15" type="button" wire:click="applyFilter" wire:loading.attr="disabled">
@@ -41,7 +39,6 @@
     @if ($userRankings->isEmpty())
         <p>Nenhum usuário participou desta prova.</p>
     @else
-        {{-- Tabela de rankings com paginação --}}
         <div style="max-height: 80vh; overflow-y: scroll;" class="bg-light p-4 shadow">
             <table class="table table-striped shadow-sm">
                 <thead>
@@ -68,7 +65,6 @@
             </table>
         </div>
 
-        {{-- Controles de paginação --}}
         <div class="d-flex justify-content-center mt-4">
             {{ $userRankings->links('pagination::bootstrap-4') }}
         </div>

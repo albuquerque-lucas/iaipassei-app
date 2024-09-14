@@ -4,9 +4,7 @@
 <div class="container mt-5 m-height-100">
     <h3 class="mb-4">Gabarito | Ranking</h3>
 
-    <!-- Message Rendering -->
     <x-cards.flash-message-container />
-    <!-- End of Message Rendering -->
 
     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-1">
         <ul class="nav nav-tabs w-100 w-md-auto mb-3 mb-md-0" id="resultTabs" role="tablist">
