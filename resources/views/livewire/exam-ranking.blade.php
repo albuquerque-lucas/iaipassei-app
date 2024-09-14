@@ -42,10 +42,14 @@
         </button>
     </div>
 
+    <div class="d-flex justify-content-center my-3">
+        {{ $userRankings->links('pagination::bootstrap-4') }}
+    </div>
+
     @if ($userRankings->isEmpty())
         <p>Nenhum usuário participou desta prova.</p>
     @else
-        {{-- Tabela de rankings --}}
+        {{-- Tabela de rankings com paginação --}}
         <div style="max-height: 80vh; overflow-y: scroll;" class="bg-light p-3">
             <table class="table table-striped shadow">
                 <thead>
@@ -70,6 +74,11 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        {{-- Controles de paginação --}}
+        <div class="d-flex justify-content-center mt-4">
+            {{ $userRankings->links('pagination::bootstrap-4') }}
         </div>
     @endif
 </div>

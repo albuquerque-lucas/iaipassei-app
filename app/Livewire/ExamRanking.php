@@ -4,19 +4,23 @@ namespace App\Livewire;
 
 use App\Models\Exam;
 use Livewire\Component;
+use Livewire\WithPagination; // Importando o trait para paginação
 use Illuminate\Support\Facades\Log;
 
 class ExamRanking extends Component
 {
+    use WithPagination; // Usando o trait para paginação
+
     public $examId;
     public Exam $exam;
-    public $userRankings = [];
     public bool $userAnsweredAllQuestions;
     public bool $isUpdating = false;
     public $userPosition;
     public $userCorrectAnswers;
     public $userPercentage;
     public $search = ''; // Campo para o filtro de username
+
+    protected $paginationTheme = 'bootstrap'; // Tema da paginação para Bootstrap
 
     public function mount($examId)
     {
@@ -30,11 +34,16 @@ class ExamRanking extends Component
         $this->loadUserRankings();
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reseta para a primeira página ao buscar algo novo
+    }
+
     public function loadUserRankings()
     {
         $this->isUpdating = true;
 
-        // Buscar rankings com base no filtro de username
+        // Buscar rankings com base no filtro de username e paginar os resultados
         $this->userRankings = $this->exam->rankings()
             ->with('user')
             ->when($this->search, function ($query) {
@@ -43,7 +52,7 @@ class ExamRanking extends Component
                 });
             })
             ->orderBy('position')
-            ->get();
+            ->paginate(50); // Paginando 50 resultados por página
 
         $this->calculateUserStats();
 
