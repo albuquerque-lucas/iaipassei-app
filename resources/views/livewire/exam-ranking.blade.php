@@ -1,14 +1,14 @@
 <div class="container mt-5">
     {{-- Informações do usuário autenticado --}}
     @if ($userPosition)
-        <div class="d-flex align-items-center p-1 mb-3 w-100">
-            <span class="me-5 text-center">
+        <div class="d-flex align-items-center justify-content-between p-1 mb-3 w-75">
+            <span class="text-center" style="color:#666;font-size:1.2rem;opacity:0.8;">
                 <strong>Sua colocação:</strong> {{ $userPosition }}
             </span>
-            <span class="me-5 d-none d-md-inline text-center">
+            <span class="d-none d-md-inline text-center" style="color:#666;font-size:1.2rem;opacity:0.8;">
                 <strong>Acertos:</strong> {{ $userCorrectAnswers }} questões
             </span>
-            <span class="me-5 text-center">
+            <span class="text-center" style="color:#666;font-size:1.2rem;opacity:0.8;">
                 <strong>Porcentagem de acertos:</strong> {{ number_format($userPercentage, 2) }}%
             </span>
         </div>
