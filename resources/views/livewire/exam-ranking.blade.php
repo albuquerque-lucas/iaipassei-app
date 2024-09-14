@@ -1,12 +1,4 @@
 <div class="container mt-5">
-    <div class="h-5-rem">
-        @if (session('success'))
-            <x-cards.flash-message-card type="success" :message="session('success')" />
-        @elseif (session('error'))
-            <x-cards.flash-message-card type="error" :message="session('error')" />
-        @endif
-    </div>
-
     {{-- Informações do usuário autenticado --}}
     @if ($userPosition)
         <div class="d-flex align-items-center p-1 mb-3 w-100">
