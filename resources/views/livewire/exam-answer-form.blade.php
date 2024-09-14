@@ -44,17 +44,23 @@
 
         </div>
 
-        <div class="d-flex align-items-center mt-4 mb-5 justify-content-between">
-            <button type="submit" class="btn btn-indigo-800-hover rounded-0 w-25">
-                Enviar gabarito
-            </button>
-            <div wire:loading class="w-50 text-dark">
-                <div class="d-flex h-100 w-100 align-items-center justify-content-end">
-                    <p class="p-0 m-0">Calculando ranking. Aguarde alguns instantes...</p>
-                    <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+        <div class="row align-items-center mt-4 mb-5">
+            <div class="col-12 col-lg-3 mb-3 mb-lg-0">
+                <button type="submit" class="btn btn-indigo-800-hover rounded-0 w-100">
+                    Enviar gabarito
+                </button>
+            </div>
+            <div class="col-12 col-lg-9 text-dark">
+                <div wire:loading>
+                    <div class="d-flex h-100 w-100 align-items-center justify-content-end">
+                        <p class="p-0 m-0">Calculando ranking. Aguarde alguns instantes...</p>
+                        <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+                    </div>
                 </div>
             </div>
         </div>
+
+
     </form>
 </section>
 
