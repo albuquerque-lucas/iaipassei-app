@@ -45,7 +45,7 @@
         </div>
 
         <div class="d-flex align-items-center mt-4 mb-5 justify-content-between">
-            <button type="submit" class="btn btn-dark rounded-0">
+            <button type="submit" class="btn btn-indigo-800-hover rounded-0 w-25">
                 Enviar gabarito
             </button>
             <div wire:loading class="w-50 text-dark">
